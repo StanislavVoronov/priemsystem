@@ -16,6 +16,11 @@ export const Styles =
 	    boxShadow:'none'
 	    
 	 },
+	 refreshStateStatus: {
+	    display: 'inline-block',
+	    position: 'relative',
+	    backgroundColor:'#f2f2f2'
+  	 },
 	 customDialogStyle: {
 		  width: '100%',
 		  maxWidth: 'none',

@@ -10,6 +10,7 @@ import {UPDATE_DOC_TYPES_LIST,
     SET_LOGGED_PRIEM_USER,
     ADD_NEW_PRIEM_REQUEST,
     GET_DOWNLOAD_FILE_IMAGE,
+    SYSTEM_STATUS_STATE,
     UPDATE_FILE_LIST} from './'
 import {put,call,takeEvery,take,takeLatest,fork,select} from 'redux-saga/effects'
 import {networkService} from "../common/networkService";
@@ -141,6 +142,7 @@ export function* getRequestUserWorkRoom()
 {
    		
 		yield take(GET_USER_WORK_ROOM)
+		yield put({type:SYSTEM_STATUS_STATE,item:{loading:true,loaded:false}})
 		let items;
 	    try 
 	    {
@@ -150,7 +152,7 @@ export function* getRequestUserWorkRoom()
 		{
 			yield put({type:GET_USER_WORK_ROOM,items:items})
 		}
-  
+  		yield put({type:SYSTEM_STATUS_STATE,item:{loading:false,loaded:true}})
 }
 export function* getDocList()
 {

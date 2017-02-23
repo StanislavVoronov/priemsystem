@@ -1,10 +1,9 @@
-
-
+const DEFAULT_URL='https://monitoring.mgutm.ru/dev-bin/priem_requests'
+const DEFAULT_DOMEN='https://monitoring.mgutm.ru/dev-bin/'
 export function networkService(service)
 {
-    const domen='https://monitoring.mgutm.ru/'
-    let url=service.url ? `${domen}${service.url}`
-          : `${domen}dev-bin/priem_mainsystem`;
+    let url=service.url ? `${DEFAULT_DOMEN}${service.url}`
+          : `${DEFAULT_URL}`;
     const method=service.method ? service.method : 'GET' 
     const isJsonRes= service.format ? false : true
     const parametrs=isJsonRes ? JSON.stringify(service.data) 

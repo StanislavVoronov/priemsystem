@@ -2,7 +2,7 @@ import { createStore,applyMiddleware,combineReducers} from 'redux'
 
 import createSagaMiddleware from 'redux-saga'
 
-import {PriemAddNewRequest,StatusSystemState,PriemStructure,PriemAccount,PriemDataProvider} from './priemReducers'
+import {PriemAddNewRequest,SystemStatusState,PriemStructure,PriemAccount,PriemDataProvider} from './priemReducers'
 
 const sagaMiddleware=createSagaMiddleware();
 import  PriemRootSaga from "../actions"
@@ -11,7 +11,7 @@ const reducer = combineReducers({
   directories:PriemDataProvider,
   PriemAddNewRequest,
   PriemStructure,
-  state:StatusSystemState,
+  SystemStatusState,
   PriemAccount
 });
 const store=createStore(reducer,applyMiddleware(sagaMiddleware))

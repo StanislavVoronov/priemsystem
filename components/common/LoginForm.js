@@ -53,7 +53,7 @@ export default class LoginForm extends PureComponent {
     const titleLogin='Система приема абитуриентов \nМГУТУ им. К. Г. Разумовского (ПКУ)'
     return (
         <Dialog
-          open={true}
+          open={!localStorage["priemUser"]}
           title={titleLogin}
           modal
           actionsContainerStyle={{'display':'flex','justifyContent':'center'}}

@@ -24,7 +24,7 @@ import MainMenuSystem from './MainMenuSystem'
 import PriemNewRequest from "../PriemNewRequest/PriemNewRequest";
 //import Search from "./search";
 import {Card} from 'material-ui/Card';
-
+import RefreshIndicator from 'material-ui/RefreshIndicator';
 import {connect} from "react-redux"
 import {setLoggedUser,setPriemUser} from '../actions'
 import LoginForm from "./LoginForm";
@@ -47,6 +47,18 @@ class DrawerMainMenu extends PureComponent {
       titleMainApp:'Меню',
       ComponentRender: PriemNewRequest
     }
+  }
+  renderStateSystem()
+  {
+    const leftMargin=(window.innerWidth-150)/2
+    const styleConteiner=!this.props.stateSystem.loading ? {display: 'none'} : {position: 'relative'}
+    return (<div style={styleConteiner}>
+      <RefreshIndicator
+          size={70}
+          left={leftMargin}
+          top={20}
+          status={"loading"}
+          style={Styles.refreshStateStatus} /></div>)
   }
   componentWillMount()
   {
@@ -80,7 +92,6 @@ class DrawerMainMenu extends PureComponent {
   }
   render() {
     const {ComponentRender,isMainIconMenu,titleMainApp}=this.state
-    
     if (this.props.priemUser){ 
          return (<div>
             <AppBar titleStyle={Styles .mainTitleSystem}
@@ -92,10 +103,15 @@ class DrawerMainMenu extends PureComponent {
               onLeftIconButtonTouchTap={this._showMainMenu.bind(this)}
               iconElementRight={ this.renderRightPanel() }/>
             <Drawer open={this.state.drawerDisplay} docked={false} onRequestChange={(open,reason) => this._changeViewDrawer(open,reason)}>
-             <MainMenuSystem user={this.props.priemUser}/>
-                
+              <MainMenuSystem user={this.props.priemUser}/>
             </Drawer>
-            <Card style={Styles.mainCard}><PriemNewRequest /></Card></div>
+              {this.renderStateSystem()}
+             <Card style={Object.assign({},Styles.mainCard,this.props.stateSystem.loading ? {display:'none'} : {})}>
+                      <PriemNewRequest />
+                    
+              </Card>
+
+            </div> 
         )}
         return <LoginForm setPriemUser={this.props.setPriemUser} />
 
@@ -106,7 +122,8 @@ class DrawerMainMenu extends PureComponent {
 const mapStateToProps=(state)=>
 {
   return {
-        priemUser: state.PriemAccount.user,       
+        priemUser: state.PriemAccount.user, 
+        stateSystem: state.SystemStatusState  
     }
 }
 const mapDispatchToProps=(dispatch) => {

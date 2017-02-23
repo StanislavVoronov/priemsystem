@@ -48,13 +48,13 @@ export function PriemDataProvider(state={},action)
         default: return state
     }
 }
-export function StatusSystemState(state={loading:false,loaded:true},action)
+export function SystemStatusState(state={loading:false,loaded:true},action)
 {
     switch(action.type)
     { 
         case SYSTEM_STATUS_STATE:
         {
-            return Object.assign({},state,{state:action.item}) 
+            return Object.assign({},state,action.item) 
         }
 
         default:

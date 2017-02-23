@@ -22,8 +22,6 @@ export default class UserWorkRoom extends PureComponent{
                 <TableRowColumn key={`Done ${index}`}>{user.done}</TableRowColumn>
                 <TableRowColumn key={`InProgress ${index}`}>{user.inProgress}</TableRowColumn>
             </TableRow> 	
-
-
 			)
  		}
 	}
