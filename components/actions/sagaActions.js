@@ -17,12 +17,13 @@ import {networkService} from "../common/networkService";
 export function* getDownloadFileImage()
 {
 	yield take(GET_DOWNLOAD_FILE_IMAGE)
-	const userData = JSON.parse(localStorage["priemUser"])
-	let item;
+	const userData = yield select(state => state.PriemAccount.user)
+	let items;
 	try 
     {
 			items = yield call(networkService,
 			{name:"userFileImage",data:userData.id_operator,method:"GET"})
+			console.log("userFileImage",items)
 			yield put({type:UPDATE_FILE_LIST,items})
 	}catch(error)
 	{
@@ -68,7 +69,7 @@ export function* setLoginUser(state)
 				yield put({type:SET_PRIEM_USER,item})
 		}catch(error)
 		{
-			yield put({type:UPDATE_DOC_NEED_SCANS,items})
+			yield put({type:SET_PRIEM_USER,items})
 		}
 
 
@@ -106,7 +107,7 @@ export function* sendNewFileToServer()
 							name:file.name,
 							data:file,
 							format:true,
-							url:'dev-bin/priem_image_upload?json=1',
+							url:'priem_image_upload?json=1',
 							method:'POST'})
 				yield put({type:UPDATE_UPLOAD_IMAGE_FILE,item:image})
 			}catch(error)

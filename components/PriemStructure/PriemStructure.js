@@ -309,8 +309,8 @@ const mapStateToProps=(state,ownProps)=>
 {
  
   return {
-        priemStructure:state.PriemStructure,
-        infoUser:state.PriemUser}
+        priemStructure:state.PriemStructure
+    }
 }
 const mapDispatchToProps=(dispatch) => {
       

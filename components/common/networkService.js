@@ -34,6 +34,6 @@ export function networkService(service)
     }
   
     return fetch(url,request)
-            .then(response=> response.json() )
+            .then(response=> response.json())
   
 }    

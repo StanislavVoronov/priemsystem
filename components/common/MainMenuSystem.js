@@ -15,7 +15,7 @@ class MainMenuList extends React.Component {
       console.log("Links",this.props.user)
       if (!this.props.user) return []
       const links=this.props.user.links;
-  
+      if (!links) return []
       let chapter=[];
       let mainLinks=[];
       for (let i=0; i<links.length; i++)

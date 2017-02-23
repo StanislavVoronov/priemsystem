@@ -89,6 +89,6 @@ export const setNewTypeRequest=(item)=>
 }
 export const getUserUploadImage=()=>
 {
-	return {type:GET_DOWNLOAD_FILE_IMAGE}
+	return {type:GET_DOWNLOAD_FILE_IMAGE,items:[]}
 }
 

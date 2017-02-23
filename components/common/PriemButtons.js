@@ -62,12 +62,12 @@ Buttons.defaultProps=
 {
 	backgroundColor:'#4286f4',
 	buttonStyle:{	'width':'auto',
-					'height':30,
-     				'lineHeight':'30px'
+					'height':'25px',
+     				'lineHeight':'25px'
      			},
 	hoverColor:'',
 	disabled:false,
-	labelStyle:{'color':'#ffffff'},
+	labelStyle:{'color':'#ffffff','fontSize':'12px'},
 	primary:false,
 	secondary:false
 }

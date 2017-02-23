@@ -40,7 +40,7 @@ class PriemNewRequest extends React.Component {
   {
       if (!this.props.docsNeedScans)    this.props.updateDocNeedScans()
       if (!this.props.docTypeList)      this.props.updateDocTypeList()
-      //this.props.getUserUploadImage()
+      this.props.getUserUploadImage()
   }
 
   handleNext (){

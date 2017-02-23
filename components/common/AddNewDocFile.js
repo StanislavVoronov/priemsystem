@@ -107,11 +107,7 @@ export default class  AddNewDocFile extends React.Component{
                </TableRowColumn>
               <TableRowColumn  style={Styles.NameFileRowStyle}>{file.name}</TableRowColumn>
               <TableRowColumn  style={Styles.PreviewRowStyle}>
-                  <IconButton style={{width: 45,height: 45}}  
-                    onClick={event=>this.showPopOverView(event,file)} 
-                    iconStyle={{'color':'white','marginTop':0,width: 25,height: 25}} >
-                            <ImageView color='#00bcd4' />
-                  </IconButton> 
+                  <a target='_blank' title='Изображение документа' href={file.preview}>Изображение</a>
               </TableRowColumn>
               <TableRowColumn  style={Object.assign({},Styles.TypeDocFileRowStyle,{'textAlign':'left'})}>{
                 <Select data={this.props.docTypeList} styleSelectContainer={{'width':'100%'}}
@@ -150,8 +146,8 @@ export default class  AddNewDocFile extends React.Component{
 
             <TableRow selectable={false}>
                     <TableHeaderColumn style={Styles.StatusFileRowStyle}>Статус</TableHeaderColumn>
-              <TableHeaderColumn style={Styles.NameFileRowStyle}>Название документа</TableHeaderColumn>
-                    <TableHeaderColumn style={Styles.PreviewRowStyle}>Изображение</TableHeaderColumn>
+              <TableHeaderColumn style={Styles.NameFileRowStyle}>Название файла</TableHeaderColumn>
+                    <TableHeaderColumn style={Styles.PreviewRowStyle}>Файл</TableHeaderColumn>
               <TableHeaderColumn style={Styles.TypeDocFileRowStyle}>Тип документа</TableHeaderColumn>
               <TableHeaderColumn style={Styles.DeleteButtonRowStyle}>Действие</TableHeaderColumn>
             </TableRow>
