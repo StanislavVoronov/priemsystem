@@ -179,11 +179,11 @@ export function* getDocList()
 
 export function* addNewPriemRequest()
 {
-   		
+	while(true) {
 		yield take(ADD_NEW_PRIEM_REQUEST)
 		yield put({type:SYSTEM_STATUS_STATE,item:{loading:true,loaded:false}})
 		let items;
-	   	const files = yield select(state => {
+	   	const addedFiles = yield select(state => {
 				return state.PriemAddNewRequest.DocFileList.filter(file=> 
 				file.selected==true && file.typeDoc && file.typeDoc.typeDoc)
 		}); 
@@ -194,11 +194,21 @@ export function* addNewPriemRequest()
 				return state.PriemAddNewRequest.typeRequest
 		});
 		let requestData= new FormData(); 
-		files.map(file=> {if (!file.id) requestData.append(file.preview)})
+		let needUploadFiles=[];
+		addedFiles.filter(file=> {
+			if (!file.id) 
+			{
+				requestData.append('file',file)
+				needUploadFiles.push(file)
+				return false
+			}
+			return true
+		})
 		let error=false
 		requestData.append('idNewTypeRequest',typeRequest.id);
 		requestData.append('operatorIdNewRequest',operator);
-  		requestData.append('newDocFilesRequest',JSON.stringify(files));
+  		requestData.append('addedDocFiles',JSON.stringify(addedFiles));
+  		requestData.append('needUploadDocFiles',JSON.stringify(needUploadFiles));
   		console.log("requestData",requestData)
   		const requestNumber=yield call(networkService,
 							{	
@@ -206,9 +216,9 @@ export function* addNewPriemRequest()
 								format:true,
 								method:'POST'
 							})
-  		console.log("zaprosNumber",requestNumber)
-  		put({type:ADD_NEW_PRIEM_REQUEST,item:requestNumber})
+  		yield put({type:ADD_NEW_PRIEM_REQUEST,item:requestNumber.id_queue})
   		yield put({type:SYSTEM_STATUS_STATE,item:{loading:false,loaded:false}})
+  	}
 }
 const reduxSagaActions=[
 addNewPriemRequest(),

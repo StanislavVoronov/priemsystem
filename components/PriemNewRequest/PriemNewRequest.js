@@ -98,7 +98,7 @@ class PriemNewRequest extends React.Component {
         );
       case 3:
       {
-         return(<p>
+         return(<p style={{fontWeight:'bold',marginLeft:5}}>
                 {`Запрос № ${this.props.newNumberRequest} успешно отправлен методисту ${this.props.requestPerformer.name}`}
                 </p>)
       }
