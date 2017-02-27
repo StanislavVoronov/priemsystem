@@ -13,7 +13,7 @@ export function networkService(service)
         credentials:"same-origin",
         header:
         {
-                "Accept":"text/plain;charset='UTF-8'",
+                "Accept":"application/x-www-form-urlencoded; charset=UTF-8",
                 "Content-Type": "multipart/formdata"
         }
     }

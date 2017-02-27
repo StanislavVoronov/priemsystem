@@ -2,7 +2,7 @@ import React from 'react';
 
 
 
-
+import Divider from 'material-ui/Divider';
 import Subheader from 'material-ui/Subheader';
 import {Styles} from "../common/StylePriem"
 import FileUploadZone from 'react-dropzone';
@@ -121,7 +121,7 @@ export default class  AddNewDocFile extends React.Component{
         onClick={this.webPhotoDialogClose.bind(this,0)}
       />,
       <PriemButtons
-        label="Выбрать снимок"
+        label="Выбрать фотографию"
         type={'add'}
         onTouchTap={false}
         buttonStyle={styleAddWebPhotoButton}
@@ -159,14 +159,33 @@ export default class  AddNewDocFile extends React.Component{
         </Table>
         <Dialog
           title="Фотографирование на кампусную карту Университета"
+          titleStyle={{fontSize:16,padding:10}}
           actions={actions}
           modal={true}
+          autoDetectWindowHeight={false}
+          bodyStyle={{height:'100%', maxHeight: '100%',overflowY:'none'}}
           autoScrollBodyContent={true}
-          contentStyle={{ width: '100%', maxWidth: 'none'}}
+          contentStyle={{ width: '100%',height:'100%', maxHeight: 'none', maxWidth: 'none'}}
           open={this.state.webPhotoDialog}>
               <div style={Styles.dialogWebPhotoBox}>
-                  <Webcam height={320} audio={false} screenshotFormat={'image/jpeg'} ref='webcam'/>
-                  { this.state.webPhoto ? <img  style={{height:320,width:460}} src={this.state.webPhoto} /> : null }
+                    <Card containerStyle={{'textAlign':'center',}} style={{marginTop:5}}> 
+                        <CardHeader titleStyle={{'fontWeight':'bold'}} style={{paddingTop:8,paddingBottom:0}}
+                          title="Камера" />
+                        <Divider style={Styles.hr}/>
+                        <CardMedia>
+                              <Webcam height={320} audio={false} screenshotFormat={'image/jpeg'} ref='webcam'/>
+                        </CardMedia>
+                    </Card>
+                    { this.state.webPhoto ?
+                      <Card containerStyle={{'textAlign':'center'}} style={{marginTop:5}}> 
+                          <CardHeader titleStyle={{'fontWeight':'bold'}} style={{paddingTop:8,paddingBottom:0}}
+                            title="Фотография" />
+                          }
+                          <Divider style={Styles.hr}/>
+                          <CardMedia >
+                                 <img  style={{height:320,width:460}} src={this.state.webPhoto} /> 
+                          </CardMedia>
+                      </Card> : null}     
               </div>
               <div style={Styles.webPhotoAddScreenBox} >
                   <PriemButtons 
