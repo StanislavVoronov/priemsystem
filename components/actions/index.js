@@ -15,6 +15,7 @@ export const ADD_NEW_PRIEM_REQUEST="ADD_NEW_PRIEM_REQUEST"
 export const CHECK_BEFORE_SEND_REQUEST="CHECK_BEFORE_SEND_REQUEST"
 export const GET_DOWNLOAD_FILE_IMAGE="GET_DOWNLOAD_FILE_IMAGE"
 export const SYSTEM_STATUS_STATE="SYSTEM_STATUS_STATE"
+export const DEFAULT_STATE_NEW_REQUEST="DEFAULT_STATE_NEW_REQUEST"
 /////////////////////////////////////////////
 import reduxSagaActions from './sagaActions'
 export default function* PriemRootSaga(state)
@@ -92,3 +93,7 @@ export const getUserUploadImage=()=>
 	return {type:GET_DOWNLOAD_FILE_IMAGE,items:[]}
 }
 
+export const setDefaultStateNewRequest=()=>
+{
+	return {type:DEFAULT_STATE_NEW_REQUEST}
+}

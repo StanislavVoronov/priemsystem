@@ -17,32 +17,36 @@ import {networkService} from "../common/networkService";
 export function* getDownloadFileImage()
 {
 	yield take(GET_DOWNLOAD_FILE_IMAGE)
+	yield put({type:SYSTEM_STATUS_STATE,item:{loading:true,loaded:false}})
 	const userData = yield select(state => state.PriemAccount.user)
 	let items;
 	try 
     {
 			items = yield call(networkService,
 			{name:"userFileImage",data:userData.id_operator,method:"GET"})
-			console.log("userFileImage",items)
+			
 			yield put({type:UPDATE_FILE_LIST,items})
 	}catch(error)
 	{
 		yield put({type:UPDATE_FILE_LIST,item})
 	}
-
+	yield put({type:SYSTEM_STATUS_STATE,item:{loading:false,loaded:false}})
 }
 export function* setLoggedPriemUser()
 {
 		yield take(SET_LOGGED_PRIEM_USER)
+
 		const userData = JSON.parse(localStorage["priemUser"])
 		let item;
   	  	try 
 	    {
 				item = yield call(networkService,
 				{name:"connOper",data:userData,method:"POST"})
+
 				yield put({type:SET_LOGGED_PRIEM_USER,item})
 		}catch(error)
 		{
+			console.log(item,"connOper")
 			yield put({type:SET_LOGGED_PRIEM_USER,item})
 		}
 }
@@ -99,12 +103,13 @@ export function* sendNewFileToServer()
 				return state.PriemAddNewRequest.DocFileList.find((file,index)=> 
 					state.PriemAddNewRequest.needsUpload==index)
 			});
+			const nameDocFile=file.docType && file.docType.docType==41 ? decodeURIComponent(escape(file.name)) : file.name
 		  	let image;
 		    try 
 		    {
 				 image = yield call(networkService,
 						 {	
-							name:file.name,
+							name:nameDocFile,
 							data:file,
 							format:true,
 							url:'priem_image_upload?json=1',
@@ -141,19 +146,20 @@ export function* removeFileImageFromServer()
 }
 export function* getRequestUserWorkRoom()
 {
-   		
-		yield take(GET_USER_WORK_ROOM)
-		yield put({type:SYSTEM_STATUS_STATE,item:{loading:true,loaded:false}})
-		let items;
-	    try 
-	    {
-			items = yield call(networkService,{name:'userWorkRoom'})
-			yield put({type:GET_USER_WORK_ROOM,items})
-		}catch(error)
-		{
-			yield put({type:GET_USER_WORK_ROOM,items:items})
-		}
-  		yield put({type:SYSTEM_STATUS_STATE,item:{loading:false,loaded:true}})
+   		while(true) {
+			yield take(GET_USER_WORK_ROOM)
+			yield put({type:SYSTEM_STATUS_STATE,item:{loading:true,loaded:false}})
+			let items;
+		    try 
+		    {
+				items = yield call(networkService,{name:'userWorkRoom'})
+				yield put({type:GET_USER_WORK_ROOM,items})
+			}catch(error)
+			{
+				yield put({type:GET_USER_WORK_ROOM,items:items})
+			}
+	  		yield put({type:SYSTEM_STATUS_STATE,item:{loading:false,loaded:true}})
+	  	}
 }
 export function* getDocList()
 {
@@ -175,49 +181,34 @@ export function* addNewPriemRequest()
 {
    		
 		yield take(ADD_NEW_PRIEM_REQUEST)
+		yield put({type:SYSTEM_STATUS_STATE,item:{loading:true,loaded:false}})
 		let items;
 	   	const files = yield select(state => {
 				return state.PriemAddNewRequest.DocFileList.filter(file=> 
-				file.selected==true)
+				file.selected==true && file.typeDoc && file.typeDoc.typeDoc)
 		}); 
 		const operator=yield select(state => {
-				return state.PriemAddNewRequest.requestPerformer ? state.PriemAddNewRequest.requestPerformer.id_oper : state.PriemAccount.user.id
+				return state.PriemAddNewRequest.requestPerformer ? state.PriemAddNewRequest.requestPerformer.id : state.PriemAccount.user.id
 		});
 		const typeRequest=yield select(state => {
 				return state.PriemAddNewRequest.typeRequest
 		});
 		let requestData= new FormData(); 
+		files.map(file=> {if (!file.id) requestData.append(file.preview)})
 		let error=false
-		const typesDocFile=files.map(file=>{
-			requestData.append(file.name,file)
-			if (file.typeDoc.typeDoc || file.typeDoc.subTypeDoc)
-			{
-				return Object.assign({},{typeDoc:file.typeDoc.typeDoc},{subTypeDoc:file.typeDoc.subTypeDoc})
-			}
-			else 
-			{
-				error=true;
-				alert('У документа '+file.name+' отсутствует тип документа. Для добавления документа в пакет необходимо выбрать тип документа, либо исключить документ из пакета')
-			}
-		})
-		if (error)
-		{
-			put({type:ADD_NEW_PRIEM_REQUEST,item:'error'})
-			return false
-		}
-		requestData.append('addNewTypeRequest',typeRequest.id);
+		requestData.append('idNewTypeRequest',typeRequest.id);
 		requestData.append('operatorIdNewRequest',operator);
-  		requestData.append('newDocFilesRequest',JSON.stringify(typesDocFile));
+  		requestData.append('newDocFilesRequest',JSON.stringify(files));
   		console.log("requestData",requestData)
-  		const zaprosNumber=yield call(networkService,
+  		const requestNumber=yield call(networkService,
 							{	
-								name:"addNewRequest",
 								formData:requestData,
 								format:true,
 								method:'POST'
 							})
-  		console.log("zaprosNumber",zaprosNumber)
-  		put({type:ADD_NEW_PRIEM_REQUEST,item:zaprosNumber})
+  		console.log("zaprosNumber",requestNumber)
+  		put({type:ADD_NEW_PRIEM_REQUEST,item:requestNumber})
+  		yield put({type:SYSTEM_STATUS_STATE,item:{loading:false,loaded:false}})
 }
 const reduxSagaActions=[
 addNewPriemRequest(),

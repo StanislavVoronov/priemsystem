@@ -12,9 +12,13 @@ export const Styles =
 	    display:'flex',
 	    justifyContent: 'center',
 	    alignContent:'center',
-	    alignItems:'center',
-	    boxShadow:'none'
-	    
+	    alignItems:'center'
+	 },
+	 dialogWebPhotoBox:{
+	    display:'flex',
+	    justifyContent: 'space-around',
+	    alignContent:'center',
+	    alignItems:'center'
 	 },
 	 refreshStateStatus: {
 	    display: 'inline-block',
@@ -25,7 +29,13 @@ export const Styles =
 		  width: '100%',
 		  maxWidth: 'none',
 	 },
+	 webPhotoAddScreenBox:
+	 {
+	 	'textAlign': 'center',
+	 	'marginTop':20
+	 },
 	 centerBoxHeader:{
+	 	paddingLeft:0,
 	    display:'flex',
 	    justifyContent: 'center',
 	    alignContent:'center',
@@ -35,8 +45,9 @@ export const Styles =
 	 },
 	FileUploadZone:
 	{
-					'height': 75,
-					 'padding':20,
+					'height': 70,
+					'textAlign': 'center',
+					'padding':20,
 					'justifyContent':'center',
 					'flexDirection':'row',
 					'border': 2,

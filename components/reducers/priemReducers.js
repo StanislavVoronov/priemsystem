@@ -13,6 +13,7 @@ import {UPDATE_DOC_TYPES_LIST,
     CHECK_BEFORE_SEND_REQUEST,
     ADD_NEW_PRIEM_REQUEST,
     SET_LOGGED_PRIEM_USER,
+    DEFAULT_STATE_NEW_REQUEST,
     SYSTEM_STATUS_STATE,
     UPDATE_DOC_NEED_SCANS} from '../actions'
 import {merge} from "lodash";
@@ -67,16 +68,20 @@ export function PriemAddNewRequest(state={DocFileList:[],userWorkRoom:[],request
         console.log(action.type,action.items,action.item)
         switch(action.type)
         {  
-            case ADD_NEW_PRIEM_REQUEST:
-            {
-                 return Object.assign({},state,{requestNumber:action.item})   
+           
+            case DEFAULT_STATE_NEW_REQUEST: {
+                 const updatedDocList=state.DocFileList.filter((file,index)=>!this.selected)
+                 return Object.assign({},state,
+                    {DocFileList:updatedDocList},
+                    {requestPerformer:undefined})   
+            } 
+            case ADD_NEW_PRIEM_REQUEST:{
+                 return Object.assign({},state,{newNumberRequest:action.item})   
             }       
-            case SET_REQUEST_PERFORMER:
-            {
+            case SET_REQUEST_PERFORMER:{
                  return Object.assign({},state,{requestPerformer:action.item})   
             }
-            case UPDATE_UPLOAD_IMAGE_FILE:
-            {
+            case UPDATE_UPLOAD_IMAGE_FILE:{
                 if (action.item[0].error!="OK") {
                     alert("Возникла ошибка при добавлении файла. Повторите попытку еще раз!")
                     return false
@@ -84,28 +89,23 @@ export function PriemAddNewRequest(state={DocFileList:[],userWorkRoom:[],request
                 const updatedDocListFiles=state.DocFileList.map((file,index)=>{
                     if (index==state.needsUpload)
                     {
-                        file.image=action.item[0].id
+                        file.id=action.item[0].id
                     }
                     return file
                 })
                 return Object.assign({},state,{DocFileList:updatedDocListFiles})
             }
-            case ADD_NEW_FILE_TO_SERVER:
-            {
+            case ADD_NEW_FILE_TO_SERVER:{
                 return Object.assign({},state,{needsUpload:action.item})
             }
-            case GET_USER_WORK_ROOM:
-            {
+            case GET_USER_WORK_ROOM:{
                 return Object.assign({},state,{userWorkRoom:action.items})
             }
-            case SET_NEW_TYPE_REQUEST:
-            {
+            case SET_NEW_TYPE_REQUEST:{
                 return Object.assign({},state,{typeRequest:action.item})
             }
-            case UPDATE_FILE_ITEM_TYPE:
-            {
+            case UPDATE_FILE_ITEM_TYPE:{
                  const updateTypeItemFileList=state.DocFileList.map((file,index)=>{
-                    console.log(action.typeDoc)
                     if (action.item==index)
                     {
                         file.typeDoc=action.typeDoc
@@ -114,8 +114,7 @@ export function PriemAddNewRequest(state={DocFileList:[],userWorkRoom:[],request
                 })
                 return Object.assign({},state,{DocFileList:updateTypeItemFileList})
             }
-            case UPDATE_FILE_ITEM_STATUS:
-            {
+            case UPDATE_FILE_ITEM_STATUS: {
                 const updateStatusItemFileList=state.DocFileList.map((file,index)=>{
 
                     if (action.item==index)
@@ -126,21 +125,14 @@ export function PriemAddNewRequest(state={DocFileList:[],userWorkRoom:[],request
                 })
                 return Object.assign({},state,{DocFileList:updateStatusItemFileList})
             }
-            case DELETE_FILE_ITEM:
-            {
+            case DELETE_FILE_ITEM: {
                 let imageId
-                const updateDocList=state.DocFileList.map((file,index)=>{
-                    if (index==action.item)
-                    {
-                        imageId=file.image
-                        delete file.image
-                    }
-                    return file
-                })
-                return Object.assign({},state,{DocFileList:updateDocList},{needsImageRemove:imageId})
+               
+                const needsImageRemove=state.DocFileList.find((file,index)=>index==action.item)
+                const updateDocList=state.DocFileList.filter((file,index)=>index!=action.item)
+                return Object.assign({},state,{DocFileList:updateDocList},{needsImageRemove:needsImageRemove.id})
             }
-            case UPDATE_FILE_LIST:
-            {
+            case UPDATE_FILE_LIST: {
                  const newListFileDoc=state.DocFileList.concat(action.items)
                  return Object.assign({},state,{DocFileList:newListFileDoc}) 
             }

@@ -22,6 +22,7 @@ import {
     getUserUploadImage,
     setNewTypeRequest,
     sendNewPriemRequestForServer,
+    setDefaultStateNewRequest,
     setRequestPerformer,
     updateFileList} from '../actions'
 import {connect} from "react-redux"
@@ -38,23 +39,30 @@ class PriemNewRequest extends React.Component {
   }
   componentWillMount()
   {
-      if (!this.props.docsNeedScans)    this.props.updateDocNeedScans()
-      if (!this.props.docTypeList)      this.props.updateDocTypeList()
-      this.props.getUserUploadImage()
+      if ( !(this.props.docsNeedScans && this.props.docsNeedScans.length>0)) this.props.updateDocNeedScans();
+      if ( !(this.props.docTypeList && this.props.docTypeList.length>0)) this.props.updateDocTypeList();
+      this.props.getUserUploadImage();
   }
 
   handleNext (){
-    const {stepIndex} = this.state;
-     if (stepIndex >=2 )
-     {
-       this.props.sendNewPriemRequestForServer()
+    let {stepIndex,finished} = this.state;
+     if (stepIndex ==3) {
+        finished=false;
+        stepIndex=0
+     } else if (stepIndex==2) {
+        finished=true;
+        stepIndex+=1
+        this.props.sendNewPriemRequestForServer()
      }
-     if (stepIndex==1)
-     {
+     else if (stepIndex==1) {
         this.props.getUserWorkRoom();
+        stepIndex+=1
+     } else {
+        stepIndex+=1;
      }
      this.setState({
-        stepIndex: stepIndex >= 2 ? 0 : stepIndex+ 1,
+        stepIndex,
+        finished
       })
 
      
@@ -70,7 +78,7 @@ class PriemNewRequest extends React.Component {
 
   getStepContent(stepIndex) {
    
-    switch (stepIndex) {
+    switch(stepIndex) {
       case 0:
         return (
           <Select  selected={this.props.typeRequest} filter={false} title='Тип запроса' onChange={this.props.updateTypeRequest} placeholder='Выберите тип нового запроса' data={this.props.docsNeedScans} />
@@ -88,25 +96,70 @@ class PriemNewRequest extends React.Component {
         return (
            <UserWorkRoom onSelectPerformer={this.props.setRequestPerformer} userWorkRoom={this.props.userWorkRoom}/>
         );
+      case 3:
+      {
+         return(<p>
+                {`Запрос № ${this.props.newNumberRequest} успешно отправлен методисту ${this.props.requestPerformer.name}`}
+                </p>)
+      }
       default:
         return 'You\'re a long way from home sonny jim!';
     }
   }
+  renderLabelButton(stepIndex)
+  {
+     switch (stepIndex)
+     {
+        case 0: {
+           return "Выбрать тип запроса"
+        }
+        case 1: {
+           return "Добавить документы в запрос"
+        }
+        case 2:{
+           return "Отправить запрос методисту"
+        }
+        case 3:{
+           return "Создать новый запрос"
+        }
+     }
+
+  }
+  getNextButtonStatus(stepIndex,DocFileList)
+  {
+     switch (stepIndex)
+     {
+       case 0: return !this.props.typeRequest
+       case 1: {
+            const listDocSelectedFiles=DocFileList.filter(file=> file.selected)
+            const listDocTypeSelectedFiles=listDocSelectedFiles.filter(file=> file.typeDoc && file.typeDoc.typeDoc)
+            return !(listDocTypeSelectedFiles.length===listDocSelectedFiles.length && listDocSelectedFiles.length>0)
+       }
+       case 2: {
+         return !this.props.requestPerformer
+       }
+
+     }
+  }
   renderContent() {
-      const {finished, stepIndex} = this.state;
-      const contentStyle = {margin: '0 16px', overflow: 'hidden'};
+      const {finished, stepIndex} = this.state,
+      contentStyle = {margin: '0 16px', overflow: 'hidden'};
+      let titleLabel='';
+
     return (
       <div>
         <div>{this.getStepContent(stepIndex)}</div>
         <div style={{marginTop: 24, marginBottom: 12,'display':'flex', 'justifyContent': 'flex-end'}}>
-                                     {stepIndex!=0 && <FlatButton
+                                     {stepIndex>0 && stepIndex < 3 && <FlatButton
                                           label="Назад"
+                                          labelStyle={{'fontSize':12}}
                                           onTouchTap={this.handlePrev.bind(this)}
                                           style={{marginRight: 12}} />}
                                         <RaisedButton
-                                          disabled={!this.props.typeRequest}
-                                          label={stepIndex === 2 ? 'Создать новый запрос' : 'Готово'}
-                                          backgroundColor={'#86b2f9'}
+                                          disabled={this.getNextButtonStatus(stepIndex,this.props.DocFileList)}
+                                          label={this.renderLabelButton(stepIndex)}
+                                          backgroundColor={'#2474f5'}
+                                          labelStyle={{'fontSize':12}}
                                           labelColor={'#ffffff'}
                                           onTouchTap={this.handleNext.bind(this)}/>
                                   </div>
@@ -124,7 +177,7 @@ class PriemNewRequest extends React.Component {
             <StepLabel>Выбор типа запроса</StepLabel>
           </Step>
           <Step>
-            <StepLabel>Добавление документов абитуриента</StepLabel>
+            <StepLabel>Добавление документов</StepLabel>
           </Step>
           <Step>
             <StepLabel>Выбор методиста приема</StepLabel>
@@ -147,11 +200,13 @@ const mapStateToProps=(state)=>
         userWorkRoom: state.PriemAddNewRequest.userWorkRoom,
         typeRequest: state.PriemAddNewRequest.typeRequest,
         requestPerformer:state.PriemAddNewRequest.requestPerformer,
-        infoUser:state.PriemUser
+        newNumberRequest:state.PriemAddNewRequest.newNumberRequest,
+        user:state.PriemUser
     }
 }
 const mapDispatchToProps=(dispatch) => {
     return {
+      setDefaultStateNewRequest:()       => dispatch(setDefaultStateNewRequest()),
       getUserUploadImage: action          => dispatch(getUserUploadImage(action)), 
       addNewFileToServer: action          =>dispatch(addNewFileToServer(action)),
       updateFileItemStatus:(action,status)=>dispatch(updateFileItemStatus(action,status)),
@@ -159,7 +214,7 @@ const mapDispatchToProps=(dispatch) => {
       updateDocNeedScans:(action)         =>dispatch(updateDocNeedScans(action)),
       updateDocTypeList:(action)          => dispatch(updateDocTypeList(action)),
       updateFileList:(action)             => dispatch(updateFileList(action)),
-      getUserWorkRoom:(action)            => dispatch(getUserWorkRoom([])),
+      getUserWorkRoom:(action)            => dispatch(getUserWorkRoom()),
       deleteImageFile:(action)            => dispatch(deleteImageFile(action)),
       setRequestPerformer:(performer)     => dispatch(setRequestPerformer(performer)),
       updateTypeRequest: (typeRequest)    => dispatch(setNewTypeRequest(typeRequest)),

@@ -7,25 +7,21 @@ import Subheader from 'material-ui/Subheader';
 import {Styles} from "../common/StylePriem"
 import FileUploadZone from 'react-dropzone';
 import Checkbox from 'material-ui/Checkbox';
-import RaisedButton from 'material-ui/RaisedButton';
 import IconButton from 'material-ui/IconButton';
 import PriemButtons from './PriemButtons'
-import Popover from 'material-ui/Popover';
-import FontIcon from 'material-ui/FontIcon';
-import ImageView from 'material-ui/svg-icons/image/image';
+import Dialog from 'material-ui/Dialog';
 import {red500, yellow500, blue500} from 'material-ui/styles/colors';
 import {Card, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import Select from "../common/multiSelect";
+import Webcam from 'react-webcam';
 export default class  AddNewDocFile extends React.Component{
   constructor(props)
   {
     super(props)
     this.state={
-          dialogOpen:false,
-          openPopOverView:false,
-          source:'',
-          titlePopOver:'',
+          webPhotoDialog:false,
+          webPhoto:undefined,
           selectedDocType:null,
           defautStateDocTypes:false,
           showAddButton:this.showAddButton.bind(this),
@@ -52,10 +48,19 @@ export default class  AddNewDocFile extends React.Component{
       defautStateDocTypes:false
     }))
   }
+  addDocFileByButton(event){
+      if (this.state.selectedDocType && this.state.selectedDocType.subTypeDoc==41)
+      {
+          this.setState({webPhotoDialog:true})
+          event.preventDefault();
+          event.stopPropagation();
+          return false
+      }
+      
+  }
   onPressActionButton(index,fileLoaded)
   {
-     if (fileLoaded)
-     {
+     if (fileLoaded){
         this.props.deleteImageFile(index)
      }
      else 
@@ -63,44 +68,21 @@ export default class  AddNewDocFile extends React.Component{
         this.props.addNewFileToServer(index)
      }
   }
-
-  showPopOverView(event,file){
-    event.preventDefault();
-    this.setState({
-      openPopOverView: true,
-      source:file.preview,
-      titlePopOver:file.name,
-      anchorEl: event.currentTarget,
-    });
+  webPhotoDialogClose(isAddWebPhoto){
+    this.setState({webPhotoDialog: false,webPhoto:undefined});
+    if (isAddWebPhoto){
+        const newWebPhotoFile = new File([""], "Фотография.jpeg", {type: "image/jpeg", lastModified: new Date()})
+        newWebPhotoFile.preview=this.state.webPhoto
+        this.onDropFiles([newWebPhotoFile])
+    }
   };
-  handleRequestClose(){
-    this.setState({
-      openPopOverView: false,
-    });
-  };
-  renderPopOverImage()
-  {
-    
-    return (<Popover
-              open={this.state.openPopOverView}
-              anchorEl={this.state.anchorEl}
-              anchorOrigin={{horizontal: 'middle', vertical: 'center'}}
-              targetOrigin={{horizontal: 'middle', vertical: 'center'}}
-              onRequestClose={this.handleRequestClose.bind(this)}>
-               <Card style={{backgroundColor:'#e6e6e6'}}>
-                 <CardHeader
-                    title={this.state.titlePopOver} />
-                  <CardMedia>
-                    <img src={this.state.source} />
-                  </CardMedia>
-            </Card>
-        </Popover>)
-  }
   renderTableAttachDocs()
   {
     if (!this.props.DocFileList) return []
     
     return this.props.DocFileList.map((file,index)=>{
+     
+
      return (<TableRow style={Styles.OverflowVisible} key={index} selectable={false}>
                <TableRowColumn style={Styles.StatusFileRowStyle}>
                       <Checkbox onCheck={()=> this.props.updateFileItemStatus(index,file.selected)} label=""  checked={file.selected}   />
@@ -117,28 +99,47 @@ export default class  AddNewDocFile extends React.Component{
           placeholder='Выберите тип документа' />}</TableRowColumn>
               <TableRowColumn style={Styles.DeleteButtonRowStyle} >
                 <PriemButtons
-                    type={file.image ? 'delete' : 'save'}
-                    label={ file.image ? 'Удалить' : 'Сохранить'} 
-                    onClick={this.onPressActionButton.bind(this,index,file.image)} />
+                    type={file.id ? 'delete' : 'save'}
+                    label={ file.id ? 'Удалить' : 'Сохранить'} 
+                    onClick={this.onPressActionButton.bind(this,index,file.id)} />
                 </TableRowColumn>
         </TableRow>)
     })
   }
+  makeWebPhoto(){
+      var screenshot = this.refs.webcam.getScreenshot();
+      this.setState({webPhoto: screenshot});
+  }
 	render()
 	{
+     const styleAddWebPhotoButton=Object.assign({},Styles.widthAuto,this.state.webPhoto ? {} : Styles.DisplayNone,{marginLeft:25})
+     const actions = [
+      <PriemButtons
+        label="Закрыть"
+        type={'delete'}
+        onTouchTap={false}
+        onClick={this.webPhotoDialogClose.bind(this,0)}
+      />,
+      <PriemButtons
+        label="Выбрать снимок"
+        type={'add'}
+        onTouchTap={false}
+        buttonStyle={styleAddWebPhotoButton}
+        onClick={this.webPhotoDialogClose.bind(this,1)}
+      />];
      const {defautStateDocTypes,renderTableAttachDocs,
             selectedDocType,showAddButton,onDropFiles}=this.state
-    const isAddButton=!defautStateDocTypes && selectedDocType ?  Styles.centerBox : Styles.DisplayNone
+    const isShowAddButton=!defautStateDocTypes && selectedDocType ? {} : Styles.DisplayNone
 		return  (<div>
-             {this.renderPopOverImage()}
             <Select data={this.props.docTypeList} filter='startsWith' selected={selectedDocType} onChange={showAddButton} 
                 placeholder='Выберите тип документа для добавления одного документа' 
                 title='Тип документнта' />
             <FileUploadZone style={Styles.FileUploadZone} onDrop={onDropFiles}>
-                 <RaisedButton 
-                 style={isAddButton}
-               buttonStyle={Styles.widthAuto}
-                 label="Добавить новый документ" primary={true} />
+                 <PriemButtons 
+                     onClick={event=>this.addDocFileByButton(event)} 
+                     type='add'
+                     buttonStyle={Object.assign({},Styles.widthAuto,isShowAddButton)}
+                     label="Добавить новый документ" />
                  <Subheader style={Styles.centerBoxHeader} inset={true}>перенесите все необходимые документы в отмеченную область</Subheader>
             </FileUploadZone>
             <Table selectable={false} wrapperStyle={Styles.OverflowVisible} style={Styles.OverflowVisible} bodyStyle={Styles.OverflowVisible}>
@@ -156,7 +157,25 @@ export default class  AddNewDocFile extends React.Component{
               {renderTableAttachDocs()}
             </TableBody>
         </Table>
-       
+        <Dialog
+          title="Фотографирование на кампусную карту Университета"
+          actions={actions}
+          modal={true}
+          autoScrollBodyContent={true}
+          contentStyle={{ width: '100%', maxWidth: 'none'}}
+          open={this.state.webPhotoDialog}>
+              <div style={Styles.dialogWebPhotoBox}>
+                  <Webcam height={320} audio={false} screenshotFormat={'image/jpeg'} ref='webcam'/>
+                  { this.state.webPhoto ? <img  style={{height:320,width:460}} src={this.state.webPhoto} /> : null }
+              </div>
+              <div style={Styles.webPhotoAddScreenBox} >
+                  <PriemButtons 
+                     onClick={this.makeWebPhoto.bind(this)} 
+                     type='save'
+                     buttonStyle={Object.assign({},Styles.widthAuto)}
+                     label="Сделать снимок" />
+                </div>
+        </Dialog>
       </div>)
 	}
 }
