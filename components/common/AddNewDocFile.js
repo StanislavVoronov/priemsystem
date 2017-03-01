@@ -69,12 +69,13 @@ export default class  AddNewDocFile extends React.Component{
      }
   }
   webPhotoDialogClose(isAddWebPhoto){
-    this.setState({webPhotoDialog: false,webPhoto:undefined});
+    
     if (isAddWebPhoto){
-        const newWebPhotoFile = new File([""], "Фотография.jpeg", {type: "image/jpeg", lastModified: new Date()})
+        const newWebPhotoFile = new File([this.state.webPhoto], "Фотография.jpeg", {type: "image/jpeg", lastModified: new Date()})
         newWebPhotoFile.preview=this.state.webPhoto
         this.onDropFiles([newWebPhotoFile])
     }
+    this.setState({webPhotoDialog: false,webPhoto:undefined});
   };
   renderTableAttachDocs()
   {
@@ -112,7 +113,7 @@ export default class  AddNewDocFile extends React.Component{
   }
 	render()
 	{
-     const styleAddWebPhotoButton=Object.assign({},Styles.widthAuto,this.state.webPhoto ? {} : Styles.DisplayNone,{marginLeft:25})
+     const styleAddWebPhotoButton=Object.assign({},this.state.webPhoto ? {} : Styles.DisplayNone,{marginLeft:25})
      const actions = [
       <PriemButtons
         label="Закрыть"
@@ -138,7 +139,7 @@ export default class  AddNewDocFile extends React.Component{
                  <PriemButtons 
                      onClick={event=>this.addDocFileByButton(event)} 
                      type='add'
-                     buttonStyle={Object.assign({},Styles.widthAuto,isShowAddButton)}
+                     buttonStyle={isShowAddButton}
                      label="Добавить новый документ" />
                  <Subheader style={Styles.centerBoxHeader} inset={true}>перенесите все необходимые документы в отмеченную область</Subheader>
             </FileUploadZone>
