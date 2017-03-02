@@ -8,6 +8,7 @@ import {UPDATE_DOC_TYPES_LIST,
     SET_PRIEM_USER,
     DELETE_FILE_ITEM,
     SET_LOGGED_PRIEM_USER,
+    CLEAN_DELETE_FILE_LIST,
     ADD_NEW_PRIEM_REQUEST,
     GET_DOWNLOAD_FILE_IMAGE,
     SYSTEM_STATUS_STATE,
@@ -135,11 +136,13 @@ export function* removeFileImageFromServer()
 							name:"removeUploadImageFile",
 							data:imageId,
 							format:true,
+
 							method:'POST'})
 			}catch(error)
 			{
 				console.log(error)
 			}
+			yield put({type:CLEAN_DELETE_FILE_LIST,item:imageId})
 		  }
 		
 		

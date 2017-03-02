@@ -34,6 +34,14 @@ export function networkService(service)
     }
   
     return fetch(url,request)
-            .then(response=> response.json())
+            .then(response=> 
+            {
+                try { 
+                  return response.json() 
+                } 
+                catch(e){
+                    console.log(e)
+                }
+            })
   
 }    

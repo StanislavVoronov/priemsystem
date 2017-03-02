@@ -15,6 +15,7 @@ import {UPDATE_DOC_TYPES_LIST,
     SET_LOGGED_PRIEM_USER,
     DEFAULT_STATE_NEW_REQUEST,
     SYSTEM_STATUS_STATE,
+    CLEAN_DELETE_FILE_LIST,
     UPDATE_DOC_NEED_SCANS} from '../actions'
 import {merge} from "lodash";
 
@@ -126,14 +127,16 @@ export function PriemAddNewRequest(state={DocFileList:[],userWorkRoom:[],request
                 return Object.assign({},state,{DocFileList:updateStatusItemFileList})
             }
             case DELETE_FILE_ITEM: {
-                let imageId
-               
+              
                 const needsImageRemove=state.DocFileList.find((file,index)=>index==action.item)
-                const updateDocList=state.DocFileList.filter((file,index)=>index!=action.item)
-                return Object.assign({},state,{DocFileList:updateDocList},{needsImageRemove:needsImageRemove.id})
+                return Object.assign({},state,{needsImageRemove:needsImageRemove.id})
+            }
+            case CLEAN_DELETE_FILE_LIST: {
+                 const newListFileDoc=state.DocFileList.filter(file=> file.id!=action.item)
+                 return Object.assign({},state,{DocFileList:newListFileDoc}) 
             }
             case UPDATE_FILE_LIST: {
-                 const newListFileDoc=state.DocFileList.concat(action.items)
+                  const newListFileDoc=state.DocFileList.concat(action.items)
                  return Object.assign({},state,{DocFileList:newListFileDoc}) 
             }
             default:
