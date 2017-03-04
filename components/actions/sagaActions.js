@@ -11,10 +11,32 @@ import {UPDATE_DOC_TYPES_LIST,
     CLEAN_DELETE_FILE_LIST,
     ADD_NEW_PRIEM_REQUEST,
     GET_DOWNLOAD_FILE_IMAGE,
+    GET_USER_LIST_REQUEST,
     SYSTEM_STATUS_STATE,
     UPDATE_FILE_LIST} from './'
 import {put,call,takeEvery,take,takeLatest,fork,select} from 'redux-saga/effects'
 import {networkService} from "../common/networkService";
+
+export function* getUserListRequest()
+{
+	while(true) {
+		yield take(GET_USER_LIST_REQUEST)
+		const userData =yield select(state => state.PriemAccount.listRequests)
+		let item;
+		try 
+	    {
+				item = yield call(networkService,
+				{name:"userListRequests",data:userData,method:"GET"})
+				
+				yield put({type:GET_USER_LIST_REQUEST,item})
+		}catch(error)
+		{
+			yield put({type:GET_USER_LIST_REQUEST,item})
+		}
+	}
+}
+
+
 export function* getDownloadFileImage()
 {
 	yield take(GET_DOWNLOAD_FILE_IMAGE)
@@ -233,5 +255,6 @@ getDocNeedScans(),
 setLoginUser(),
 setLoggedPriemUser(),
 getDownloadFileImage(),
+getUserListRequest(),
 ]
 export default reduxSagaActions

@@ -3,7 +3,7 @@ import {Styles} from "../common/StylePriem"
 
 
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
-
+import Loader from 'react-loader';
 
 
 export default class UserWorkRoom extends PureComponent{
@@ -31,8 +31,11 @@ export default class UserWorkRoom extends PureComponent{
 	}
 	render()
 	{
+
 		return (   
+		     
 			<Table 	onCellClick={this.selectRequestPerformer.bind(this)}>
+
 			    <TableHeader adjustForCheckbox={true} enableSelectAll={false} displaySelectAll={false}>
 			     <TableRow>
 			      

@@ -9,7 +9,7 @@ import IconButton from 'material-ui/IconButton';
 
 
 import IconMenu from 'material-ui/IconMenu';
-
+import Loader from 'react-loader';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
@@ -26,7 +26,7 @@ import PriemNewRequest from "../PriemNewRequest/PriemNewRequest";
 import {Card} from 'material-ui/Card';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 import {connect} from "react-redux"
-import {setLoggedUser,setPriemUser} from '../actions'
+import {setLoggedUser,setPriemUser,getUserListRequest} from '../actions'
 import LoginForm from "./LoginForm";
 const Profile = () => (
   <IconMenu iconStyle={{'color':'white'}} 
@@ -48,21 +48,14 @@ class DrawerMainMenu extends PureComponent {
       ComponentRender: PriemNewRequest
     }
   }
-  renderStateSystem()
-  {
-    const leftMargin=(window.innerWidth-150)/2
-    const styleConteiner=!this.props.stateSystem.loading ? {display: 'none'} : {position: 'relative'}
-    return (<div style={styleConteiner}>
-      <RefreshIndicator
-          size={70}
-          left={leftMargin}
-          top={20}
-          status={"loading"}
-          style={Styles.refreshStateStatus} /></div>)
-  }
   componentWillMount()
   {
-      if (localStorage["priemUser"]) this.props.setLoggedUser(JSON.parse(localStorage["priemUser"]));
+      
+      if (localStorage["priemUser"]) {
+        const userPriem=JSON.parse(localStorage["priemUser"])
+        this.props.setLoggedUser(userPriem)
+        this.props.getUserListRequest(userPriem.id_operator);
+      };
   }
 
   _showMainMenu()
@@ -75,13 +68,14 @@ class DrawerMainMenu extends PureComponent {
   }
   renderRightPanel()
   {
+    console.log("renderRightPanel",this.props.userListRequests)
     return (<div>  
                   <IconButton style={{'marginTop':0}} tooltip='Поиск'  iconStyle={{'color':'white'}} ><SearchIcon /></IconButton>
                    <Badge
-                        badgeContent={10}
+                        badgeContent={Array.isArray(this.props.userListRequests)  ? this.props.userListRequests.length : 0}
                         secondary={true}
                         style={{padding:0}}
-                        badgeStyle={{top: 1, backgroundColor:'#ff0000', right: 5, fontSize:11,width:18,height:18}}>
+                        badgeStyle={{top: 4, backgroundColor:'#ff0000', right: 6, fontSize:10,width:20,height:20}}>
                         <IconButton style={{'marginTop':0}} tooltip='Очередь запросов' iconStyle={{'color':'white','marginTop':0}} >
                             <NotificationsIcon color='#ffaa00' />
                         </IconButton>
@@ -92,8 +86,10 @@ class DrawerMainMenu extends PureComponent {
   }
   render() {
     const {ComponentRender,isMainIconMenu,titleMainApp}=this.state
+
     if (this.props.priemUser){ 
          return (<div>
+          
             <AppBar titleStyle={Styles .mainTitleSystem}
               showMenuIconButton={isMainIconMenu}
               title={titleMainApp}
@@ -105,12 +101,13 @@ class DrawerMainMenu extends PureComponent {
             <Drawer open={this.state.drawerDisplay} docked={false} onRequestChange={(open,reason) => this._changeViewDrawer(open,reason)}>
               <MainMenuSystem user={this.props.priemUser}/>
             </Drawer>
-              {this.renderStateSystem()}
+           
              <Card style={Object.assign({},Styles.mainCard,this.props.stateSystem.loading ? {display:'none'} : {})}>
-                      <PriemNewRequest />
-                    
+               <Loader loaded={!this.props.stateSystem.loading}>       <PriemNewRequest />
+               </Loader>
+                      
               </Card>
-
+              
             </div> 
         )}
         return <LoginForm setPriemUser={this.props.setPriemUser} />
@@ -123,14 +120,15 @@ const mapStateToProps=(state)=>
 {
   return {
         priemUser: state.PriemAccount.user, 
-        stateSystem: state.SystemStatusState  
+        stateSystem: state.SystemStatusState,
+        userListRequests:state.PriemAccount.listRequests 
     }
 }
 const mapDispatchToProps=(dispatch) => {
     return {
       setPriemUser: user => dispatch(setPriemUser(user)),
       setLoggedUser: user => dispatch(setLoggedUser(user)),
-
+      getUserListRequest: user=> dispatch(getUserListRequest(user))
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(DrawerMainMenu)

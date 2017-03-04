@@ -17,6 +17,8 @@ export const GET_DOWNLOAD_FILE_IMAGE="GET_DOWNLOAD_FILE_IMAGE"
 export const SYSTEM_STATUS_STATE="SYSTEM_STATUS_STATE"
 export const DEFAULT_STATE_NEW_REQUEST="DEFAULT_STATE_NEW_REQUEST"
 export const CLEAN_DELETE_FILE_LIST="CLEAN_DELETE_FILE_LIST"
+export const SET_STATE_NEWREQUEST="CLEAN_DELETE_FILE_LIST"
+export const GET_USER_LIST_REQUEST="GET_USER_LIST_REQUEST"
 /////////////////////////////////////////////
 import reduxSagaActions from './sagaActions'
 export default function* PriemRootSaga(state)
@@ -25,8 +27,13 @@ export default function* PriemRootSaga(state)
 }
 /////////////////////////////////////////////
 
+export const getUserListRequest=(item)=>{
+   	return {type:GET_USER_LIST_REQUEST,item}
+}
 
-
+export const setStateNewRequest=(stepIndex,finished)=>{
+   	return {type:SET_STATE_NEWREQUEST,items:{stepIndex,finished}}
+}
 
 export const updateDocTypeList=(items)=>
 {

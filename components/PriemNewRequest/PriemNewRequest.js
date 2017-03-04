@@ -24,19 +24,13 @@ import {
     sendNewPriemRequestForServer,
     setDefaultStateNewRequest,
     setRequestPerformer,
+    setStateNewRequest,
     updateFileList} from '../actions'
 import {connect} from "react-redux"
 import UserWorkRoom from '../common/UserWorkRoom'
 import AddNewDocFile from '../common/AddNewDocFile'
 class PriemNewRequest extends React.Component {
-  constructor(props)
-  {
-    super(props)
-    this.state={
-          finished: false,
-          stepIndex: 0,
-     }
-  }
+
   componentWillMount()
   {
       if ( !(this.props.docsNeedScans && this.props.docsNeedScans.length>0)) this.props.updateDocNeedScans();
@@ -45,7 +39,8 @@ class PriemNewRequest extends React.Component {
   }
 
   handleNext (){
-    let {stepIndex,finished} = this.state;
+    let {stepIndex,finished} = this.props.projectStates;
+
      if (stepIndex ==3) {
         finished=false;
         stepIndex=0
@@ -60,12 +55,7 @@ class PriemNewRequest extends React.Component {
      } else {
         stepIndex+=1;
      }
-     this.setState({
-        stepIndex,
-        finished
-      })
-
-     
+     this.props.setStateNewRequest(stepIndex,finished) 
   };
 
   handlePrev (){
@@ -94,7 +84,7 @@ class PriemNewRequest extends React.Component {
         );
       case 2:
         return (
-           <UserWorkRoom onSelectPerformer={this.props.setRequestPerformer} userWorkRoom={this.props.userWorkRoom}/>
+           <UserWorkRoom stateSystem={this.props.stateSystem} onSelectPerformer={this.props.setRequestPerformer} userWorkRoom={this.props.userWorkRoom}/>
         );
       case 3:
       {
@@ -142,10 +132,9 @@ class PriemNewRequest extends React.Component {
      }
   }
   renderContent() {
-      const {finished, stepIndex} = this.state,
+      const {finished, stepIndex} = this.props.projectStates,
       contentStyle = {margin: '0 16px', overflow: 'hidden'};
       let titleLabel='';
-
     return (
       <div>
         <div>{this.getStepContent(stepIndex)}</div>
@@ -168,7 +157,7 @@ class PriemNewRequest extends React.Component {
   }
 
   render() {
-    const { stepIndex} = this.state;
+    const { stepIndex} = this.props.projectStates;
     console.log(this.props)
     return (
       <div style={{width: '100%', margin: 'auto'}}>
@@ -195,18 +184,21 @@ const mapStateToProps=(state)=>
 {
   return {
         docsNeedScans: state.directories.docsNeedScansList,
+        projectStates: state.projectStates.priemNewRequestState,
         docTypeList:state.directories.subTypesDocList,
         DocFileList:state.PriemAddNewRequest.DocFileList,
         userWorkRoom: state.PriemAddNewRequest.userWorkRoom,
         typeRequest: state.PriemAddNewRequest.typeRequest,
         requestPerformer:state.PriemAddNewRequest.requestPerformer,
         newNumberRequest:state.PriemAddNewRequest.newNumberRequest,
-        user:state.PriemUser
+        user:state.PriemUser,
+        stateSystem: state.SystemStatusState  
     }
 }
 const mapDispatchToProps=(dispatch) => {
     return {
       setDefaultStateNewRequest:()       => dispatch(setDefaultStateNewRequest()),
+      setStateNewRequest:(stepIndex,finished)  =>dispatch(setStateNewRequest(stepIndex,finished)),
       getUserUploadImage: action          => dispatch(getUserUploadImage(action)), 
       addNewFileToServer: action          =>dispatch(addNewFileToServer(action)),
       updateFileItemStatus:(action,status)=>dispatch(updateFileItemStatus(action,status)),

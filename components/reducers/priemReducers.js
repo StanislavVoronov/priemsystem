@@ -16,10 +16,14 @@ import {UPDATE_DOC_TYPES_LIST,
     DEFAULT_STATE_NEW_REQUEST,
     SYSTEM_STATUS_STATE,
     CLEAN_DELETE_FILE_LIST,
-    UPDATE_DOC_NEED_SCANS} from '../actions'
+    SET_STATE_NEWREQUEST,
+    GET_USER_LIST_REQUEST,
+    UPDATE_DOC_NEED_SCANS
+} from '../actions'
 import {merge} from "lodash";
 
-export function PriemAccount(state={},action)
+export function PriemAccount(state={
+},action)
 {
 
     switch(action.type)
@@ -32,17 +36,36 @@ export function PriemAccount(state={},action)
         {
              return Object.assign({},state,{'user':action.item})   
         }
+        case GET_USER_LIST_REQUEST:
+        {
+             return Object.assign({},state,{'listRequests':action.item})   
+        }
         default:
             return state
     }
 
+}
+export function PriemProjectStates(state={
+    priemNewRequestState:{stepIndex:0,finished:false}},action)
+{
+    switch(action.type)
+    { 
+        case SET_STATE_NEWREQUEST:
+        {
+           return Object.assign({},state,{priemNewRequestState:action.items})
+        }
+        default: return state
+    }
 }
 export function PriemDataProvider(state={},action)
 {   
     //console.log(action.type,action.items)
     switch(action.type)
     { 
-
+        case SET_STATE_NEWREQUEST:
+        {
+           return Object.assign({},state,{priemNewRequestState:action.items})
+        }
         case UPDATE_DOC_NEED_SCANS:
              return Object.assign({},state,{docsNeedScansList:action.items}) 
         case UPDATE_DOC_TYPES_LIST:
