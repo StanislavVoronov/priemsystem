@@ -10,18 +10,26 @@ import Divider from 'material-ui/Divider';
 import {Styles} from './StylePriem'
 export default class Select extends PureComponent{
 
+  constructor(props)
+  {
+    super(props)
+    this.state={selected:null}
+  }
   get selected()
   {
     if (this.props.clean) return null
     if (this.props.selected) return this.props.selected
+    return this.state.selected
   }
   render() {
   const  {data,title,multiSelect,filter,styleTitle,placeholder,styleHR,flexDirection} = this.props
   const elementSelect=multiSelect ? <Multiselect 
       valueField='id' textField='name'
       data={data}
+      placeholder={placeholder}
       value={this.selected}
       onChange={value=> {
+          this.setState({selected:value})
           this.props.onChange(value) 
       }}  
     />

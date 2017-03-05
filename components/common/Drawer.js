@@ -19,7 +19,7 @@ import Badge from 'material-ui/Badge';
 import Person from 'material-ui/svg-icons/social/person';
 import AddNew from 'material-ui/svg-icons/action/note-add';
 import MainMenuSystem from './MainMenuSystem'
-
+import PriemTableView from './PriemTableView'
 //import PriemStructure from "../PriemStructure/PriemStructure";
 import PriemNewRequest from "../PriemNewRequest/PriemNewRequest";
 //import Search from "./search";
@@ -103,7 +103,7 @@ class DrawerMainMenu extends PureComponent {
             </Drawer>
            
              <Card style={Object.assign({},Styles.mainCard,this.props.stateSystem.loading ? {display:'none'} : {})}>
-               <Loader loaded={!this.props.stateSystem.loading}>       <PriemNewRequest />
+               <Loader loaded={!this.props.stateSystem.loading}>       <PriemTableView />
                </Loader>
                       
               </Card>
