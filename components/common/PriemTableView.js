@@ -50,54 +50,73 @@ const priemDataTable=[
 ]
 export default class TableView extends PureComponent{
 
-	setSearchText(index)
+	constructor(props)
 	{
-
+		super(props)
+		this.state={filterMap:new Map(),headerTable:null}
 	}
-	getSearchField(selectField)
+	setFilterTable(index,value)
 	{
-
-		const priemSearchRows=selectField.map((searchRow,index)=>{
-			
-			if (searchRow.length>0)
-			{
+		console.log("setFilterTable",value)
+		const filterMap=this.state.filterMap
+		filterMap.set(index,value)
+		this.setState({filterMap:new Map(filterMap)})
+	}
+	componentWillMount()
+	{
+		this.setState({headerTable:this.renderHeaderTable()})
+	}
+	getSearchField()
+	{
+		
+		const priemSearchRows=priemHeaderTable.map((searchRow,index)=>{
+			if (searchRow.isSearch==true) {
+				const uniqueValues = [...new Set(priemDataTable.map(item => item[index]))];
+				const dataSelect=uniqueValues.map((name,id) => new Object({id,name}))
 				return (<TableRowColumn style={Styles.OverflowVisible} key={`SearchCell ${index}`}>
-							<Select placeholder={"Фильтр по полю"} multiSelect={true}  data={searchRow} styleSelectContainer={{'width':'100%'}}
-		                  		filter='startsWith' divider={false} onChange={this.setSearchText.bind(this,index)}/>
+							<Select placeholder={"Фильтр по полю"} multiSelect={true}  onChange={this.setFilterTable.bind(this,index)}
+								data={dataSelect} styleSelectContainer={{'width':'100%'}}
+		                  		filter='startsWith' divider={false} />
 						</TableRowColumn>)
 			}
-			else 
-			{
+			else {
 				return (<TableRowColumn key={`SearchCell ${index}`}>
 						</TableRowColumn>)
 			}
 		})
-		console.log("priemSearchRows",priemSearchRows)
 		return (<TableRow style={Styles.OverflowVisible} key={`SearchRow`}>{priemSearchRows}</TableRow>)
 
 	}
 	renderDataTable()
 	{
 		let selectField=[]
-		const priemRows=priemDataTable.map((row,index)=>
-		{
-			let priemCell= priemHeaderTable.map((search,key)=>{
-				if (!selectField[key]) selectField[key]=[]
-				if (search.isSearch==true)
-				{
-					selectField[key].push({id:index,name:row[key]})
-				}
-				return (<TableRowColumn key={`RowTable ${index} - ${key}`}>{row[index]}</TableRowColumn>)
-			})
+		let filterValues=[]
+		let dataExists=false
+		filterValues=priemDataTable.filter(value=>{
+				let dataExists=priemHeaderTable.filter((search,key)=>{
+					if (this.state.filterMap.has(key))
+					{
+						const dataFilter=this.state.filterMap.get(key)
+						dataExists=dataFilter.findIndex((row,index)=>row.name===value[key])
+						return dataExists>-1
+					}
+					return true
+				})
+				return dataExists.length==priemHeaderTable.length
+		})
+		console.log(filterValues)
+		return filterValues.map((row,index)=>{
+			const priemCell= priemHeaderTable.map((search,key)=>
+				 (<TableRowColumn key={`RowTable ${index} - ${key}`}>{row[key]}</TableRowColumn>))
 			return (<TableRow key={`Column ${index}`}>{priemCell}</TableRow>)
 		})
-		priemRows.unshift(this.getSearchField(selectField))
-		return priemRows
 	}
 	renderHeaderTable()
 	{
-		return priemHeaderTable.map((header,index)=>
+		let headerTable=priemHeaderTable.map((header,index)=>
 				<TableRowColumn key={`Header ${index}`}>{header.name}</TableRowColumn>)
+		return [(<TableRow key={`MainHeader`}>{headerTable}</TableRow>),this.getSearchField()];
+
 	}
 	render()
 	{
@@ -105,9 +124,9 @@ export default class TableView extends PureComponent{
 		return (   
 			<Table>
 			    <TableHeader adjustForCheckbox={true} enableSelectAll={false} displaySelectAll={false}>
-				    <TableRow>
-				    		{this.renderHeaderTable()}
-				    </TableRow>
+				   
+				    {this.state.headerTable}
+				    
 			     </TableHeader>
 			      <TableBody displayRowCheckbox={false}>
 			       	{this.renderDataTable()}
