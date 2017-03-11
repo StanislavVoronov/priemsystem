@@ -19,6 +19,10 @@ export const DEFAULT_STATE_NEW_REQUEST="DEFAULT_STATE_NEW_REQUEST"
 export const CLEAN_DELETE_FILE_LIST="CLEAN_DELETE_FILE_LIST"
 export const SET_STATE_NEWREQUEST="CLEAN_DELETE_FILE_LIST"
 export const GET_USER_LIST_REQUEST="GET_USER_LIST_REQUEST"
+export const SET_USER_LIST_REQUEST="SET_USER_LIST_REQUEST"
+export const PRIEM_ERROR_OCCURED="PRIEM_ERROR_OCCURED"
+export const PRIEM_SUCCESS_OCCURED="PRIEM_SUCCESS_OCCURED"
+export const PRIEM_CLEAR_ERRORS="PRIEM_CLEAR_ERRORS"
 /////////////////////////////////////////////
 import reduxSagaActions from './sagaActions'
 export default function* PriemRootSaga(state)
@@ -34,6 +38,11 @@ export const getUserListRequest=(item)=>{
 export const setStateNewRequest=(stepIndex,finished)=>{
    	return {type:SET_STATE_NEWREQUEST,items:{stepIndex,finished}}
 }
+export const clearErrorState=()=>
+{
+	return {type:PRIEM_CLEAR_ERRORS}
+}
+
 
 export const updateDocTypeList=(items)=>
 {

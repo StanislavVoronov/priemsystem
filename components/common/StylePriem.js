@@ -25,6 +25,13 @@ export const Styles =
 	    position: 'relative',
 	    backgroundColor:'#f2f2f2'
   	 },
+  	 errorDialogTitle:
+  	 {
+  	 	color:'red',
+  	 	paddingTop:12,
+  	 	fontSize:18,
+  	 	paddingBottom:0
+  	 },
 	 customDialogStyle: {
 		  width: '100%',
 		  maxWidth: 'none',

@@ -12,27 +12,39 @@ import {UPDATE_DOC_TYPES_LIST,
     ADD_NEW_PRIEM_REQUEST,
     GET_DOWNLOAD_FILE_IMAGE,
     GET_USER_LIST_REQUEST,
+    SET_USER_LIST_REQUEST,
+    PRIEM_ERROR_OCCURED,
+    PRIEM_SUCCESS_OCCURED,
     SYSTEM_STATUS_STATE,
     UPDATE_FILE_LIST} from './'
 import {put,call,takeEvery,take,takeLatest,fork,select} from 'redux-saga/effects'
 import {networkService} from "../common/networkService";
-
+function priemMakeErrorList(error)
+{
+ 	const arrayErrors=error.message.split(";")
+ 	return {type:PRIEM_ERROR_OCCURED,
+ 		reason:arrayErrors[1],
+ 		service:arrayErrors[3],
+ 		codeError:arrayErrors[0],
+ 		request:arrayErrors[2]}
+}
 export function* getUserListRequest()
 {
 	while(true) {
 		yield take(GET_USER_LIST_REQUEST)
-		const userData =yield select(state => state.PriemAccount.listRequests)
+		const userData =yield select(state => state.PriemAccount.getUserRequests)
 		let item;
 		try 
 	    {
-				item = yield call(networkService,
-				{name:"userListRequests",data:userData,method:"GET"})
-				
-				yield put({type:GET_USER_LIST_REQUEST,item})
-		}catch(error)
-		{
+			item = yield call(networkService,
+			{name:"userListRequests",data:userData,method:"GET"})
+
 			yield put({type:GET_USER_LIST_REQUEST,item})
+			yield put({type:SET_USER_LIST_REQUEST,item})	
+		}catch(error){
+			yield put(priemMakeErrorList(error))
 		}
+		
 	}
 }
 
@@ -49,9 +61,8 @@ export function* getDownloadFileImage()
 			{name:"userFileImage",data:userData.id_operator,method:"GET"})
 			
 			yield put({type:UPDATE_FILE_LIST,items})
-	}catch(error)
-	{
-		yield put({type:UPDATE_FILE_LIST,item})
+	}catch(error){
+		yield put(priemMakeErrorList(error))
 	}
 	yield put({type:SYSTEM_STATUS_STATE,item:{loading:false,loaded:false}})
 }
@@ -67,10 +78,8 @@ export function* setLoggedPriemUser()
 				{name:"connOper",data:userData,method:"POST"})
 
 				yield put({type:SET_LOGGED_PRIEM_USER,item})
-		}catch(error)
-		{
-			console.log(item,"connOper")
-			yield put({type:SET_LOGGED_PRIEM_USER,item})
+		}catch(error){
+			yield put(priemMakeErrorList(error))
 		}
 }
 export function* setLoginUser(state)
@@ -94,9 +103,8 @@ export function* setLoginUser(state)
 				}
 				
 				yield put({type:SET_PRIEM_USER,item})
-		}catch(error)
-		{
-			yield put({type:SET_PRIEM_USER,items})
+		}catch(error){
+			yield put(priemMakeErrorList(error))
 		}
 
 
@@ -112,9 +120,8 @@ export function* getDocNeedScans(state)
 				items = yield call(networkService,
 				{name:'RequestTypesNeedScans'})
 				yield put({type:UPDATE_DOC_NEED_SCANS,items})
-		}catch(error)
-		{
-			yield put({type:UPDATE_DOC_NEED_SCANS,items})
+		}catch(error){
+			yield put(priemMakeErrorList(error))
 		}
 		  
 }
@@ -138,9 +145,8 @@ export function* sendNewFileToServer()
 							url:'priem_image_upload?json=1',
 							method:'POST'})
 				yield put({type:UPDATE_UPLOAD_IMAGE_FILE,item:image})
-			}catch(error)
-			{
-				console.log(error)
+			}catch(error){
+				yield put(priemMakeErrorList(error))
 			}
 		  }
 		
@@ -160,9 +166,8 @@ export function* removeFileImageFromServer()
 							format:true,
 
 							method:'POST'})
-			}catch(error)
-			{
-				console.log(error)
+			}catch(error){
+				yield put(priemMakeErrorList(error))
 			}
 			yield put({type:CLEAN_DELETE_FILE_LIST,item:imageId})
 		  }
@@ -175,13 +180,11 @@ export function* getRequestUserWorkRoom()
 			yield take(GET_USER_WORK_ROOM)
 			yield put({type:SYSTEM_STATUS_STATE,item:{loading:true,loaded:false}})
 			let items;
-		    try 
-		    {
+		    try {
 				items = yield call(networkService,{name:'userWorkRoom'})
 				yield put({type:GET_USER_WORK_ROOM,items})
-			}catch(error)
-			{
-				yield put({type:GET_USER_WORK_ROOM,items:items})
+			}catch(error){
+				yield put(priemMakeErrorList(error))
 			}
 	  		yield put({type:SYSTEM_STATUS_STATE,item:{loading:false,loaded:true}})
 	  	}
@@ -191,12 +194,10 @@ export function* getDocList()
    		
 		yield take(UPDATE_DOC_TYPES_LIST)
 		let items;
-	    try 
-	    {
+	    try {
 			items = yield call(networkService,{name:'DocumentList'})
 			yield put({type:UPDATE_DOC_TYPES_LIST,items})
-		}catch(error)
-		{
+		}catch(error){
 			yield put({type:UPDATE_DOC_TYPES_LIST,items:items})
 		}
   
@@ -235,14 +236,18 @@ export function* addNewPriemRequest()
   		requestData.append('addedDocFiles',JSON.stringify(addedFiles));
   		requestData.append('needUploadDocFiles',JSON.stringify(needUploadFiles));
   		console.log("requestData",requestData)
-  		const requestNumber=yield call(networkService,
-							{	
-								formData:requestData,
-								format:true,
-								method:'POST'
-							})
-  		yield put({type:ADD_NEW_PRIEM_REQUEST,item:requestNumber.id_queue})
-  		yield put({type:SYSTEM_STATUS_STATE,item:{loading:false,loaded:false}})
+  		try{
+	  		const requestNumber=yield call(networkService,
+								{	
+									formData:requestData,
+									format:true,
+									method:'POST'
+								})
+	  		yield put({type:ADD_NEW_PRIEM_REQUEST,item:requestNumber.id_queue})
+	  		yield put({type:SYSTEM_STATUS_STATE,item:{loading:false,loaded:false}})
+	  	}catch(error){
+			yield put({type:UPDATE_DOC_TYPES_LIST,items:items})
+		}
   	}
 }
 const reduxSagaActions=[

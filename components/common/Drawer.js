@@ -19,14 +19,18 @@ import Badge from 'material-ui/Badge';
 import Person from 'material-ui/svg-icons/social/person';
 import AddNew from 'material-ui/svg-icons/action/note-add';
 import MainMenuSystem from './MainMenuSystem'
-import PriemTableView from './PriemTableView'
+import Snackbar from 'material-ui/Snackbar';
+import Dialog from 'material-ui/Dialog';
 //import PriemStructure from "../PriemStructure/PriemStructure";
+import Divider from 'material-ui/Divider';
+import PriemUserRequestList from "../PriemUserRequestList/PriemUserRequestList"
 import PriemNewRequest from "../PriemNewRequest/PriemNewRequest";
+
 //import Search from "./search";
 import {Card} from 'material-ui/Card';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 import {connect} from "react-redux"
-import {setLoggedUser,setPriemUser,getUserListRequest} from '../actions'
+import {setLoggedUser,setPriemUser,getUserListRequest,clearErrorState} from '../actions'
 import LoginForm from "./LoginForm";
 const Profile = () => (
   <IconMenu iconStyle={{'color':'white'}} 
@@ -84,9 +88,14 @@ class DrawerMainMenu extends PureComponent {
                   <Profile />
              </div> )
   }
+  closeErrorDialog(){
+      this.props.clearErrorState()
+  }
+  closeMessageBox(){
+
+  }
   render() {
     const {ComponentRender,isMainIconMenu,titleMainApp}=this.state
-
     if (this.props.priemUser){ 
          return (<div>
           
@@ -103,13 +112,34 @@ class DrawerMainMenu extends PureComponent {
             </Drawer>
            
              <Card style={Object.assign({},Styles.mainCard,this.props.stateSystem.loading ? {display:'none'} : {})}>
-               <Loader loaded={!this.props.stateSystem.loading}>       <PriemNewRequest />
+               <Loader loaded={!this.props.stateSystem.loading}>       
+                  <PriemUserRequestList userListRequests={this.props.userListRequests} /> 
                </Loader>
                       
               </Card>
-              
+                 <Snackbar
+                    open={false}
+                    action="Закрыть"
+                    message={`${this.props.error.service}`}
+                    onActionTouchTap={this.closeMessageBox.bind(this)} />
+                  <Dialog
+                      title="Сообщения сервера об ошибке"
+                      modal={false}
+                      titleStyle={Styles.errorDialogTitle}  
+                      onRequestClose={this.closeErrorDialog.bind(this)}
+                      open={this.props.error.show}>
+                        <Divider style={Styles.hr}/>
+                        <div><b>ErrorCode:</b> {this.props.error.codeError}</div>
+                        <Divider style={Styles.hr}/>
+                        <div><b>Service=parametrs:</b> {this.props.error.service}</div>
+                        <Divider style={Styles.hr}/>
+                        <div><b>Request:</b> {this.props.error.request}</div>
+                        <Divider style={Styles.hr}/>
+                        <div><b>Reason:</b> {this.props.error.reason}</div>
+                  </Dialog>
             </div> 
         )}
+    
         return <LoginForm setPriemUser={this.props.setPriemUser} />
 
   }
@@ -121,11 +151,13 @@ const mapStateToProps=(state)=>
   return {
         priemUser: state.PriemAccount.user, 
         stateSystem: state.SystemStatusState,
-        userListRequests:state.PriemAccount.listRequests 
+        userListRequests:state.PriemAccount.listRequests,
+        error: state.PriemAccount.error, 
     }
 }
 const mapDispatchToProps=(dispatch) => {
     return {
+      clearErrorState:() => dispatch(clearErrorState()),
       setPriemUser: user => dispatch(setPriemUser(user)),
       setLoggedUser: user => dispatch(setLoggedUser(user)),
       getUserListRequest: user=> dispatch(getUserListRequest(user))

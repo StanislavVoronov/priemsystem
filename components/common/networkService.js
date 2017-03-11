@@ -30,18 +30,19 @@ export function networkService(service)
     {
         const formData = new FormData();
         formData.append(service.name,parametrs);
+
         Object.assign(request,{body:formData});
     }
   
     return fetch(url,request)
-            .then(response=> 
-            {
-                try { 
-                  return response.json() 
-                } 
-                catch(e){
-                    console.log(e)
+            .then(response=> response.json())
+            .then(data=>{ 
+                if (data.error)
+                {
+                    const stringError=`${data.codeError};${data.error};${data.request};${url}`
+                    throw new Error(stringError)
                 }
+                return data
             })
   
 }    

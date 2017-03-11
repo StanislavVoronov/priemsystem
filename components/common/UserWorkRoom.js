@@ -37,7 +37,7 @@ export default class UserWorkRoom extends PureComponent{
 			},
 			{
 				component:true,
-				name:'Действия',
+				name:'Статус',
 				type:'radio',
 				title:'Выбрать'
 			},

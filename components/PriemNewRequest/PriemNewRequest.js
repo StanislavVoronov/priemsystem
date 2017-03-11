@@ -84,12 +84,12 @@ class PriemNewRequest extends React.Component {
         );
       case 2:
         return (
-           <UserWorkRoom stateSystem={this.props.stateSystem} requestPerformer={this.props.requestPerformer} onSelectPerformer={this.props.setRequestPerformer} userWorkRoom={this.props.userWorkRoom}/>
+           <UserWorkRoom stateSystem={this.props.stateSystem} requestPerformer={this.props.requestPerformer} onSelectPerformerМ={this.props.setRequestPerformer} userWorkRoom={this.props.userWorkRoom}/>
         );
       case 3:
       {
          return(<p style={{fontWeight:'bold',marginLeft:5}}>
-                {`Запрос № ${this.props.newNumberRequest} успешно отправлен методисту ${this.props.requestPerformer.name}`}
+                {`Запрос № ${this.props.newNumberRequest} успешно отправлен методисту: ${this.props.requestPerformer.name}`}
                 </p>)
       }
       default:

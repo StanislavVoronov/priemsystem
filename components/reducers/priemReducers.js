@@ -18,11 +18,16 @@ import {UPDATE_DOC_TYPES_LIST,
     CLEAN_DELETE_FILE_LIST,
     SET_STATE_NEWREQUEST,
     GET_USER_LIST_REQUEST,
-    UPDATE_DOC_NEED_SCANS
+    SET_USER_LIST_REQUEST,
+    PRIEM_ERROR_OCCURED,
+    PRIEM_SUCCESS_OCCURED,
+    UPDATE_DOC_NEED_SCANS,
+    PRIEM_CLEAR_ERRORS
 } from '../actions'
 import {merge} from "lodash";
 
-export function PriemAccount(state={
+
+export function PriemAccount(state={error:{show:false}
 },action)
 {
 
@@ -38,7 +43,30 @@ export function PriemAccount(state={
         }
         case GET_USER_LIST_REQUEST:
         {
+             return Object.assign({},state,{'getUserRequests':action.item})   
+        }
+        case SET_USER_LIST_REQUEST:
+        {
              return Object.assign({},state,{'listRequests':action.item})   
+        }
+        case PRIEM_ERROR_OCCURED:
+        {
+             return Object.assign({},state,{'error':
+                                             {  "reason":action.reason,
+                                                "codeError":action.codeError,
+                                                "show":true,
+                                                "request":action.request,
+                                                "service":action.service,
+                                                "parametrs":action.parametrs
+                                             }})   
+        }
+        case PRIEM_SUCCESS_OCCURED:
+        {
+             return Object.assign({},state,{'success':action.item})   
+        }
+        case PRIEM_CLEAR_ERRORS:
+        {
+             return Object.assign({},state,{'error':{show:false}})   
         }
         default:
             return state
