@@ -84,7 +84,7 @@ class PriemNewRequest extends React.Component {
         );
       case 2:
         return (
-           <UserWorkRoom stateSystem={this.props.stateSystem} onSelectPerformer={this.props.setRequestPerformer} userWorkRoom={this.props.userWorkRoom}/>
+           <UserWorkRoom stateSystem={this.props.stateSystem} requestPerformer={this.props.requestPerformer} onSelectPerformer={this.props.setRequestPerformer} userWorkRoom={this.props.userWorkRoom}/>
         );
       case 3:
       {

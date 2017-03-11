@@ -1,80 +1,43 @@
 import React, { PureComponent, PropTypes } from 'react';
 
-
+import {sortAlfabet} from './priemGlobals'
 import Select from "../common/multiSelect";
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import {Styles} from "../common/StylePriem"
-const priemHeaderTable=[
-{
-	name:'ФИО',
-	isSearch:false,
-},
-{
-	name:'Номер телефона',
-	isSearch:true,
-},
-{
-	name:'Кол-во заявлений',
-	isSearch:false,
-},
-{
-	name:'Адрес',
-	isSearch:false,
-}
-]
-const priemDataTable=[
-{
-	0:'Воронов0 Станислав Игоревич',
-	1:1444,
-	2: 'Russia',
-	3:1
-},
-{
-	0:'Воронов1 Станислав Игоревич',
-	1:1111,
-	2: 'Russia',
-	3:2
-},
-{
-	0:'Воронов2 Станислав Игоревич',
-	1:1234,
-	2: 'Russia',
-	3:3
-},
-{
-	0:'Воронов3 Станислав Игоревич',
-	1:1111,
-	2: 'Russia',
-	3:5
-},
-]
+import PriemButtons from './PriemButtons'
+import Checkbox from 'material-ui/Checkbox';
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 export default class TableView extends PureComponent{
 
 	constructor(props)
 	{
 		super(props)
-		this.state={filterMap:new Map(),headerTable:null}
+		this.state={filterMap:new Map(),headerTableRow:[],searchTableRow:[]}
 	}
 	setFilterTable(index,value)
 	{
-		console.log("setFilterTable",value)
+		
+
 		const filterMap=this.state.filterMap
 		filterMap.set(index,value)
+		console.log("filterMap",filterMap)
 		this.setState({filterMap:new Map(filterMap)})
 	}
 	componentWillMount()
 	{
-		this.setState({headerTable:this.renderHeaderTable()})
+		this.setState({headerTableRow:this.renderTableHeaderRow(),searchTableRow:this.renderTableSearchRow()})
 	}
-	getSearchField()
+	renderTableSearchRow()
 	{
-		
-		const priemSearchRows=priemHeaderTable.map((searchRow,index)=>{
+		let countSearchFields=0;
+		const priemSearchRows=this.props.priemHeaderTable.map((searchRow,index)=>{
 			if (searchRow.isSearch==true) {
-				const uniqueValues = [...new Set(priemDataTable.map(item => item[index]))];
+				countSearchFields++;
+				const uniqueValues = [...new Set(this.props.priemDataTable.map(item => item[searchRow['key']]))];
+				uniqueValues.sort(sortAlfabet)
 				const dataSelect=uniqueValues.map((name,id) => new Object({id,name}))
 				return (<TableRowColumn style={Styles.OverflowVisible} key={`SearchCell ${index}`}>
-							<Select placeholder={"Фильтр по полю"} multiSelect={true}  onChange={this.setFilterTable.bind(this,index)}
+							<Select placeholder={`Фильтр по ${searchRow.placeholder}`} multiSelect={true}  onChange={this.setFilterTable.bind(this,index)}
 								data={dataSelect} styleSelectContainer={{'width':'100%'}}
 		                  		filter='startsWith' divider={false} />
 						</TableRowColumn>)
@@ -84,52 +47,98 @@ export default class TableView extends PureComponent{
 						</TableRowColumn>)
 			}
 		})
-		return (<TableRow style={Styles.OverflowVisible} key={`SearchRow`}>{priemSearchRows}</TableRow>)
+		if (countSearchFields>0){
+			return (<TableRow selectable={false} key={`SearchRow`}>{priemSearchRows}</TableRow>);
+		}	
+	}
+	renderActionElement(header,row,index,key){
 
+		switch (header.type){
+			case "button":
+			{
+				return (<TableRowColumn key={`RowTable ${index} - ${key}`}><PriemButtons
+                    type={header.type}
+                    label={header.title} 
+                    onClick={this.props.onAction.bind(this,row)} /></TableRowColumn>)
+			}
+			case "radio":
+			{
+				return (<TableRowColumn key={`RowTable ${index} - ${key}`}>
+								<RadioButtonGroup valueSelected={this.props.selected} onChange={this.props.onAction.bind(this,row)} name="shipSpeed" >
+							  	<RadioButton
+						        	//value="enterprise
+						        	value={row.id}
+						        	label={header.title} /> 
+						        </RadioButtonGroup>
+	                    </TableRowColumn>)
+			}
+			case "checkbox":
+			{
+				return (<TableRowColumn key={`RowTable ${index} - ${key}`}>
+							<Checkbox onCheck={this.props.onAction.bind(this,row)}
+						      //checkedIcon={<ActionFavorite />}
+						      //uncheckedIcon={<ActionFavoriteBorder />}
+						      label={header.title}/>
+						 </TableRowColumn>)
+			}
+			case "menu":
+			{
+				return (<TableRowColumn key={`RowTable ${index} - ${key}`}><PriemButtons
+                    type={header.type}
+                    label={header.title} 
+                    onClick={this.props.onAction.bind(this,row)} /></TableRowColumn>)
+			}
+
+		}
+		
 	}
 	renderDataTable()
 	{
-		let selectField=[]
-		let filterValues=[]
-		let dataExists=false
-		filterValues=priemDataTable.filter(value=>{
-				let dataExists=priemHeaderTable.filter((search,key)=>{
+		const filterValues=this.props.priemDataTable.filter(value=>{
+				let dataExists=this.props.priemHeaderTable.filter((header,key)=>{
 					if (this.state.filterMap.has(key))
 					{
 						const dataFilter=this.state.filterMap.get(key)
-						dataExists=dataFilter.findIndex((row,index)=>row.name===value[key])
+						if (dataFilter.length==0) return true
+						dataExists=dataFilter.findIndex((row,index)=>row.name===value[header['key']])
 						return dataExists>-1
 					}
 					return true
 				})
-				return dataExists.length==priemHeaderTable.length
+				return dataExists.length==this.props.priemHeaderTable.length
 		})
-		console.log(filterValues)
 		return filterValues.map((row,index)=>{
-			const priemCell= priemHeaderTable.map((search,key)=>
-				 (<TableRowColumn key={`RowTable ${index} - ${key}`}>{row[key]}</TableRowColumn>))
+			const priemCell= this.props.priemHeaderTable.map((header,key)=>{
+				if (header.component){
+					return this.renderActionElement(header,row,index,key)
+				}
+				return (<TableRowColumn key={`RowTable ${index} - ${key}`}>{row[header['key']]}</TableRowColumn>)
+			})
 			return (<TableRow key={`Column ${index}`}>{priemCell}</TableRow>)
 		})
 	}
-	renderHeaderTable()
+	renderTableHeaderRow()
 	{
-		let headerTable=priemHeaderTable.map((header,index)=>
-				<TableRowColumn key={`Header ${index}`}>{header.name}</TableRowColumn>)
-		return [(<TableRow key={`MainHeader`}>{headerTable}</TableRow>),this.getSearchField()];
-
+		let headerTable=this.props.priemHeaderTable.map((header,index)=>
+				<TableHeaderColumn key={`Header ${index}`}>{header.name}</TableHeaderColumn>)
+		return (<TableRow key={`MainHeader`}>{headerTable}</TableRow>);
 	}
 	render()
 	{
+		return ( 
 
-		return (   
 			<Table>
-			    <TableHeader adjustForCheckbox={true} enableSelectAll={false} displaySelectAll={false}>
+			    <TableHeader adjustForCheckbox={false} enableSelectAll={false} displaySelectAll={false}>
 				   
-				    {this.state.headerTable}
-				    
+				    {this.state.headerTableRow}
+				   
 			     </TableHeader>
-			      <TableBody displayRowCheckbox={false}>
-			       	{this.renderDataTable()}
+
+			      <TableBody displayRowCheckbox={false} adjustForCheckbox={false} > 
+			     	
+				      	{this.state.searchTableRow}
+				       	{this.renderDataTable()}
+			      
 			      </TableBody>
 			</Table>)
 	}

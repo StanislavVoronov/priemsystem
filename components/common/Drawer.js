@@ -103,7 +103,7 @@ class DrawerMainMenu extends PureComponent {
             </Drawer>
            
              <Card style={Object.assign({},Styles.mainCard,this.props.stateSystem.loading ? {display:'none'} : {})}>
-               <Loader loaded={!this.props.stateSystem.loading}>       <PriemTableView />
+               <Loader loaded={!this.props.stateSystem.loading}>       <PriemNewRequest />
                </Loader>
                       
               </Card>

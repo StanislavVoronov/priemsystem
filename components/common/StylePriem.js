@@ -82,9 +82,14 @@ export const Styles =
      					'height':48,
                         'fontSize':18,
      },
+     OverflowTableVisible:
+     {
+     	'overflow': 'visible'
+     },
      OverflowVisible:
      {
-     	overflow:'visible'
+     	'overflow': 'visible',
+     	'whiteSpace': 'normal'
      },
      DeleteButton:
      {

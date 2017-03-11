@@ -86,7 +86,7 @@ export function SystemStatusState(state={loading:false,loaded:true},action)
            return state
     }
 }
-export function PriemAddNewRequest(state={DocFileList:[],userWorkRoom:[],requestPerformer:undefined},action){
+export function PriemAddNewRequest(state={DocFileList:[],userWorkRoom:[],requestPerformer:{}},action){
        
     
         console.log(action.type,action.items,action.item)

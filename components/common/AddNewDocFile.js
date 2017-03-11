@@ -151,7 +151,7 @@ export default class  AddNewDocFile extends React.Component{
 		return  (<div>
             <Select data={this.props.docTypeList} filter='startsWith' selected={selectedDocType} onChange={showAddButton} 
                 placeholder='Выберите тип документа для добавления одного документа' 
-                title='Тип документнта' />
+                title='Тип документа' />
             <FileUploadZone style={Styles.FileUploadZone} onDrop={onDropFiles}>
                  <PriemButtons 
                      onClick={event=>this.addDocFileByButton(event)} 
