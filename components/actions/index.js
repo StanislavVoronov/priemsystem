@@ -23,6 +23,7 @@ export const SET_USER_LIST_REQUEST="SET_USER_LIST_REQUEST"
 export const PRIEM_ERROR_OCCURED="PRIEM_ERROR_OCCURED"
 export const PRIEM_SUCCESS_OCCURED="PRIEM_SUCCESS_OCCURED"
 export const PRIEM_CLEAR_ERRORS="PRIEM_CLEAR_ERRORS"
+
 /////////////////////////////////////////////
 import reduxSagaActions from './sagaActions'
 export default function* PriemRootSaga(state)

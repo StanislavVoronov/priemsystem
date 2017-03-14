@@ -22,7 +22,12 @@ export default class PriemUserRequestList extends PureComponent{
 			{
 				name:'Дата создания',
 				key:'created'
-			},{
+			},
+			{
+				name:'Кол-во документов ',
+				key:'docsCount'
+			},
+			{
 				component:true,
 				typeClass:'save',
 				name:'Действие',

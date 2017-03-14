@@ -25,6 +25,11 @@ export const Styles =
 	    position: 'relative',
 	    backgroundColor:'#f2f2f2'
   	 },
+  	 authFailed:
+  	 {
+  	 	color:'red',
+  	 	textAlign:'center'
+  	 },
   	 errorDialogTitle:
   	 {
   	 	color:'red',

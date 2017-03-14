@@ -6,26 +6,13 @@ import React, { PureComponent } from 'react';
 
 
 
-
+import {Styles} from './StylePriem'
 import Divider from 'material-ui/Divider';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 
-const styles = {
-  button: {
-    color:'white',
-    
-    hover: {
-        backgroundColor: 'rgba(0, 188, 212,0.5)'
-      }
-  },
-  exampleImageInput: {
-    cursor: 'pointer',
-    position: 'absolute',
-    backgroundColor:'rgb(0, 188, 212)'
-  },
-};
+
 export default class LoginForm extends PureComponent { 
 
   regOperator()
@@ -40,7 +27,6 @@ export default class LoginForm extends PureComponent {
   }
  
   render() {
-    const  isOpen = this.props.loginForm;
     const actions = [
       <FlatButton
         hoverColor={'rgba(0, 188, 212,0.7)'}
@@ -50,10 +36,10 @@ export default class LoginForm extends PureComponent {
         onTouchTap={this.regOperator.bind(this)}
       />,
     ];
-    const titleLogin='Система приема абитуриентов \nМГУТУ им. К. Г. Разумовского (ПКУ)'
+    const titleLogin='ЕАИСПА \nМГУТУ им. К. Г. Разумовского (ПКУ)'
     return (
         <Dialog
-          open={!localStorage["priemUser"]}
+          open={!(localStorage["priemUser"] && localStorage["priemUser"].id_operator>0)}
           title={titleLogin}
           modal
           actionsContainerStyle={{'display':'flex','justifyContent':'center'}}
@@ -71,7 +57,7 @@ export default class LoginForm extends PureComponent {
               type="password"
             />
             <Divider /> 
-            <h3 className='errorEntry'>{this.props.priemUser && this.props.priemUser.errorText}</h3>
+            <h3 style={Styles.authFailed}>{this.props.priemUser && this.props.priemUser.authMessage}</h3>
         </Dialog>
      
     );

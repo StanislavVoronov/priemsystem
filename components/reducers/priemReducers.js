@@ -56,8 +56,7 @@ export function PriemAccount(state={error:{show:false}
                                                 "codeError":action.codeError,
                                                 "show":true,
                                                 "request":action.request,
-                                                "service":action.service,
-                                                "parametrs":action.parametrs
+                                                "service":action.service
                                              }})   
         }
         case PRIEM_SUCCESS_OCCURED:

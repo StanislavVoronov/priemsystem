@@ -92,17 +92,18 @@ export function* setLoginUser(state)
 	    {
 				item = yield call(networkService,
 				{name:"regOper",data:userData,method:"POST"})
-				const priemUser=JSON.stringify(item)
-				if (priemUser.id_operator==0) {
-					alert("Error has occured")
+				if (item.id_operator==0) {
+					localStorage.clear()
 					item=undefined
+					yield put({type:SET_PRIEM_USER,item:{authMessage:"Неправильный логин или пароль!"}})
 				}
 				else 
 				{
 					localStorage["priemUser"]=JSON.stringify(item)
+					yield put({type:SET_PRIEM_USER,item})
 				}
 				
-				yield put({type:SET_PRIEM_USER,item})
+				
 		}catch(error){
 			yield put(priemMakeErrorList(error))
 		}

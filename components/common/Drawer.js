@@ -96,7 +96,8 @@ class DrawerMainMenu extends PureComponent {
   }
   render() {
     const {ComponentRender,isMainIconMenu,titleMainApp}=this.state
-    if (this.props.priemUser){ 
+    
+    if (this.props.priemUser && this.props.priemUser.id_operator>0){ 
          return (<div>
           
             <AppBar titleStyle={Styles .mainTitleSystem}
@@ -140,7 +141,7 @@ class DrawerMainMenu extends PureComponent {
             </div> 
         )}
     
-        return <LoginForm setPriemUser={this.props.setPriemUser} />
+        return <LoginForm setPriemUser={this.props.setPriemUser} priemUser={this.props.priemUser}/>
 
   }
 }
