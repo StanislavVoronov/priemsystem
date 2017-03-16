@@ -9,12 +9,14 @@ import {UPDATE_DOC_TYPES_LIST,
     DELETE_FILE_ITEM,
     SET_LOGGED_PRIEM_USER,
     CLEAN_DELETE_FILE_LIST,
-    ADD_NEW_PRIEM_REQUEST,
+    ADDED_NEW_PRIEM_REQUEST,
     GET_DOWNLOAD_FILE_IMAGE,
     GET_USER_LIST_REQUEST,
     SET_USER_LIST_REQUEST,
     PRIEM_ERROR_OCCURED,
+    ADD_NEW_PRIEM_REQUEST,
     PRIEM_SUCCESS_OCCURED,
+    SET_AUTH_DATA,
     SYSTEM_STATUS_STATE,
     UPDATE_FILE_LIST} from './'
 import {put,call,takeEvery,take,takeLatest,fork,select} from 'redux-saga/effects'
@@ -84,9 +86,8 @@ export function* setLoggedPriemUser()
 }
 export function* setLoginUser(state)
 {
-		yield take(SET_PRIEM_USER)
-		const userData = yield select(state => state.PriemAccount.user)
-		console.log(userData)
+		yield take(SET_AUTH_DATA)
+		const userData = yield select(state => state.PriemAccount.auth)
 		let item;
   	  	try 
 	    {
@@ -102,9 +103,10 @@ export function* setLoginUser(state)
 					localStorage["priemUser"]=JSON.stringify(item)
 					yield put({type:SET_PRIEM_USER,item})
 				}
-				
+				yield put({type:SET_AUTH_DATA,item:null})
 				
 		}catch(error){
+			yield put({type:SET_AUTH_DATA,item:null})
 			yield put(priemMakeErrorList(error))
 		}
 
@@ -211,11 +213,14 @@ export function* addNewPriemRequest()
 		yield put({type:SYSTEM_STATUS_STATE,item:{loading:true,loaded:false}})
 		let items;
 	   	const addedFiles = yield select(state => {
-				return state.PriemAddNewRequest.DocFileList.filter(file=> 
-				file.selected==true && file.typeDoc && file.typeDoc.typeDoc)
-		}); 
+	   		return state.PriemAddNewRequest.DocFileList})
+		 
+		console.log("addedFiles",addedFiles)
+		const selectedDocs=addedFiles.filter(file=>{
+						return file.selected && file.typeDoc
+		})
 		const operator=yield select(state => {
-				return state.PriemAddNewRequest.requestPerformer ? state.PriemAddNewRequest.requestPerformer.id : state.PriemAccount.user.id
+				return state.PriemAddNewRequest.requestPerformer.id
 		});
 		const typeRequest=yield select(state => {
 				return state.PriemAddNewRequest.typeRequest
@@ -223,7 +228,7 @@ export function* addNewPriemRequest()
 		let requestData= new FormData(); 
 		let needUploadFiles=[];
 		addedFiles.filter(file=> {
-			if (!file.id) 
+			if (!file.id && file.selected && file.typeDoc) 
 			{
 				requestData.append('file',file)
 				needUploadFiles.push(file)
@@ -234,7 +239,7 @@ export function* addNewPriemRequest()
 		let error=false
 		requestData.append('idNewTypeRequest',typeRequest.id);
 		requestData.append('operatorIdNewRequest',operator);
-  		requestData.append('addedDocFiles',JSON.stringify(addedFiles));
+  		requestData.append('addedDocFiles',JSON.stringify(selectedDocs));
   		requestData.append('needUploadDocFiles',JSON.stringify(needUploadFiles));
   		console.log("requestData",requestData)
   		try{

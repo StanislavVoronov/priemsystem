@@ -6,10 +6,15 @@ import {Styles} from "../common/StylePriem"
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import PriemTableView from '../common/PriemTableView'
 
-
+              // <PriemUserRequestList userListRequests={this.props.userListRequests} getUserListRequest={this.props.getUserListRequest} id_operator={this.props.priemUser.id_operator} /> 
 
 
 export default class PriemUserRequestList extends PureComponent{
+	componentWillMount()
+  	{
+        const userPriem=this.props.id_operator
+        this.props.getUserListRequest(userPriem);
+  	}
 	setHeaderTable()
 	{
 		return [

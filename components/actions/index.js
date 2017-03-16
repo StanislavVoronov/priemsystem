@@ -11,19 +11,20 @@ export const SET_REQUEST_PERFORMER="SET_REQUEST_PERFORMER"
 export const SET_PRIEM_USER="SET_PRIEM_USER"
 export const SET_LOGGED_PRIEM_USER="SET_LOGGED_PRIEM_USER"
 export const SET_NEW_TYPE_REQUEST="SET_NEW_TYPE_REQUEST"
-export const ADD_NEW_PRIEM_REQUEST="ADD_NEW_PRIEM_REQUEST"
+export const ADDED_NEW_PRIEM_REQUEST="ADDED_NEW_PRIEM_REQUEST"
 export const CHECK_BEFORE_SEND_REQUEST="CHECK_BEFORE_SEND_REQUEST"
 export const GET_DOWNLOAD_FILE_IMAGE="GET_DOWNLOAD_FILE_IMAGE"
 export const SYSTEM_STATUS_STATE="SYSTEM_STATUS_STATE"
 export const DEFAULT_STATE_NEW_REQUEST="DEFAULT_STATE_NEW_REQUEST"
 export const CLEAN_DELETE_FILE_LIST="CLEAN_DELETE_FILE_LIST"
-export const SET_STATE_NEWREQUEST="CLEAN_DELETE_FILE_LIST"
+export const SET_STATE_NEWREQUEST="SET_STATE_NEWREQUEST"
 export const GET_USER_LIST_REQUEST="GET_USER_LIST_REQUEST"
 export const SET_USER_LIST_REQUEST="SET_USER_LIST_REQUEST"
 export const PRIEM_ERROR_OCCURED="PRIEM_ERROR_OCCURED"
 export const PRIEM_SUCCESS_OCCURED="PRIEM_SUCCESS_OCCURED"
 export const PRIEM_CLEAR_ERRORS="PRIEM_CLEAR_ERRORS"
-
+export const SET_AUTH_DATA="SET_AUTH_DATA"
+export const ADD_NEW_PRIEM_REQUEST="ADD_NEW_PRIEM_REQUEST"
 /////////////////////////////////////////////
 import reduxSagaActions from './sagaActions'
 export default function* PriemRootSaga(state)
@@ -92,7 +93,7 @@ export const setRequestPerformer=(item)=>
 }
 export const setPriemUser=(item)=>
 {
-	return {type:SET_PRIEM_USER,item}
+	return {type:SET_AUTH_DATA,item}
 }
 export const setLoggedUser=(item)=>
 {

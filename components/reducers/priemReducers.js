@@ -22,6 +22,7 @@ import {UPDATE_DOC_TYPES_LIST,
     PRIEM_ERROR_OCCURED,
     PRIEM_SUCCESS_OCCURED,
     UPDATE_DOC_NEED_SCANS,
+    SET_AUTH_DATA,
     PRIEM_CLEAR_ERRORS
 } from '../actions'
 import {merge} from "lodash";
@@ -33,6 +34,10 @@ export function PriemAccount(state={error:{show:false}
 
     switch(action.type)
     {
+        case SET_AUTH_DATA:
+        {
+             return Object.assign({},state,{'auth':action.item})   
+        }
         case SET_PRIEM_USER:
         {
              return Object.assign({},state,{'user':action.item})   

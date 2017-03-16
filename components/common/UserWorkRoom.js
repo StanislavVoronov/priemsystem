@@ -43,9 +43,9 @@ export default class UserWorkRoom extends PureComponent{
 			},
 		]
 	}
-	selectRequestPerformer(priemUser)
+	selectRequestPerformer(priemMetodist)
 	{
-		this.props.onSelectPerformer(priemUser)
+		this.props.onSelectPerformer(priemMetodist)
 	}
 	render()
 	{

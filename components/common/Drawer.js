@@ -58,7 +58,7 @@ class DrawerMainMenu extends PureComponent {
       if (localStorage["priemUser"]) {
         const userPriem=JSON.parse(localStorage["priemUser"])
         this.props.setLoggedUser(userPriem)
-        this.props.getUserListRequest(userPriem.id_operator);
+        //this.props.getUserListRequest(userPriem.id)
       };
   }
 
@@ -97,7 +97,8 @@ class DrawerMainMenu extends PureComponent {
   render() {
     const {ComponentRender,isMainIconMenu,titleMainApp}=this.state
     
-    if (this.props.priemUser && this.props.priemUser.id_operator>0){ 
+    if (this.props.priemUser && this.props.priemUser.id>0){
+
          return (<div>
           
             <AppBar titleStyle={Styles .mainTitleSystem}
@@ -113,8 +114,9 @@ class DrawerMainMenu extends PureComponent {
             </Drawer>
            
              <Card style={Object.assign({},Styles.mainCard,this.props.stateSystem.loading ? {display:'none'} : {})}>
-               <Loader loaded={!this.props.stateSystem.loading}>       
-                  <PriemUserRequestList userListRequests={this.props.userListRequests} /> 
+               <Loader loaded={!this.props.stateSystem.loading}> 
+                    <PriemNewRequest />     
+   
                </Loader>
                       
               </Card>

@@ -35,7 +35,8 @@ class PriemNewRequest extends React.Component {
   {
       if ( !(this.props.docsNeedScans && this.props.docsNeedScans.length>0)) this.props.updateDocNeedScans();
       if ( !(this.props.docTypeList && this.props.docTypeList.length>0)) this.props.updateDocTypeList();
-      this.props.getUserUploadImage();
+      if (this.props.priemUser.typeOperator!=2)  this.props.setRequestPerformer(this.props.priemUser)
+      //this.props.getUserUploadImage();
   }
 
   handleNext (){
@@ -49,8 +50,8 @@ class PriemNewRequest extends React.Component {
         stepIndex+=1
         this.props.sendNewPriemRequestForServer()
      }
-     else if (stepIndex==1) {
-        this.props.getUserWorkRoom();
+     else if (stepIndex==1 ) {
+        this.props.priemUser.typeOperator==2 && this.props.getUserWorkRoom();
         stepIndex+=1
      } else {
         stepIndex+=1;
@@ -83,9 +84,14 @@ class PriemNewRequest extends React.Component {
 
         );
       case 2:
-        return (
-           <UserWorkRoom stateSystem={this.props.stateSystem} requestPerformer={this.props.requestPerformer} onSelectPerformerМ={this.props.setRequestPerformer} userWorkRoom={this.props.userWorkRoom}/>
-        );
+        
+        if (this.props.priemUser.typeOperator==2){
+            return (
+               <UserWorkRoom stateSystem={this.props.stateSystem} requestPerformer={this.props.requestPerformer} onSelectPerformerМ={this.props.setRequestPerformer} userWorkRoom={this.props.userWorkRoom}/>
+            )
+        }else {
+           return (<div>Отсутствуют для выбора доступные методисты. Чтобы отправить запрос текущему пользователю нажмите кнопку "Создать запрос"</div>)
+        }
       case 3:
       {
          return(<p style={{fontWeight:'bold',marginLeft:5}}>
@@ -107,7 +113,7 @@ class PriemNewRequest extends React.Component {
            return "Добавить документы в запрос"
         }
         case 2:{
-           return "Отправить запрос методисту"
+           return "Создать запрос"
         }
         case 3:{
            return "Создать новый запрос"
@@ -191,7 +197,7 @@ const mapStateToProps=(state)=>
         typeRequest: state.PriemAddNewRequest.typeRequest,
         requestPerformer:state.PriemAddNewRequest.requestPerformer,
         newNumberRequest:state.PriemAddNewRequest.newNumberRequest,
-        user:state.PriemUser,
+        priemUser: state.PriemAccount.user, 
         stateSystem: state.SystemStatusState  
     }
 }
