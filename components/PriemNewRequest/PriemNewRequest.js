@@ -6,7 +6,7 @@ import {
 } from 'material-ui/Stepper';
 
 
-
+import {Styles} from '../common/StylePriem'
 import ExpandTransition from 'material-ui/internal/ExpandTransition';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
@@ -90,12 +90,13 @@ class PriemNewRequest extends React.Component {
                <UserWorkRoom stateSystem={this.props.stateSystem} requestPerformer={this.props.requestPerformer} onSelectPerformerМ={this.props.setRequestPerformer} userWorkRoom={this.props.userWorkRoom}/>
             )
         }else {
-           return (<div>Отсутствуют для выбора доступные методисты. Чтобы отправить запрос текущему пользователю нажмите кнопку "Создать запрос"</div>)
+           return (<p style={{marginLeft:5}}><p><span style={Styles.boldRed}>Отсутствуют доступные методисты.</span></p>
+            <p><span style={{fontWeight:'bold'}}>Для отправки запроса текущему пользователю</span> нажмите <span style={Styles.boldGreen}>«Создать запрос».</span></p></p>)
         }
       case 3:
       {
-         return(<p style={{fontWeight:'bold',marginLeft:5}}>
-                {`Запрос № ${this.props.newNumberRequest} успешно отправлен методисту: ${this.props.requestPerformer.name}`}
+         return(<p style={{marginLeft:5}}>
+                {`<span style={{fontWeight:'bold'}}>Запрос № ${this.props.newNumberRequest} успешно отправлен</span> методисту: ${this.props.requestPerformer.name}`}
                 </p>)
       }
       default:

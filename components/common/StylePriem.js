@@ -134,6 +134,8 @@ export const Styles =
 	 	textAlign:'center',
 	 	width:'7%'
 	 },
+	 boldRed:{color:'red',fontWeight:'bold'},
+	 boldGreen:{color:'green',fontWeight:'bold'},
      PreviewRowStyle:
 	 {
 	 	textAlign:'center',

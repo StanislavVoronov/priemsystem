@@ -28,8 +28,7 @@ import {UPDATE_DOC_TYPES_LIST,
 import {merge} from "lodash";
 
 
-export function PriemAccount(state={error:{show:false}
-},action)
+export function PriemAccount(state={error:{show:false},needStateUpdate: new Set() },action)
 {
 
     switch(action.type)

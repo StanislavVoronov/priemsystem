@@ -212,6 +212,8 @@ export function* addNewPriemRequest()
 		yield take(ADD_NEW_PRIEM_REQUEST)
 		yield put({type:SYSTEM_STATUS_STATE,item:{loading:true,loaded:false}})
 		let items;
+		const user  = yield select(state => {
+	   		return state.PriemAccount.user})
 	   	const addedFiles = yield select(state => {
 	   		return state.PriemAddNewRequest.DocFileList})
 		 
@@ -219,7 +221,7 @@ export function* addNewPriemRequest()
 		const selectedDocs=addedFiles.filter(file=>{
 						return file.selected && file.typeDoc
 		})
-		const operator=yield select(state => {
+		const idOperator=yield select(state => {
 				return state.PriemAddNewRequest.requestPerformer.id
 		});
 		const typeRequest=yield select(state => {
@@ -238,7 +240,7 @@ export function* addNewPriemRequest()
 		})
 		let error=false
 		requestData.append('idNewTypeRequest',typeRequest.id);
-		requestData.append('operatorIdNewRequest',operator);
+		requestData.append('operatorIdNewRequest',idOperator);
   		requestData.append('addedDocFiles',JSON.stringify(selectedDocs));
   		requestData.append('needUploadDocFiles',JSON.stringify(needUploadFiles));
   		console.log("requestData",requestData)
@@ -249,10 +251,17 @@ export function* addNewPriemRequest()
 									format:true,
 									method:'POST'
 								})
+
+	  		
 	  		yield put({type:ADD_NEW_PRIEM_REQUEST,item:requestNumber.id_queue})
 	  		yield put({type:SYSTEM_STATUS_STATE,item:{loading:false,loaded:false}})
+	  		if (user.id==idOperator)
+	  		{
+	  			yield put ({type:GET_USER_LIST_REQUEST,item:idOperator})
+	  		}
 	  	}catch(error){
-			yield put({type:UPDATE_DOC_TYPES_LIST,items:items})
+	  		console.log(error)
+			yield put({type:ADD_NEW_PRIEM_REQUEST,item:0})
 		}
   	}
 }

@@ -156,6 +156,7 @@ const mapStateToProps=(state)=>
         stateSystem: state.SystemStatusState,
         userListRequests:state.PriemAccount.listRequests,
         error: state.PriemAccount.error, 
+        needStateUpdate: state.PriemAccount.needStateUpdate
     }
 }
 const mapDispatchToProps=(dispatch) => {
