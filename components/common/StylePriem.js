@@ -1,10 +1,6 @@
 export const Styles =
 {
-	mainCard:
-	{
-		margin:10,
-		padding:5
-	},
+
 	selectClass:{'display':'flex','flexDirection':'column',alignContent:'center'},
  	spaceSelect:{padding:5},
 	spanTitleSelect: {'fontSize':'13px','color':'#8c8c8c','marginBottom':2},  
@@ -47,7 +43,8 @@ export const Styles =
 	 	'marginTop':20
 	 },
 	 centerBoxHeader:{
-	 	paddingLeft:0,
+	 	padding:0,
+	 	margin:0,
 	    display:'flex',
 	    justifyContent: 'center',
 	    alignContent:'center',
@@ -57,9 +54,9 @@ export const Styles =
 	 },
 	FileUploadZone:
 	{
-					'height': 70,
+					'height': 80,
 					'textAlign': 'center',
-					'padding':20,
+					'padding':10,
 					'justifyContent':'center',
 					'flexDirection':'row',
 					'border': 2,

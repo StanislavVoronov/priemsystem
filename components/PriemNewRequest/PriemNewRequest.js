@@ -59,12 +59,8 @@ class PriemNewRequest extends React.Component {
      this.props.setStateNewRequest(stepIndex,finished) 
   };
 
-  handlePrev (){
-    const {stepIndex} = this.state;
-
-    this.setState({
-        stepIndex: stepIndex - 1,
-    })
+  handlePrev (stepIndex){
+     this.props.setStateNewRequest(stepIndex-1,false) 
   };
 
   getStepContent(stepIndex) {
@@ -100,7 +96,7 @@ class PriemNewRequest extends React.Component {
                 </p>)
       }
       default:
-        return 'You\'re a long way from home sonny jim!';
+        return '';
     }
   }
   renderLabelButton(stepIndex)
@@ -149,7 +145,7 @@ class PriemNewRequest extends React.Component {
                                      {stepIndex>0 && stepIndex < 3 && <FlatButton
                                           label="Назад"
                                           labelStyle={{'fontSize':12}}
-                                          onTouchTap={this.handlePrev.bind(this)}
+                                          onTouchTap={this.handlePrev.bind(this,stepIndex)}
                                           style={{marginRight: 12}} />}
                                         <RaisedButton
                                           disabled={this.getNextButtonStatus(stepIndex,this.props.DocFileList)}

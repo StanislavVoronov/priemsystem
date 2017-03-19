@@ -10,7 +10,8 @@ import IconButton from 'material-ui/IconButton';
 
 import IconMenu from 'material-ui/IconMenu';
 import Loader from 'react-loader';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import {Tabs, Panel} from 'react-tabtab';
+
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import SearchIcon from 'material-ui/svg-icons/action/search';
@@ -23,11 +24,12 @@ import Snackbar from 'material-ui/Snackbar';
 import Dialog from 'material-ui/Dialog';
 //import PriemStructure from "../PriemStructure/PriemStructure";
 import Divider from 'material-ui/Divider';
+
+
 import PriemUserRequestList from "../PriemUserRequestList/PriemUserRequestList"
 import PriemNewRequest from "../PriemNewRequest/PriemNewRequest";
 
 //import Search from "./search";
-import {Card} from 'material-ui/Card';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 import {connect} from "react-redux"
 import {setLoggedUser,setPriemUser,getUserListRequest,clearErrorState} from '../actions'
@@ -94,6 +96,20 @@ class DrawerMainMenu extends PureComponent {
   closeMessageBox(){
 
   }
+  renderUserTabs()
+  {
+    return this.props.userTabsListMenu.map((project,key)=>
+    {
+        const titlePanel=project.titlePanel
+        return (
+            <Panel title={titlePanel} key={`PanelTab ${key}`}>  
+              <Loader key={`LoaderState ${key}`} loaded={!project.state.loading}>
+                <PriemNewRequest {...project.props} />
+              </Loader>
+            </Panel> 
+         )
+    })
+  }
   render() {
     const {ComponentRender,isMainIconMenu,titleMainApp}=this.state
     
@@ -113,13 +129,10 @@ class DrawerMainMenu extends PureComponent {
               <MainMenuSystem user={this.props.priemUser}/>
             </Drawer>
            
-             <Card style={Object.assign({},Styles.mainCard,this.props.stateSystem.loading ? {display:'none'} : {})}>
-               <Loader loaded={!this.props.stateSystem.loading}> 
-                    <PriemNewRequest />     
-   
-               </Loader>
-                      
-              </Card>
+              <Tabs activeKey={0} style={"tabtab__folder__"} tabDeleteButton>
+                    {this.renderUserTabs()}  
+              </Tabs>
+           
                  <Snackbar
                     open={false}
                     action="Закрыть"
@@ -156,6 +169,7 @@ const mapStateToProps=(state)=>
         stateSystem: state.SystemStatusState,
         userListRequests:state.PriemAccount.listRequests,
         error: state.PriemAccount.error, 
+        userTabsListMenu:state.projectStates.userTabsListMenu,
         needStateUpdate: state.PriemAccount.needStateUpdate
     }
 }

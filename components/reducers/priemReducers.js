@@ -23,6 +23,7 @@ import {UPDATE_DOC_TYPES_LIST,
     PRIEM_SUCCESS_OCCURED,
     UPDATE_DOC_NEED_SCANS,
     SET_AUTH_DATA,
+    SET_USER_TABS_MENU_LIST,
     PRIEM_CLEAR_ERRORS
 } from '../actions'
 import {merge} from "lodash";
@@ -77,6 +78,13 @@ export function PriemAccount(state={error:{show:false},needStateUpdate: new Set(
 
 }
 export function PriemProjectStates(state={
+    userTabsListMenu:[
+    {
+        name:'PriemNewRequest',
+        state:{loading:false},
+        titlePanel:"Создание нового запроса"
+
+    }],
     priemNewRequestState:{stepIndex:0,finished:false}},action)
 {
     switch(action.type)
@@ -85,6 +93,13 @@ export function PriemProjectStates(state={
         {
            return Object.assign({},state,{priemNewRequestState:action.items})
         }
+        case SET_USER_TABS_MENU_LIST:
+        {
+           const menuList=state.userTabsListMenu
+           menuList.concat(action.item)
+           return Object.assign({},state,{userTabsListMenu:menuList})
+        }
+        
         default: return state
     }
 }

@@ -25,6 +25,8 @@ export const PRIEM_SUCCESS_OCCURED="PRIEM_SUCCESS_OCCURED"
 export const PRIEM_CLEAR_ERRORS="PRIEM_CLEAR_ERRORS"
 export const SET_AUTH_DATA="SET_AUTH_DATA"
 export const ADD_NEW_PRIEM_REQUEST="ADD_NEW_PRIEM_REQUEST"
+export const SET_USER_TABS_MENU_LIST="SET_USER_TABS_MENU_LIST"
+
 /////////////////////////////////////////////
 import reduxSagaActions from './sagaActions'
 export default function* PriemRootSaga(state)
