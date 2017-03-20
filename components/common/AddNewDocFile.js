@@ -10,6 +10,7 @@ import Checkbox from 'material-ui/Checkbox';
 import IconButton from 'material-ui/IconButton';
 import PriemButtons from './PriemButtons'
 import Dialog from 'material-ui/Dialog';
+import Popover from 'material-ui/Popover';
 import {red500, yellow500, blue500} from 'material-ui/styles/colors';
 import {Card, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
@@ -22,6 +23,7 @@ export default class  AddNewDocFile extends React.Component{
     this.state={
           webPhotoDialog:false,
           webPhoto:undefined,
+          popOverImageOpen:false,
           selectedDocType:null,
           defautStateDocTypes:false,
           showAddButton:this.showAddButton.bind(this),
@@ -107,7 +109,7 @@ export default class  AddNewDocFile extends React.Component{
                </TableRowColumn>
               <TableRowColumn  style={Styles.NameFileRowStyle}>{file.name}</TableRowColumn>
               <TableRowColumn  style={Styles.PreviewRowStyle}>
-                  <a target='_blank' title='Изображение документа' href={file.preview}>Изображение</a>
+                  <a href={"#"} onClick={this.handleTouchTap.bind(this,file)} title='Изображение документа'>Изображение</a>
               </TableRowColumn>
               <TableRowColumn  style={Object.assign({},Styles.TypeDocFileRowStyle,{'textAlign':'left'})}>{
                 <Select data={this.props.docTypeList} styleSelectContainer={{'width':'100%'}}
@@ -128,6 +130,47 @@ export default class  AddNewDocFile extends React.Component{
       var screenshot = this.refs.webcam.getScreenshot();
       this.setState({webPhoto: screenshot});
   }
+
+  handleTouchTap(file,event){
+    // This prevents ghost click.
+   
+    event.preventDefault();
+    console.log(event.currentTarget)
+    this.setState({
+      popOverImageOpen:true,
+      popOverUrlImage:file.preview,
+      popOverNameImage:file.name,
+      anchorEl: event.currentTarget,
+    });
+  };
+
+  handleRequestClose(){
+    this.setState({
+      popOverImageOpen: false,
+    });
+  };
+  renderPopOverImage()
+  {
+   
+    return(
+     <Popover
+          open={this.state.popOverImageOpen}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{horizontal: 'rigth', vertical: 'top'}}
+          targetOrigin={{horizontal: 'rigth', vertical: 'top'}}
+          onRequestClose={this.handleRequestClose.bind(this)}>
+          <Card> 
+              <CardHeader titleStyle={{'fontWeight':'bold'}} style={{paddingTop:8,paddingBottom:0}}
+                title={this.state.popOverNameImage} />
+                  <Divider style={Styles.hr}/>
+                  <CardMedia>
+                        <img style={{width:window.innerWidth/1.4,height:window.innerHeight/1.4}} src={this.state.popOverUrlImage} /> 
+                  </CardMedia>
+          </Card>
+         
+
+      </Popover>)
+  } 
 	render()
 	{
      const styleAddWebPhotoButton=Object.assign({},this.state.webPhoto ? {} : Styles.DisplayNone,{marginLeft:25})
@@ -171,8 +214,10 @@ export default class  AddNewDocFile extends React.Component{
           </TableHeader>
             <TableBody selectable={false} style={Styles.OverflowVisible} displayRowCheckbox={false}>
               {renderTableAttachDocs()}
+              
             </TableBody>
         </Table>
+        {this.renderPopOverImage()}
         <Dialog
           title="Фотографирование на кампусную карту Университета"
           titleStyle={{fontSize:16,padding:10}}
