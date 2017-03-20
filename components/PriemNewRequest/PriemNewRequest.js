@@ -36,7 +36,7 @@ class PriemNewRequest extends React.Component {
       if ( !(this.props.docsNeedScans && this.props.docsNeedScans.length>0)) this.props.updateDocNeedScans();
       if ( !(this.props.docTypeList && this.props.docTypeList.length>0)) this.props.updateDocTypeList();
       if (this.props.priemUser.typeOperator!=2)  this.props.setRequestPerformer(this.props.priemUser)
-      //this.props.getUserUploadImage();
+      this.props.getUserUploadImage();
   }
 
   handleNext (){

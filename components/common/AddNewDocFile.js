@@ -136,15 +136,13 @@ export default class  AddNewDocFile extends React.Component{
         label="Закрыть"
         type={'delete'}
         onTouchTap={false}
-        onClick={this.webPhotoDialogClose.bind(this,0)}
-      />,
+        onClick={this.webPhotoDialogClose.bind(this,0)}/>,
       <PriemButtons
         label="Выбрать фотографию"
         type={'add'}
         onTouchTap={false}
         buttonStyle={styleAddWebPhotoButton}
-        onClick={this.webPhotoDialogClose.bind(this,1)}
-      />];
+        onClick={this.webPhotoDialogClose.bind(this,1)} />];
      const {defautStateDocTypes,renderTableAttachDocs,
             selectedDocType,showAddButton,onDropFiles}=this.state
     const isShowAddButton=!defautStateDocTypes && selectedDocType ? {} : Styles.DisplayNone

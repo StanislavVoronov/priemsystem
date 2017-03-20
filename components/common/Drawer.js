@@ -61,16 +61,17 @@ class DrawerMainMenu extends PureComponent {
       if (localStorage["priemUser"]) {
         const userPriem=JSON.parse(localStorage["priemUser"])
         this.props.setLoggedUser(userPriem)
-        //this.props.getUserListRequest(userPriem.id)
+        this.props.getUserListRequest(userPriem.id)
       };
   }
 
-  createNewPanel(component,title,props={},state={loading:false,loader:true})
+  createNewPanel(component,title,name,props={},state={loading:false,loader:true})
   {
      const activeKey=this.props.userTabsListMenu.length
      this.props.addNewTabPanel( {
         component,
         props,
+        name,
         state,
         title
     }) 
@@ -113,7 +114,6 @@ class DrawerMainMenu extends PureComponent {
     let activeKey=this.state.activeKey,
     sizeTabMenuList=this.props.userTabsListMenu.length-1
     activeKey= sizeTabMenuList <= activeKey+1 ? sizeTabMenuList-1 : 0
-    alert(activeKey)
     this.props.removeUserTabPanel(this.state.activeKey)
     this.setState({activeKey})
   }

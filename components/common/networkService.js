@@ -24,7 +24,8 @@ export function networkService(service)
     }
     else if (method=="GET")
     {
-        url+=`?${service.name}=${parametrs}`;
+        url+=`?${service.name}`
+        url+= parametrs ? `=${parametrs}` : `=currentUser`
     }
     else if (method=="POST")
     {
