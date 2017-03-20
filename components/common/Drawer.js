@@ -32,7 +32,7 @@ import PriemNewRequest from "../PriemNewRequest/PriemNewRequest";
 //import Search from "./search";
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 import {connect} from "react-redux"
-import {setLoggedUser,setPriemUser,getUserListRequest,clearErrorState} from '../actions'
+import {setLoggedUser,setPriemUser,getUserListRequest,clearErrorState,addNewTabPanel,removeUserTabPanel} from '../actions'
 import LoginForm from "./LoginForm";
 const Profile = () => (
   <IconMenu iconStyle={{'color':'white'}} 
@@ -49,6 +49,7 @@ class DrawerMainMenu extends PureComponent {
     super(props);
     this.state={
       drawerDisplay:false,
+      activeKey:0,
       isMainIconMenu:true,
       titleMainApp:'Меню',
       ComponentRender: PriemNewRequest
@@ -64,6 +65,17 @@ class DrawerMainMenu extends PureComponent {
       };
   }
 
+  createNewPanel(component,title,props={},state={loading:false,loader:true})
+  {
+     const activeKey=this.props.userTabsListMenu.length
+     this.props.addNewTabPanel( {
+        component,
+        props,
+        state,
+        title
+    }) 
+    this.setState({activeKey})
+  }
   _showMainMenu()
   {
     this.setState({drawerDisplay:true})
@@ -86,7 +98,8 @@ class DrawerMainMenu extends PureComponent {
                             <NotificationsIcon color='#ffaa00' />
                         </IconButton>
                   </Badge>
-                  <IconButton style={{'marginTop':0}} iconStyle={{'color':'white'}} tooltip='Новый запрос'  ><AddNew /></IconButton> 
+                  <IconButton style={{'marginTop':0}} iconStyle={{'color':'white'}} tooltip='Новый запрос'  
+                              onTouchTap={this.createNewPanel.bind(this,PriemNewRequest,"Создание нового запроса")}><AddNew /></IconButton> 
                   <Profile />
              </div> )
   }
@@ -96,25 +109,35 @@ class DrawerMainMenu extends PureComponent {
   closeMessageBox(){
 
   }
+  removeUserTabPanel(){
+    let activeKey=this.state.activeKey,
+    sizeTabMenuList=this.props.userTabsListMenu.length-1
+    activeKey= sizeTabMenuList <= activeKey+1 ? sizeTabMenuList-1 : 0
+    alert(activeKey)
+    this.props.removeUserTabPanel(this.state.activeKey)
+    this.setState({activeKey})
+  }
   renderUserTabs()
   {
+    
     return this.props.userTabsListMenu.map((project,key)=>
     {
-        const titlePanel=project.titlePanel
+        const titlePanel=project.title,
+        СomponentPanel=PriemNewRequest
         return (
             <Panel title={titlePanel} key={`PanelTab ${key}`}>  
               <Loader key={`LoaderState ${key}`} loaded={!project.state.loading}>
-                <PriemNewRequest {...project.props} />
+                <СomponentPanel />
               </Loader>
             </Panel> 
          )
     })
   }
   render() {
-    const {ComponentRender,isMainIconMenu,titleMainApp}=this.state
+    const {ComponentRender,isMainIconMenu,titleMainApp,activeKey}=this.state
     
     if (this.props.priemUser && this.props.priemUser.id>0){
-
+         
          return (<div>
           
             <AppBar titleStyle={Styles .mainTitleSystem}
@@ -129,7 +152,8 @@ class DrawerMainMenu extends PureComponent {
               <MainMenuSystem user={this.props.priemUser}/>
             </Drawer>
            
-              <Tabs activeKey={0} style={"tabtab__folder__"} tabDeleteButton>
+              <Tabs activeKey={activeKey} style={"tabtab__folder__"} 
+                tabDeleteButton handleTabDeleteButton={this.removeUserTabPanel.bind(this)}>
                     {this.renderUserTabs()}  
               </Tabs>
            
@@ -178,7 +202,9 @@ const mapDispatchToProps=(dispatch) => {
       clearErrorState:() => dispatch(clearErrorState()),
       setPriemUser: user => dispatch(setPriemUser(user)),
       setLoggedUser: user => dispatch(setLoggedUser(user)),
-      getUserListRequest: user=> dispatch(getUserListRequest(user))
+      getUserListRequest: user=> dispatch(getUserListRequest(user)),
+      addNewTabPanel: item => dispatch(addNewTabPanel(item)),
+      removeUserTabPanel: item => dispatch(removeUserTabPanel(item))
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(DrawerMainMenu)

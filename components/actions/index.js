@@ -26,7 +26,7 @@ export const PRIEM_CLEAR_ERRORS="PRIEM_CLEAR_ERRORS"
 export const SET_AUTH_DATA="SET_AUTH_DATA"
 export const ADD_NEW_PRIEM_REQUEST="ADD_NEW_PRIEM_REQUEST"
 export const SET_USER_TABS_MENU_LIST="SET_USER_TABS_MENU_LIST"
-
+export const REMOVE_USER_TAB_PANEL="REMOVE_TAB_PANEL"
 /////////////////////////////////////////////
 import reduxSagaActions from './sagaActions'
 export default function* PriemRootSaga(state)
@@ -35,9 +35,18 @@ export default function* PriemRootSaga(state)
 }
 /////////////////////////////////////////////
 
+export const removeUserTabPanel=(item)=>{
+   	return {type:REMOVE_USER_TAB_PANEL,item}
+}
+
 export const getUserListRequest=(item)=>{
    	return {type:GET_USER_LIST_REQUEST,item}
 }
+
+export const addNewTabPanel=(item)=>{
+   	return {type:SET_USER_TABS_MENU_LIST,item}
+}
+
 
 export const setStateNewRequest=(stepIndex,finished)=>{
    	return {type:SET_STATE_NEWREQUEST,items:{stepIndex,finished}}
