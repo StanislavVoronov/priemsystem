@@ -9,7 +9,7 @@ import FileUploadZone from 'react-dropzone';
 import Checkbox from 'material-ui/Checkbox';
 import IconButton from 'material-ui/IconButton';
 import PriemButtons from './PriemButtons'
-import Dialog from 'material-ui/Dialog';
+import WebPhoto from './WebPhoto'
 import Popover from 'material-ui/Popover';
 import {red500, yellow500, blue500} from 'material-ui/styles/colors';
 import {Card, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
@@ -70,32 +70,6 @@ export default class  AddNewDocFile extends React.Component{
         this.props.addNewFileToServer(index)
      }
   }
-  dataURItoBlob(dataURI) {
-      // convert base64 to raw binary data held in a string
-      // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
-      var byteString = atob(dataURI.split(',')[1]);
-      // write the bytes of the string to an ArrayBuffer
-      var ab = new ArrayBuffer(byteString.length);
-      var ia = new Uint8Array(ab);
-      for (var i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
-      }
-
-      // write the ArrayBuffer to a blob, and you're done
-      var bb = new Blob([ab], {type: 'image/jpeg'});
-      return bb;
-  }
-  webPhotoDialogClose(isAddWebPhoto){
-    
-    if (isAddWebPhoto){
-        var fileBlob = this.dataURItoBlob(this.state.webPhoto);
-        const newWebPhotoFile = new File([fileBlob], "Фотография.jpeg", {type: "image/jpeg", lastModified: new Date()})
-        newWebPhotoFile.blob=fileBlob
-        newWebPhotoFile.preview=this.state.webPhoto
-        this.onDropFiles([newWebPhotoFile])
-    }
-    this.setState({webPhotoDialog: false,webPhoto:undefined});
-  };
   renderTableAttachDocs()
   {
     if (!this.props.DocFileList) return []
@@ -126,14 +100,7 @@ export default class  AddNewDocFile extends React.Component{
         </TableRow>)
     })
   }
-  makeWebPhoto(){
-      var screenshot = this.refs.webcam.getScreenshot();
-      this.setState({webPhoto: screenshot});
-  }
-
   handleTouchTap(file,event){
-    // This prevents ghost click.
-   
     event.preventDefault();
     console.log(event.currentTarget)
     this.setState({
@@ -143,7 +110,15 @@ export default class  AddNewDocFile extends React.Component{
       anchorEl: event.currentTarget,
     });
   };
-
+  makeWebPhoto(screenshot)
+  {
+      this.setState({webPhoto: screenshot});
+  }
+  webPhotoDialogClose(photo)
+  {
+     photo && this.onDropFiles(photo)
+     this.setState({webPhotoDialog: false,webPhoto:undefined});
+  }
   handleRequestClose(){
     this.setState({
       popOverImageOpen: false,
@@ -167,25 +142,12 @@ export default class  AddNewDocFile extends React.Component{
                         <img style={{width:window.innerWidth/1.4,height:window.innerHeight/1.4}} src={this.state.popOverUrlImage} /> 
                   </CardMedia>
           </Card>
-         
-
       </Popover>)
   } 
 	render()
 	{
      const styleAddWebPhotoButton=Object.assign({},this.state.webPhoto ? {} : Styles.DisplayNone,{marginLeft:25})
-     const actions = [
-      <PriemButtons
-        label="Закрыть"
-        type={'delete'}
-        onTouchTap={false}
-        onClick={this.webPhotoDialogClose.bind(this,0)}/>,
-      <PriemButtons
-        label="Выбрать фотографию"
-        type={'add'}
-        onTouchTap={false}
-        buttonStyle={styleAddWebPhotoButton}
-        onClick={this.webPhotoDialogClose.bind(this,1)} />];
+ 
      const {defautStateDocTypes,renderTableAttachDocs,
             selectedDocType,showAddButton,onDropFiles}=this.state
     const isShowAddButton=!defautStateDocTypes && selectedDocType ? {} : Styles.DisplayNone
@@ -218,44 +180,10 @@ export default class  AddNewDocFile extends React.Component{
             </TableBody>
         </Table>
         {this.renderPopOverImage()}
-        <Dialog
-          title="Фотографирование на кампусную карту Университета"
-          titleStyle={{fontSize:16,padding:10}}
-          actions={actions}
-          modal={true}
-          autoDetectWindowHeight={false}
-          bodyStyle={{height:'100%', maxHeight: '100%',overflowY:'none'}}
-          autoScrollBodyContent={true}
-          contentStyle={{ width: '100%',height:'100%', maxHeight: 'none', maxWidth: 'none'}}
-          open={this.state.webPhotoDialog}>
-              <div style={Styles.dialogWebPhotoBox}>
-                    <Card containerStyle={{'textAlign':'center',}} style={{marginTop:5}}> 
-                        <CardHeader titleStyle={{'fontWeight':'bold'}} style={{paddingTop:8,paddingBottom:0}}
-                          title="Камера" />
-                        <Divider style={Styles.hr}/>
-                        <CardMedia>
-                              <Webcam height={320} audio={false} screenshotFormat={'image/jpeg'} ref='webcam'/>
-                        </CardMedia>
-                    </Card>
-                    { this.state.webPhoto ?
-                      <Card containerStyle={{'textAlign':'center'}} style={{marginTop:5}}> 
-                          <CardHeader titleStyle={{'fontWeight':'bold'}} style={{paddingTop:8,paddingBottom:0}}
-                            title="Фотография" />
-                          }
-                          <Divider style={Styles.hr}/>
-                          <CardMedia >
-                                 <img  style={{height:320,width:460}} src={this.state.webPhoto} /> 
-                          </CardMedia>
-                      </Card> : null}     
-              </div>
-              <div style={Styles.webPhotoAddScreenBox} >
-                  <PriemButtons 
-                     onClick={this.makeWebPhoto.bind(this)} 
-                     type='save'
-                     buttonStyle={Object.assign({},Styles.widthAuto)}
-                     label="Сделать снимок" />
-                </div>
-        </Dialog>
+        <WebPhoto makeWebPhoto={this.makeWebPhoto.bind(this)} 
+                  webPhotoDialogClose={this.webPhotoDialogClose.bind(this)} 
+                  webPhotoDialog={this.state.webPhotoDialog} 
+                  webPhoto={this.state.webPhoto}/>
       </div>)
 	}
 }

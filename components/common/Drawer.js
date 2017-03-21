@@ -34,13 +34,13 @@ import RefreshIndicator from 'material-ui/RefreshIndicator';
 import {connect} from "react-redux"
 import {setLoggedUser,setPriemUser,getUserListRequest,clearErrorState,addNewTabPanel,removeUserTabPanel} from '../actions'
 import LoginForm from "./LoginForm";
-const Profile = () => (
+const Profile = (props) => (
   <IconMenu iconStyle={{'color':'white'}} 
     iconButtonElement={
       <IconButton tooltip='Профиль' ><MoreVertIcon /></IconButton>}>
-    <MenuItem primaryText="Пользователь" />
-    <MenuItem primaryText="Права доступа" />
-    <MenuItem primaryText="Выход" />
+    <MenuItem onItemTouchTap={props.userFullInfo} primaryText="Пользователь" />
+    <MenuItem onItemTouchTap={props.userPrivilages} primaryText="Права доступа" />
+    <MenuItem onItemTouchTap={props.exitSystem} primaryText="Выход" />
   </IconMenu>
 );
 
@@ -52,8 +52,20 @@ class DrawerMainMenu extends PureComponent {
       activeKey:0,
       isMainIconMenu:true,
       titleMainApp:'Меню',
+      userPrivilages:this.userPrivilages.bind(this),
+      userFullInfo:this.userFullInfo.bind(this),
+      exitSystem:this.exitSystem.bind(this),
       ComponentRender: PriemNewRequest
     }
+  }
+  userFullInfo(){
+
+  }
+  userPrivilages(){
+
+  }
+  exitSystem(){
+
   }
   componentWillMount()
   {
