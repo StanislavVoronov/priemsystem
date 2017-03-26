@@ -85,6 +85,7 @@ export const Styles =
                         'lineHeight':'48px',
                         'marginTop':0,
      },
+    listAutoComplete: {backgroundColor:'rgba(217, 217, 217,0.5)'},
     LeftInfoUserMainMenu:{  
      					'marginTop':0,
      					'marginRight':0,
@@ -153,5 +154,10 @@ export const Styles =
 	 {
 	 	textAlign:'center',
 	 	width:'15%'
-	 }
+	 },
+	 marginBetweenTextField:
+	 {
+	 	marginTop:-20
+	 },
+	 paddingSides:{flex:1,paddingLeft:10,paddingRight:10}
 }

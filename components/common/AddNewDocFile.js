@@ -2,7 +2,7 @@ import React from 'react';
 
 
 
-import Divider from 'material-ui/Divider';
+
 import Subheader from 'material-ui/Subheader';
 import {Styles} from "../common/StylePriem"
 import FileUploadZone from 'react-dropzone';
@@ -15,7 +15,7 @@ import {red500, yellow500, blue500} from 'material-ui/styles/colors';
 import {Card, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import Select from "../common/multiSelect";
-import Webcam from 'react-webcam';
+
 export default class  AddNewDocFile extends React.Component{
   constructor(props)
   {
@@ -131,13 +131,12 @@ export default class  AddNewDocFile extends React.Component{
      <Popover
           open={this.state.popOverImageOpen}
           anchorEl={this.state.anchorEl}
-          anchorOrigin={{horizontal: 'rigth', vertical: 'top'}}
-          targetOrigin={{horizontal: 'rigth', vertical: 'top'}}
+          anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+          targetOrigin={{horizontal: 'left', vertical: 'top'}}
           onRequestClose={this.handleRequestClose.bind(this)}>
           <Card> 
               <CardHeader titleStyle={{'fontWeight':'bold'}} style={{paddingTop:8,paddingBottom:0}}
                 title={this.state.popOverNameImage} />
-                  <Divider style={Styles.hr}/>
                   <CardMedia>
                         <img style={{width:window.innerWidth/1.4,height:window.innerHeight/1.4}} src={this.state.popOverUrlImage} /> 
                   </CardMedia>
@@ -146,7 +145,7 @@ export default class  AddNewDocFile extends React.Component{
   } 
 	render()
 	{
-     const styleAddWebPhotoButton=Object.assign({},this.state.webPhoto ? {} : Styles.DisplayNone,{marginLeft:25})
+     
  
      const {defautStateDocTypes,renderTableAttachDocs,
             selectedDocType,showAddButton,onDropFiles}=this.state

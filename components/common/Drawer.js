@@ -9,9 +9,8 @@ import IconButton from 'material-ui/IconButton';
 
 
 import IconMenu from 'material-ui/IconMenu';
-import Loader from 'react-loader';
-import {Tabs, Panel} from 'react-tabtab';
 
+import {Tabs, Panel} from 'react-tabtab';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import SearchIcon from 'material-ui/svg-icons/action/search';
@@ -25,24 +24,13 @@ import Dialog from 'material-ui/Dialog';
 //import PriemStructure from "../PriemStructure/PriemStructure";
 import Divider from 'material-ui/Divider';
 
-
-import PriemUserRequestList from "../PriemUserRequestList/PriemUserRequestList"
-import PriemNewRequest from "../PriemNewRequest/PriemNewRequest";
+import {templateTabPanel} from './priemGlobals'
 
 //import Search from "./search";
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 import {connect} from "react-redux"
-import {setLoggedUser,setPriemUser,getUserListRequest,clearErrorState,addNewTabPanel,removeUserTabPanel} from '../actions'
+import {setLoggedUser,setPriemUser,getUserListRequest,logOutUser,clearErrorState,addNewTabPanel,removeUserTabPanel} from '../actions'
 import LoginForm from "./LoginForm";
-const Profile = (props) => (
-  <IconMenu iconStyle={{'color':'white'}} 
-    iconButtonElement={
-      <IconButton tooltip='Профиль' ><MoreVertIcon /></IconButton>}>
-    <MenuItem onItemTouchTap={props.userFullInfo} primaryText="Пользователь" />
-    <MenuItem onItemTouchTap={props.userPrivilages} primaryText="Права доступа" />
-    <MenuItem onItemTouchTap={props.exitSystem} primaryText="Выход" />
-  </IconMenu>
-);
 
 class DrawerMainMenu extends PureComponent {
   constructor(props) {
@@ -55,7 +43,6 @@ class DrawerMainMenu extends PureComponent {
       userPrivilages:this.userPrivilages.bind(this),
       userFullInfo:this.userFullInfo.bind(this),
       exitSystem:this.exitSystem.bind(this),
-      ComponentRender: PriemNewRequest
     }
   }
   userFullInfo(){
@@ -65,7 +52,8 @@ class DrawerMainMenu extends PureComponent {
 
   }
   exitSystem(){
-
+    localStorage.clear();
+    this.props.logOutUser();
   }
   componentWillMount()
   {
@@ -75,13 +63,18 @@ class DrawerMainMenu extends PureComponent {
         this.props.setLoggedUser(userPriem)
         this.props.getUserListRequest(userPriem.id)
       };
+      this.props.addNewTabPanel( {
+        name:"PriemRegNewPerson",
+        state:{},
+        title:"Регистрация нового абитуриента"
+      })
+      this.setState({activeKey:0})
   }
 
-  createNewPanel(component,title,name,props={},state={loading:false,loader:true})
+  createNewPanel(name,title,props={},state={loading:false,loader:true})
   {
      const activeKey=this.props.userTabsListMenu.length
      this.props.addNewTabPanel( {
-        component,
         props,
         name,
         state,
@@ -99,7 +92,6 @@ class DrawerMainMenu extends PureComponent {
   }
   renderRightPanel()
   {
-    console.log("renderRightPanel",this.props.userListRequests)
     return (<div>  
                   <IconButton style={{'marginTop':0}} tooltip='Поиск'  iconStyle={{'color':'white'}} ><SearchIcon /></IconButton>
                    <Badge
@@ -112,8 +104,8 @@ class DrawerMainMenu extends PureComponent {
                         </IconButton>
                   </Badge>
                   <IconButton style={{'marginTop':0}} iconStyle={{'color':'white'}} tooltip='Новый запрос'  
-                              onTouchTap={this.createNewPanel.bind(this,PriemNewRequest,"Создание нового запроса")}><AddNew /></IconButton> 
-                  <Profile />
+                              onTouchTap={this.createNewPanel.bind(this,"PriemNewRequest","Создание нового запроса")}><AddNew /></IconButton> 
+                  <ProfileMenu {...this.state}/>
              </div> )
   }
   closeErrorDialog(){
@@ -129,18 +121,18 @@ class DrawerMainMenu extends PureComponent {
     this.props.removeUserTabPanel(this.state.activeKey)
     this.setState({activeKey})
   }
+
   renderUserTabs()
   {
     
     return this.props.userTabsListMenu.map((project,key)=>
     {
+      
         const titlePanel=project.title,
-        СomponentPanel=PriemNewRequest
+        NewTabPanel=templateTabPanel(project.name)
         return (
             <Panel title={titlePanel} key={`PanelTab ${key}`}>  
-              <Loader key={`LoaderState ${key}`} loaded={!project.state.loading}>
-                <СomponentPanel />
-              </Loader>
+               <NewTabPanel />
             </Panel> 
          )
     })
@@ -211,12 +203,23 @@ const mapStateToProps=(state)=>
 }
 const mapDispatchToProps=(dispatch) => {
     return {
-      clearErrorState:() => dispatch(clearErrorState()),
-      setPriemUser: user => dispatch(setPriemUser(user)),
-      setLoggedUser: user => dispatch(setLoggedUser(user)),
-      getUserListRequest: user=> dispatch(getUserListRequest(user)),
-      addNewTabPanel: item => dispatch(addNewTabPanel(item)),
-      removeUserTabPanel: item => dispatch(removeUserTabPanel(item))
+      clearErrorState:()        => dispatch(clearErrorState()),
+      setPriemUser: user        => dispatch(setPriemUser(user)),
+      setLoggedUser: user       => dispatch(setLoggedUser(user)),
+      getUserListRequest: user  => dispatch(getUserListRequest(user)),
+      addNewTabPanel: item      => dispatch(addNewTabPanel(item)),
+      removeUserTabPanel: item  => dispatch(removeUserTabPanel(item)),
+      logOutUser:()             => dispatch(logOutUser())
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(DrawerMainMenu)
+
+const ProfileMenu = (props) => (
+  <IconMenu iconStyle={{'color':'white'}} 
+    iconButtonElement={
+      <IconButton tooltip='Профиль' ><MoreVertIcon /></IconButton>}>
+    <MenuItem onTouchTap={props.userFullInfo.bind(this)} primaryText="Пользователь" />
+    <MenuItem onTouchTap={props.userPrivilages.bind(this)} primaryText="Права доступа" />
+    <MenuItem onTouchTap={props.exitSystem.bind(this)} primaryText="Выход" />
+  </IconMenu>
+);

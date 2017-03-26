@@ -1,4 +1,3 @@
-export const UPDATE_DOC_TYPES_LIST="UPDATE_DOC_TYPES_LIST"
 export const UPDATE_FILE_LIST="UPDATE_FILE_LIST"
 export const UPDATE_UPLOAD_IMAGE_FILE="UPDATE_UPLOAD_IMAGE_FILE"
 export const UPDATE_FILE_ITEM_TYPE="UPDATE_FILE_ITEM_TYPE"
@@ -27,13 +26,22 @@ export const SET_AUTH_DATA="SET_AUTH_DATA"
 export const ADD_NEW_PRIEM_REQUEST="ADD_NEW_PRIEM_REQUEST"
 export const SET_USER_TABS_MENU_LIST="SET_USER_TABS_MENU_LIST"
 export const REMOVE_USER_TAB_PANEL="REMOVE_TAB_PANEL"
+export const PRIEM_LOGOUT_USER="PRIEM_LOGOUT_USER"
+export const UPDATE_STATE_TAB_PANEL="UPDATE_STATE_TAB_PANEL"
+
+
 /////////////////////////////////////////////
 import reduxSagaActions from './sagaActions'
+import sagaDataProvider from './dataProviderActions/sagaDataProvider'
 export default function* PriemRootSaga(state)
 {
- 	yield [...reduxSagaActions]
+ 	yield [...reduxSagaActions,...sagaDataProvider]
 }
 /////////////////////////////////////////////
+
+export const logOutUser=()=>{
+   	return {type:PRIEM_LOGOUT_USER}
+}
 
 export const removeUserTabPanel=(item)=>{
    	return {type:REMOVE_USER_TAB_PANEL,item}
@@ -57,10 +65,7 @@ export const clearErrorState=()=>
 }
 
 
-export const updateDocTypeList=(items)=>
-{
-	return {type:UPDATE_DOC_TYPES_LIST,items}
-}
+
 export const addNewFileToServer=(item)=>
 {
 	return {type:ADD_NEW_FILE_TO_SERVER,item}
@@ -127,3 +132,11 @@ export const setDefaultStateNewRequest=()=>
 {
 	return {type:DEFAULT_STATE_NEW_REQUEST}
 }
+
+//////
+
+export const updateTabPanelState=(name,items)=>
+{
+	return {type:UPDATE_STATE_TAB_PANEL,name,items}
+}
+//////

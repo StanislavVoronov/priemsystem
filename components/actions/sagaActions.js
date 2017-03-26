@@ -1,5 +1,5 @@
 
-import {UPDATE_DOC_TYPES_LIST,
+import {GET_TYPE_DOC_LIST,
     UPDATE_FILE_TYPE,
     UPDATE_DOC_NEED_SCANS,
     ADD_NEW_FILE_TO_SERVER,
@@ -86,6 +86,8 @@ export function* setLoggedPriemUser()
 }
 export function* setLoginUser(state)
 {
+	while(true)
+	{
 		yield take(SET_AUTH_DATA)
 		const userData = yield select(state => state.PriemAccount.auth)
 		let item;
@@ -93,7 +95,7 @@ export function* setLoginUser(state)
 	    {
 				item = yield call(networkService,
 				{name:"regOper",data:userData,method:"POST"})
-				if (item.id_operator==0) {
+				if (item.id==0) {
 					localStorage.clear()
 					item=undefined
 					yield put({type:SET_PRIEM_USER,item:{authMessage:"Неправильный логин или пароль!"}})
@@ -109,7 +111,7 @@ export function* setLoginUser(state)
 			yield put({type:SET_AUTH_DATA,item:null})
 			yield put(priemMakeErrorList(error))
 		}
-
+	}
 
 }
 export function* getDocNeedScans(state)
@@ -192,19 +194,7 @@ export function* getRequestUserWorkRoom()
 	  		yield put({type:SYSTEM_STATUS_STATE,item:{loading:false,loaded:true}})
 	  	}
 }
-export function* getDocList()
-{
-   		
-		yield take(UPDATE_DOC_TYPES_LIST)
-		let items;
-	    try {
-			items = yield call(networkService,{name:'DocumentList'})
-			yield put({type:UPDATE_DOC_TYPES_LIST,items})
-		}catch(error){
-			yield put({type:UPDATE_DOC_TYPES_LIST,items:items})
-		}
-  
-}
+
 
 export function* addNewPriemRequest()
 {
@@ -267,7 +257,6 @@ export function* addNewPriemRequest()
 }
 const reduxSagaActions=[
 addNewPriemRequest(),
-getDocList(),
 getRequestUserWorkRoom(),
 removeFileImageFromServer(),
 sendNewFileToServer(),

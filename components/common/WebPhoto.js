@@ -1,13 +1,15 @@
-
-import {Component} from 'react';
-import Dialog from 'material-ui/Dialog';
+import React from 'react'
+import Dialog from 'material-ui/Dialog'
 import {Styles} from "../common/StylePriem"
-import {Card, CardHeader, CardMedia} from 'material-ui/Card';
-export default class WebPhoto extends Component{
+import {Card, CardHeader, CardMedia} from "material-ui/Card"
+import PriemButtons from './PriemButtons'
+import Divider from 'material-ui/Divider'
+import Webcam from 'react-webcam'
+export default class WebPhoto extends React.Component{
 
   onMakeWebPhoto(){
       var screenshot = this.refs.webcam.getScreenshot();
-      this.props.makeWebPhoto(webPhoto,screenshot)
+      this.props.makeWebPhoto(screenshot)
      
   }
   dataURItoBlob(dataURI) {
@@ -27,15 +29,16 @@ export default class WebPhoto extends Component{
   onWebPhotoDialogClose(isAddWebPhoto){
     let newWebPhotoFile;
     if (isAddWebPhoto){
-        var fileBlob = this.dataURItoBlob(this.state.webPhoto);
+        var fileBlob = this.dataURItoBlob(this.props.webPhoto);
         newWebPhotoFile = new File([fileBlob], "Фотография.jpeg", {type: "image/jpeg", lastModified: new Date()})
         newWebPhotoFile.blob=fileBlob
-        newWebPhotoFile.preview=this.state.webPhoto
+        newWebPhotoFile.preview=this.props.webPhoto
     }
     this.props.webPhotoDialogClose(isAddWebPhoto && [newWebPhotoFile])
   }
   render()
   {
+    const styleAddWebPhotoButton=Object.assign({},this.props.webPhoto ? {} : Styles.DisplayNone,{marginLeft:25})
     const actions = [
       <PriemButtons
         label="Закрыть"
@@ -58,7 +61,7 @@ export default class WebPhoto extends Component{
           bodyStyle={{height:'100%', maxHeight: '100%',overflowY:'none'}}
           autoScrollBodyContent={true}
           contentStyle={{ width: '100%',height:'100%', maxHeight: 'none', maxWidth: 'none'}}
-          open={this.state.webPhotoDialog}>
+          open={this.props.webPhotoDialog}>
               <div style={Styles.dialogWebPhotoBox}>
                     <Card containerStyle={{'textAlign':'center',}} style={{marginTop:5}}> 
                         <CardHeader titleStyle={{'fontWeight':'bold'}} style={{paddingTop:8,paddingBottom:0}}
@@ -68,14 +71,14 @@ export default class WebPhoto extends Component{
                               <Webcam height={320} audio={false} screenshotFormat={'image/jpeg'} ref='webcam'/>
                         </CardMedia>
                     </Card>
-                    { this.state.webPhoto ?
+                    { this.props.webPhoto ?
                       <Card containerStyle={{'textAlign':'center'}} style={{marginTop:5}}> 
                           <CardHeader titleStyle={{'fontWeight':'bold'}} style={{paddingTop:8,paddingBottom:0}}
                             title="Фотография" />
                           }
                           <Divider style={Styles.hr}/>
                           <CardMedia >
-                                 <img  style={{height:320,width:460}} src={this.state.webPhoto} /> 
+                                 <img  style={{height:320,width:460}} src={this.props.webPhoto} /> 
                           </CardMedia>
                       </Card> : null}     
               </div>

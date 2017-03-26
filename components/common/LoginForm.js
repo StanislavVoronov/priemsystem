@@ -47,15 +47,18 @@ export default class LoginForm extends PureComponent {
           actions={actions}>
             <TextField id='loginName'
               hintText="Логин"
+              underlineFocusStyle={{borderColor: '#00e600'}}
               ref='textLogin'
-              fullWidth={true}/>
-            <Divider /> 
+              inputStyle={{paddingLeft:7}}
+              fullWidth={true} />
+             <Divider /> 
             <TextField id='password'
               hintText="Пароль"
+              inputStyle={{paddingLeft:7}}
+              underlineFocusStyle={{borderColor: '#00e600'}}
               ref='textPassword'
               fullWidth={true}
-              type="password"
-            />
+              type="password"/>
             <Divider /> 
             <h3 style={Styles.authFailed}>{this.props.priemUser && this.props.priemUser.authMessage}</h3>
         </Dialog>

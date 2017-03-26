@@ -86,8 +86,8 @@ class PriemNewRequest extends React.Component {
                <UserWorkRoom stateSystem={this.props.stateSystem} requestPerformer={this.props.requestPerformer} onSelectPerformerМ={this.props.setRequestPerformer} userWorkRoom={this.props.userWorkRoom}/>
             )
         }else {
-           return (<p style={{marginLeft:5}}><p><span style={Styles.boldRed}>Отсутствуют доступные методисты.</span></p>
-            <p><span style={{fontWeight:'bold'}}>Для отправки запроса текущему пользователю</span> нажмите <span style={Styles.boldGreen}>«Создать запрос».</span></p></p>)
+           return (<p style={{marginLeft:5,fontSize:14}}><p><span style={Styles.boldRed}>Отсутствуют доступные методисты.</span></p>
+            <p style={{fontSize:14}}><span style={{fontWeight:'bold'}}>Для отправки запроса текущему пользователю</span> нажмите <span style={Styles.boldGreen}>«Создать запрос».</span></p></p>)
         }
       case 3:
       {

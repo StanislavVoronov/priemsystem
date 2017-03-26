@@ -38,6 +38,7 @@ export default class Select extends PureComponent{
     filter={filter}
     busy={this.props.data && this.props.data.length>0 ? false : true}
     onChange={value=> {
+      this.setState({selected:value})
       this.props.onChange(value)
     }} valueField='id' textField='name'  data={data} />
     let defaultStyleTitle= {'display':'none'}
@@ -45,8 +46,10 @@ export default class Select extends PureComponent{
     {
        defaultStyleTitle = styleTitle ? Object.assign(styleTitle,{'flexDirection':flexDirection}) : Styles.spanTitleSelect
     }
+   
+    const selectClass=Object.assign({},Styles.selectClass,this.props.selectClass)
     return (
-    <div style={Styles.selectClass}>
+    <div style={selectClass}>
       <div style={defaultStyleTitle}>{title}</div>
       <div style={this.props.styleSelectContainer}>{elementSelect}</div>
       {this.props.divider ? <Divider style={Object.assign(Styles.hr,styleHR)}/> : null}
@@ -56,6 +59,7 @@ export default class Select extends PureComponent{
 }
 Select.defaultProps={
   data:[],
+  selectClass:{},
   selected:undefined,
   clean:false,
   title:'',

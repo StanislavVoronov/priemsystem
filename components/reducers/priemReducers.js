@@ -1,5 +1,5 @@
 
-import {UPDATE_DOC_TYPES_LIST,
+import {GET_TYPE_DOC_LIST,
     UPDATE_FILE_LIST,
     UPDATE_FILE_ITEM_STATUS,
     UPDATE_FILE_ITEM_TYPE,
@@ -21,20 +21,27 @@ import {UPDATE_DOC_TYPES_LIST,
     SET_USER_LIST_REQUEST,
     PRIEM_ERROR_OCCURED,
     PRIEM_SUCCESS_OCCURED,
-    UPDATE_DOC_NEED_SCANS,
     SET_AUTH_DATA,
     REMOVE_USER_TAB_PANEL,
     SET_USER_TABS_MENU_LIST,
-    PRIEM_CLEAR_ERRORS
+    PRIEM_CLEAR_ERRORS,
+    PRIEM_LOGOUT_USER,
+    UPDATE_STATE_TAB_PANEL,
+    GET_DEFAULT_NAMES
 } from '../actions'
 import {merge} from "lodash";
 
 
 export function PriemAccount(state={error:{show:false},needStateUpdate: new Set() },action)
 {
-
+    console.log("TYPE:===>",action.type,"<===")
+    console.log("ACTION:===>",action,"<===")
     switch(action.type)
     {
+        case PRIEM_LOGOUT_USER:
+        {
+             return Object.assign({},state,{'user':undefined})   
+        }
         case SET_AUTH_DATA:
         {
              return Object.assign({},state,{'auth':action.item})   
@@ -79,15 +86,17 @@ export function PriemAccount(state={error:{show:false},needStateUpdate: new Set(
 
 }
 export function PriemProjectStates(state={
-    userTabsListMenu:[
-  ],
-    priemNewRequestState:{stepIndex:0,finished:false}},action)
+        userTabsListMenu:[],
+        priemTabPanelStates:new Map()
+    },action)
 {
     switch(action.type)
     { 
-        case SET_STATE_NEWREQUEST:
+        case UPDATE_STATE_TAB_PANEL:
         {
-           return Object.assign({},state,{priemNewRequestState:action.items})
+           const updatedTabPanelStates=new Map(state.priemTabPanelStates)
+           updatedTabPanelStates.set(action.name,action.items)
+           return Object.assign({},state,{priemTabPanelStates:updatedTabPanelStates})
         }
         case REMOVE_USER_TAB_PANEL:
         { 
@@ -104,22 +113,7 @@ export function PriemProjectStates(state={
         default: return state
     }
 }
-export function PriemDataProvider(state={},action)
-{   
-    //console.log(action.type,action.items)
-    switch(action.type)
-    { 
-        case SET_STATE_NEWREQUEST:
-        {
-           return Object.assign({},state,{priemNewRequestState:action.items})
-        }
-        case UPDATE_DOC_NEED_SCANS:
-             return Object.assign({},state,{docsNeedScansList:action.items}) 
-        case UPDATE_DOC_TYPES_LIST:
-             return Object.assign({},state,{subTypesDocList:action.items})
-        default: return state
-    }
-}
+
 export function SystemStatusState(state={loading:false,loaded:true},action)
 {
     switch(action.type)
@@ -134,9 +128,7 @@ export function SystemStatusState(state={loading:false,loaded:true},action)
     }
 }
 export function PriemAddNewRequest(state={DocFileList:[],userWorkRoom:[],requestPerformer:{}},action){
-       
-    
-        console.log(action.type,action.items,action.item)
+
         switch(action.type)
         {  
            
