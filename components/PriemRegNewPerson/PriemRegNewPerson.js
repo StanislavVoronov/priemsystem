@@ -123,8 +123,8 @@ export class PriemRegNewPerson extends React.Component{
     const { stepIndex,loading}= new Object(this.props.tabPanelState.get("priemRegNewPerson"))
     return (
        <Loader loaded={!loading} options={options} className="spinner">
-        <Stepper activeStep={stepIndex}>
-          <Step>
+        <Stepper activeStep={stepIndex} style={Styles.flexWrap}>
+          <Step style={Styles.firstStepMarginLeft}>
             <StepLabel>Персональные данные</StepLabel>
           </Step>
           <Step>
@@ -142,9 +142,7 @@ export class PriemRegNewPerson extends React.Component{
         </Stepper>
         	<Divider style={{marginBottom:10}}/>
 	        <ExpandTransition open={true}>
-	         
 	          	{this.renderContent(stepIndex)}
-	         
 	        </ExpandTransition>
          </Loader>
     

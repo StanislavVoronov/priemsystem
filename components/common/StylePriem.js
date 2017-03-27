@@ -139,10 +139,15 @@ export const Styles =
 	 	textAlign:'center',
 	 	width:'10%'
 	 },
+	 firstStepMarginLeft: {marginLeft: -6},
 	 NameFileRowStyle:
 	 {
 	 	textAlign:'center',
 	 	width:'25%'
+	 },
+	 flexWrap:
+	 {
+	 	display:'flex',flexWrap:'wrap'
 	 },
 	 TypeDocFileRowStyle:
 	 {

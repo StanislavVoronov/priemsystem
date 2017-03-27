@@ -9,13 +9,13 @@ import TextField from 'material-ui/TextField';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import Select from "../common/multiSelect";
 import Subheader from 'material-ui/Subheader';
+import PriemImageComponent from '../common/PriemImageComponent'
 const dataSourceConfig = {
   text: 'value',
   value: 'id',
 };
 
 export class PriemRegPersonData extends React.Component{
-
 	componentWillMount()
 	{
 		this.props.getDefaultNames()
@@ -35,6 +35,7 @@ export class PriemRegPersonData extends React.Component{
 		return searchText.length>1 && searchText !== '' && key.indexOf(searchText) !== -1
 	}
 	render(){
+
 		return (
 			<div style={{display:'flex'}}>
 			 <div style={Styles.paddingSides}>
@@ -96,13 +97,11 @@ export class PriemRegPersonData extends React.Component{
 						   <br />
 						 <TextField fullWidth id='oldNumberDocPerson' style={Styles.marginBetweenTextField} floatingLabelText={"Номер документа"} hintText="012463" />
 				</div>		  	
-	      		<div style={{flex:1,backgroundColor:'rgba(217, 217, 217,0.3)'}}>
+	      		<div style={{flex:1,selfAlign:'center',position:'relative'}}>
+	      		  	<PriemImageComponent />
 	      		</div>
       	 </div>
 		)
-
-
-
 	}
 }
 const mapStateToProps=(state)=>
