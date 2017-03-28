@@ -45,7 +45,7 @@ export default class PriemImageComponent extends React.Component{
 					          type="range"
 					          onChange={this.handleScale.bind(this)}
 					          min="1"
-					          max="5"
+					          max="10"
 					          step="1"
 					          defaultValue="1"/></Subheader>
 				  </div>

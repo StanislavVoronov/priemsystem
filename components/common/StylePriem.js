@@ -164,5 +164,9 @@ export const Styles =
 	 {
 	 	marginTop:-20
 	 },
+	 marginBetweenTextFieldValid:
+	 {
+	 	marginTop:-10
+	 },
 	 paddingSides:{flex:1,paddingLeft:10,paddingRight:10}
 }

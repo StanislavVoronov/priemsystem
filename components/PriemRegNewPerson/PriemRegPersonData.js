@@ -4,12 +4,14 @@ import {connect} from "react-redux"
 import AutoComplete from 'material-ui/AutoComplete';
 
 import {getTypeDocList,getDefaultNames,getGovermentList} from '../actions/dataProviderActions/'
-
+import Checkbox from 'material-ui/Checkbox';
 import TextField from 'material-ui/TextField'; 
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import Select from "../common/multiSelect";
 import Subheader from 'material-ui/Subheader';
 import PriemImageComponent from '../common/PriemImageComponent'
+import Divider from 'material-ui/Divider';
+import {setFirstName,setLastName,setMiddleName,setSexNewPerson,setDateOfBirth} from "../actions/regNewPerson/"
 const dataSourceConfig = {
   text: 'value',
   value: 'id',
@@ -28,50 +30,75 @@ export class PriemRegPersonData extends React.Component{
 	}
 	getDefaultMiddleNames()
 	{
-		return this.props.defaultNames && this.props.defaultNames.middleNames || []
+		const middleNames=this.props.defaultNames && this.props.defaultNames.middleNames || []
+		if (this.props.newPerson && this.props.newPerson["firstName"]	){
+			const personName=this.props.defaultNames.firstNames.find(name=>name.value===this.props.newPerson["firstName"])
+			if (personName) {
+				return middleNames.filter(name=> name.sex==personName.sex)
+			}
+		}
+		return middleNames
 	}
-	filterNames(searchText, key)
+	filterNames(searchText, key,sex)
 	{
 		return searchText.length>1 && searchText !== '' && key.indexOf(searchText) !== -1
 	}
-	render(){
+	checkExistData(data,message)
+	{
+		return this.props.newPerson && this.props.newPerson[data] ? false : message
+	}
+	onSexNewPerson(value,key){
+		if (key){
+			
+			const typeSex=this.props.defaultNames.firstNames[key].sex
 
+			this.props.setSexNewPerson(typeSex)
+		}
+	}
+	render(){
+		console.log("newPerson===>>>",this.props.newPerson)
+		const currentDate=new Date().getFullYear();
+		const requiredField= "Обязательно для заполнения"
+		const {newPerson}=this.props
 		return (
 			<div style={{display:'flex'}}>
 			 <div style={Styles.paddingSides}>
-				<TextField style={Styles.marginBetweenTextField} fullWidth id='lastName' hintText="Иванов"   errorText="Обязательно для заполнения"   floatingLabelText={"Фамилия"}/>
+				<TextField style={Styles.marginBetweenTextField} onChange={this.props.setLastName} 
+					fullWidth id='lastName' hintText="Иванов" errorText={this.checkExistData("last_name",requiredField)}   floatingLabelText={"Фамилия"}/>
 			   <br />
-			   	<AutoComplete style={{margin:0}}  floatingLabelText={"Имя"} listStyle={Styles.listAutoComplete}
-				      hintText="Иван" fullWidth
-				      textFieldStyle={Styles.marginBetweenTextField}
+			   	<AutoComplete style={{margin:0}}  floatingLabelText={"Имя"} listStyle={Styles.listAutoComplete} onUpdateInput={this.props.setFirstName} 
+				      hintText="Иван" fullWidth onNewRequest={this.onSexNewPerson.bind(this)}
+				      textFieldStyle={this.checkExistData("last_name",requiredField) ? Styles.marginBetweenTextField : Styles.marginBetweenTextFieldValid}
 				      filter={(searchText, key)=>this.filterNames(searchText, key)}
 				      dataSource={this.getDefaultFirstNames()}
-      				  dataSourceConfig={dataSourceConfig} errorText="Обязательно для заполнения"/>
+      				  dataSourceConfig={dataSourceConfig} errorText={this.checkExistData("first_name",requiredField)}/>
     			<br />
       			<AutoComplete  floatingLabelText={"Отчество"} listStyle={Styles.listAutoComplete}
 				      hintText="Иванович" fullWidth
-				      textFieldStyle={Styles.marginBetweenTextField}
+				      textFieldStyle={this.checkExistData("first_name",requiredField) ? Styles.marginBetweenTextField : Styles.marginBetweenTextFieldValid}
 				      filter={(searchText, key)=>this.filterNames(searchText, key)}
 				      dataSource={this.getDefaultMiddleNames()} 
       				  dataSourceConfig={dataSourceConfig}/>	
       			
-      			 	<RadioButtonGroup name="sexPerson" style={{display:'flex',marginTop:14,marginBottom:5}}>
+      			 	<RadioButtonGroup name="sexPerson" style={{display:'flex',marginTop:10}} 
+      			 			valueSelected={newPerson && newPerson["sex"]} onChange={(event,value)=>this.props.setSexNewPerson(value-1)}>
 				      <RadioButton style={{width:'auto'}}
 				        	labelStyle={{marginRight:30}}
 				        	iconStyle={{marginRight:8}}	
-					        value="light"
+					        value={1}
 					        label="Муж."/>
 				          <RadioButton
 				          		iconStyle={{marginRight:8}}
-						        value="not_light"
+						        value={2}
 						        label="Жен." />
 				    </RadioButtonGroup>
 				    
-				    <TextField id='dateOfBirth'  fullWidth
-				    floatingLabelFixed floatingLabelText={"Дата рождения"} type={"date"} 
-				    errorText="Обязательно для заполнения" />
+				    <TextField id='birthdate'  fullWidth onChange={this.props.setDateOfBirth} 
+					    floatingLabelFixed floatingLabelText={"Дата рождения"} type={"date"} 
+					    errorText={this.checkExistData("birthdate",requiredField)} />
 				    <br />
-				    <TextField id='placeOfBirth' fullWidth style={Styles.marginBetweenTextField} floatingLabelText={"Место рождения"}  hintText={"г. Москва"} />
+				    <TextField id='placeOfBirth' fullWidth style={this.checkExistData("birthdate",requiredField) ? Styles.marginBetweenTextField : Styles.marginBetweenTextFieldValid}
+				    floatingLabelText={"Место рождения"}  hintText={"г. Москва"} />
 				    <Select divider={false}  filter={true} selectClass={{marginTop:10}}  selected={this.props.govermentList && this.props.govermentList[0]}
 				    	title='Гражданство' onChange={()=>{}} data={this.props.govermentList} />	
 				    <Select divider={false} filter={true} selectClass={{marginTop:15,marginBottom:15}}  selected={this.props.govermentList && this.props.govermentList[0]}
@@ -91,11 +118,14 @@ export class PriemRegPersonData extends React.Component{
 					   <TextField fullWidth id='dateOfDocPerson' floatingLabelFixed style={{marginTop:-7}} floatingLabelText={"Дата выдачи"}  type={"date"} errorText="Обязательно для заполнения" />
 					   <br />
 					   <TextField fullWidth id='codeOfDocPerson'  style={Styles.marginBetweenTextField} floatingLabelText={"Код подразделения"} hintText="500-144" errorText="Обязательно для заполнения" />
-					   <br />
+					   <Divider style={{marginTop:10}}/>
 					    <Subheader style={{lineHeight:0,marginTop:14}}>Сведения о ранее выданных паспортах(для получения результов ЕГЭ)</Subheader>
 					     <TextField fullWidth id='oldSeriaDocPerson' floatingLabelText={"Серия документа"} hintText="4611"/>
 						   <br />
 						 <TextField fullWidth id='oldNumberDocPerson' style={Styles.marginBetweenTextField} floatingLabelText={"Номер документа"} hintText="012463" />
+						<Divider style={{marginTop:10,marginBottom:10}}/>
+						   <Checkbox labelPosition={'left'} label={`Учитывать при поступлении в Университет действующие результатам ЕГЭ (дата сдачи экзаменов 
+						   				не позднее месяца прохождения испытаний в ${currentDate-4} году)`} />
 				</div>		  	
 	      		<div style={{flex:1,selfAlign:'center',position:'relative'}}>
 	      		  	<PriemImageComponent />
@@ -112,6 +142,7 @@ const mapStateToProps=(state)=>
         defaultNames:state.PriemDataProvider.defaultNames,
         govermentList:state.PriemDataProvider.govermentList,
         typeDocList:state.PriemDataProvider.typeDocList,
+        newPerson: state.PriemRegNewPerson
     }
 }
 const mapDispatchToProps=(dispatch) => {
@@ -119,6 +150,12 @@ const mapDispatchToProps=(dispatch) => {
     	getDefaultNames:()=> dispatch(getDefaultNames()),
     	getGovermentList:()=> dispatch(getGovermentList()),
     	getTypeDocList:()=> dispatch(getTypeDocList()),
+    	setFirstName:(value)=>dispatch(setFirstName(value)),
+    	setLastName:(event,value)=>dispatch(setLastName(value)),
+    	setMiddleName:(event,value)=>dispatch(setMiddleName(value)),
+    	setSexNewPerson:(value)=>dispatch(setSexNewPerson(value)),
+    	setDateOfBirth:(event,value) => dispatch(setDateOfBirth(value))
+
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(PriemRegPersonData)
