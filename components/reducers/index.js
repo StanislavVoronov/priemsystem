@@ -5,7 +5,7 @@ import createSagaMiddleware from 'redux-saga'
 import {PriemAddNewRequest,SystemStatusState,PriemStructure,PriemAccount,PriemProjectStates} from './priemReducers'
 import {PriemDataProvider} from './PriemDataProviderReducer'
 const sagaMiddleware=createSagaMiddleware();
-import {PriemRegNewPerson} from "./PriemRegNewPersonReducer"
+import PriemRegNewPerson from "./PriemRegNewPersonReducers/"
 import  PriemRootSaga from "../actions"
 
 const reducer = combineReducers({

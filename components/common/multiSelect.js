@@ -32,7 +32,7 @@ export default class Select extends PureComponent{
           this.props.onChange(value) 
       }}  
     />
-    : <DropdownList placeholder={placeholder ? placeholder : `Выберите ${title}`} 
+    : <DropdownList placeholder={placeholder ? placeholder : `Выберите ${title.toLowerCase()}`} 
     value={this.selected} 
     caseSensitive={false}
     filter={filter}
