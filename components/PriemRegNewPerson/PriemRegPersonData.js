@@ -16,7 +16,15 @@ import {setFirstName,setLastName,setMiddleName,setSexNewPerson,
 setGovernment,
 setCurPersonDocSeria,
 setCurPersonDoc,
+setCurPersonDocDepartment,
+setCurPersonDocCodeDepartment,
+setCurPersonDocNumber,
+setCurPersonDocDate,
+setIsFromKrim,
 setDateOfBirth,
+setCurPersonDocPage,
+setOldPersonDocSeria,
+setOldPersonDocNumber,
 setPlaceOfBirth} from "../actions/regNewPerson/"
 const dataSourceConfig = {
 text: 'value',
@@ -48,6 +56,9 @@ getDefaultMiddleNames()
 filterNames(searchText, key,sex)
 {
 	return searchText.length>1 && searchText !== '' && key.indexOf(searchText) !== -1
+}
+getPersonResultEGE(){
+
 }
 checkExistData(mainData,message,innerData)
 {
@@ -112,38 +123,62 @@ render(){
 			    	title='Гражданство' onChange={(value)=>this.props.setGovernment(value.id)} data={this.props.govermentList} />	
 			    
 
-			    <Select divider={false} filter={true} selectClass={{marginTop:15}}  selected={this.props.govermentList && this.props.govermentList[0]}
+			    <Select divider={false} filter={true} selectClass={{marginTop:15,marginBottom:5}}  selected={this.props.govermentList && this.props.govermentList[0]}
 			    	title='Документ, удостоверяющий личность' onChange={(value)=>this.props.setCurPersonDoc(value)} data={this.props.typeDocList} />	
 			    
-			    <TextField style={this.checkExistData("id_doc",requiredField,"seria") ? Styles.marginBetweenTextField : Styles.marginBetweenTextFieldValid} 
+			    <TextField style={Styles.marginBetweenTextFieldValid} 
 			    	id='SeriaPassportCur' hintText="4603"  fullWidth 
 			    	onChange={this.props.setCurPersonDocSeria} 
 			     	errorText={this.checkExistData("id_doc",requiredField,"seria")}   floatingLabelText={"Серия документа"}/>
 		   			<br />
 					
-					<TextField style={Styles.marginBetweenTextField} id='NumberPassportCur' hintText="463012"   fullWidth
-					errorText="Обязательно для заполнения"   floatingLabelText={"Номер документа"}/>
+					<TextField 
+						style={this.checkExistData("id_doc",requiredField,"seria") ? Styles.marginBetweenTextField : Styles.marginBetweenTextFieldValid}
+						id='NumberPassportCur' hintText="463012"   fullWidth
+						onChange={this.props.setCurPersonDocNumber} 	
+						errorText={this.checkExistData("id_doc",requiredField,"num")}     floatingLabelText={"Номер документа"}/>
 				   <br />	
-				   <TextField style={Styles.marginBetweenTextField} id='PassportDepartment' hintText="ТП в пос. Быково ОУФМС России по Московской обл. в Раменском р-не"   
-					    multiLine={true}
-						rows={2}
-					    rowsMax={4} fullWidth
-						multiLine={true} errorText="Обязательно для заполнения"   floatingLabelText={"Кем выдан"}/>
+				   <TextField style={this.checkExistData("id_doc",requiredField,"org") ? Styles.marginBetweenTextField : Styles.marginBetweenTextFieldValid}
+				   		id='PassportDepartment' 
+				   		onChange={this.props.setCurPersonDocDepartment}
+				   		hintText="ТП в пос. Быково ОУФМС России по Московской обл. в Раменском р-не"   
+					    multiLine={true} rows={2}  rowsMax={4} fullWidth
+							errorText={this.checkExistData("id_doc",requiredField,"org")} floatingLabelText={"Кем выдан"}/>
 				   <br />	
-				   <TextField fullWidth id='dateOfDocPerson' floatingLabelFixed style={{marginTop:-7}} floatingLabelText={"Дата выдачи"}  type={"date"} errorText="Обязательно для заполнения" />
+				   <TextField 
+				   			onChange={this.props.setCurPersonDocDate} 
+				   			fullWidth id='dateOfDocPerson' 
+				   			floatingLabelFixed style={{marginTop:-10}} 
+				   			floatingLabelText={"Дата выдачи"}  
+				   			type={"date"} 
+				   			errorText={this.checkExistData("id_doc",requiredField,"date")} />
 				   <br />
-				   <TextField fullWidth id='codeOfDocPerson'  style={Styles.marginBetweenTextField} floatingLabelText={"Код подразделения"} hintText="500-144" errorText="Обязательно для заполнения" />
-				   
+				   <TextField fullWidth id='codeOfDocPerson'  
+				   	onChange={this.props.setCurPersonDocCodeDepartment} 
+				   	style={this.checkExistData("id_doc",requiredField,"code") ? Styles.marginBetweenTextField : Styles.marginBetweenTextFieldValid}
+				   	floatingLabelText={"Код подразделения"} 
+				   	hintText="500-144" 
+				   	errorText={this.checkExistData("id_doc",requiredField,"code")} />
+				   	<Checkbox labelPosition={'left'} 
+				   		onCheck={this.props.setIsFromKrim}
+				   		label={"Постоянно проживающий в Крыму (в соотвествии с ФЗ-№273 РФ)"} />
 
 
+				   		
 				   <Divider style={{marginTop:10}}/>
-				    <Subheader style={{lineHeight:0,marginTop:14}}>Сведения о ранее выданных паспортах(для получения результов ЕГЭ)</Subheader>
-				     <TextField fullWidth id='oldSeriaDocPerson' floatingLabelText={"Серия документа"} hintText="4611"/>
+				    <Subheader style={{lineHeight:0,marginTop:14}}>Сведения о ранее выданных паспортах (только для получения результов ЕГЭ)</Subheader>
+				     <TextField fullWidth id='oldSeriaDocPerson' 
+				     onChange={this.props.setOldPersonDocSeria}
+				     floatingLabelText={"Серия документа"} hintText="4611"/>
 					   <br />
-					 <TextField fullWidth id='oldNumberDocPerson' style={Styles.marginBetweenTextField} floatingLabelText={"Номер документа"} hintText="012463" />
+					 <TextField fullWidth id='oldNumberDocPerson' 
+					 		onChange={this.props.setOldPersonDocNumber}
+					 		style={Styles.marginBetweenTextField} floatingLabelText={"Номер документа"} hintText="012463" />
 					<Divider style={{marginTop:10,marginBottom:10}}/>
-					   <Checkbox labelPosition={'left'} label={`Учитывать при поступлении в Университет действующие результатам ЕГЭ (дата сдачи экзаменов 
-					   				не позднее месяца прохождения испытаний в ${currentDate-4} году)`} />
+					   <Checkbox labelPosition={'left'} labelStyle={{fontSize:14}} 
+					   		onCheck={this.getPersonResultEGE.bind(this)}
+					   		label={`Учитывать при поступлении в Университет действующие результаты ЕГЭ (дата сдачи экзаменов 
+					   		не позднее месяца прохождения испытаний в ${currentDate-4} году)`} />
 			</div>		  	
       		<div style={{flex:1,selfAlign:'center',position:'relative'}}>
       		  	<PriemImageComponent />
@@ -165,18 +200,26 @@ return {
 }
 const mapDispatchToProps=(dispatch) => {
   return {
-  	getDefaultNames:()=> dispatch(getDefaultNames()),
-  	getGovermentList:()=> dispatch(getGovermentList()),
-  	getTypeDocList:()=> dispatch(getTypeDocList()),
-  	setFirstName:(value)=>dispatch(setFirstName(value)),
-  	setLastName:(event,value)=>dispatch(setLastName(value)),
-  	setMiddleName:(event,value)=>dispatch(setMiddleName(value)),
-  	setSexNewPerson:(value)=>dispatch(setSexNewPerson(value)),
-  	setDateOfBirth:(event,value) => dispatch(setDateOfBirth(value)),
-  	setPlaceOfBirth:(event,value) => dispatch(setPlaceOfBirth(value)),
-  	setGovernment: (value) => dispatch(setGovernment(value)),
+  	getDefaultNames:  ()=> dispatch(getDefaultNames()),
+  	getGovermentList: ()=> dispatch(getGovermentList()),
+  	getTypeDocList:   ()=> dispatch(getTypeDocList()),
+  	setFirstName: 		(value)=>dispatch(setFirstName(value)),
+  	setLastName: 			(event,value)=>dispatch(setLastName(value)),
+  	setMiddleName: 		(event,value)=>dispatch(setMiddleName(value)),
+  	setSexNewPerson: 	(value)=>dispatch(setSexNewPerson(value)),
+  	setDateOfBirth: 	(event,value) => dispatch(setDateOfBirth(value)),
+  	setPlaceOfBirth: 	(event,value) => dispatch(setPlaceOfBirth(value)),
+  	setGovernment: 		(value) => dispatch(setGovernment(value)),
   	setCurPersonDoc:  (value) => dispatch(setCurPersonDoc(value)),
-  	setCurPersonDocSeria:(event,value) => dispatch(setCurPersonDocSeria(value)),
+  	setCurPersonDocSeria: 				(event,value) => dispatch(setCurPersonDocSeria(value)),
+  	setCurPersonDocNumber: 				(event,value) => dispatch(setCurPersonDocNumber(value)),
+  	setCurPersonDocDepartment: 		(event,value) => dispatch(setCurPersonDocDepartment(value)),
+  	setCurPersonDocDate:					(event,value) => dispatch(setCurPersonDocDate(value)),
+  	setCurPersonDocCodeDepartment:(event,value) => dispatch(setCurPersonDocCodeDepartment(value)),
+  	setCurPersonDocPage:   				(value) => dispatch(setCurPersonDocPage(value)),
+  	setOldPersonDocNumber:   			(event,value) => dispatch(setOldPersonDocNumber(value)),
+  	setOldPersonDocSeria:   			(event,value) => dispatch(setOldPersonDocSeria(value)),
+  	setIsFromKrim:   							() => dispatch(setIsFromKrim()),
 
 
   }

@@ -12,7 +12,7 @@ import ExpandTransition from 'material-ui/internal/ExpandTransition';
 import RaisedButton from 'material-ui/RaisedButton';
 import {updateTabPanelState} from '../actions'
 import Loader from 'react-loader';
-import {options} from "../common/priemGlobals"
+import {options,validateFieldsNewPerson} from "../common/priemGlobals"
 import ChevronRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 import Divider from 'material-ui/Divider';
 import PriemRegPersonData from './PriemRegPersonData'
@@ -95,6 +95,28 @@ export class PriemRegNewPerson extends React.Component{
 
      }
   }
+  validateRequiredData(stepIndex)
+  {
+
+  	 const requiredFields=validateFieldsNewPerson(stepIndex)
+  	 const	notValidateFields=[]	
+  	 requiredFields.map((field,key)=>
+  	 {
+  	 	
+  	 	if (typeof field ==="object")
+  	 	{
+  	 		for (let key in field) {
+	  	 		Array.isArray(field[key]) && field[key].map(value=>{
+	  	 			!this.props.newPerson[key].hasOwnProperty(value) && notValidateFields.push(value)
+	  	 		})
+  	 		}
+  	 	} else
+  	 	{
+  	 		!this.props.newPerson.hasOwnProperty(field) && notValidateFields.push(field)
+  	 	}
+  	 })
+  	 return notValidateFields.length>0
+  }
   renderContent(stepIndex=0) {
     return (
      <div>
@@ -106,7 +128,7 @@ export class PriemRegNewPerson extends React.Component{
                                           onTouchTap={this.handlePrev.bind(this,stepIndex)}
                                           style={{marginRight: 12}} />}
                                         <RaisedButton
-                                          // disabled={this.getNextButtonStatus(stepIndex,this.props.DocFileList)}
+                                          disabled={this.validateRequiredData(stepIndex)}
                                           label={this.renderLabelButton(stepIndex)}
                                           backgroundColor={'#2474f5'}
                                           labelStyle={{'fontSize':12}}
@@ -158,7 +180,8 @@ const mapStateToProps=(state)=>
 {
   return {
         tabPanelState: state.projectStates.priemTabPanelStates,
-        priemUser: state.PriemAccount.user, 
+        priemUser: state.PriemAccount.user,
+        newPerson: state.PriemRegNewPerson,
         stateSystem: state.SystemStatusState  
     }
 }

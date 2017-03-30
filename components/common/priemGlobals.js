@@ -27,6 +27,16 @@ export const  templateTabPanel=(name)=>
 }
 
 
+export const validateFieldsNewPerson=(stepIndex)=>{
+	switch (stepIndex)
+	{
+		case 0: return ["last_name","first_name","birthdate",{"id_doc":["gov","seria","num","org","date","type","code"]},"sex"]
+		default: return []
+	}
+	
+}
+
+
 export const options = {
 	    lines: 13,
 	    length: 20,
