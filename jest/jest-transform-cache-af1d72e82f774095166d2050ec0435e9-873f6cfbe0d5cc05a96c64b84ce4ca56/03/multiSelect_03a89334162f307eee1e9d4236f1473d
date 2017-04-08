@@ -1,0 +1,79 @@
+'use strict';Object.defineProperty(exports, "__esModule", { value: true });var _Select$defaultProps;var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _react = require('react');var _react2 = _interopRequireDefault(_react);
+var _Multiselect = require('react-widgets/lib/Multiselect');var _Multiselect2 = _interopRequireDefault(_Multiselect);
+var _DropdownList = require('react-widgets/lib/DropdownList');var _DropdownList2 = _interopRequireDefault(_DropdownList);
+
+
+
+var _Divider = require('material-ui/Divider');var _Divider2 = _interopRequireDefault(_Divider);
+
+var _StylePriem = require('./StylePriem');function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+Select = function (_PureComponent) {_inherits(Select, _PureComponent);
+
+  function Select(props)
+  {_classCallCheck(this, Select);var _this = _possibleConstructorReturn(this, (Select.__proto__ || Object.getPrototypeOf(Select)).call(this,
+    props));
+    _this.state = { selected: null };return _this;
+  }_createClass(Select, [{ key: 'render', value: function render()
+
+
+
+
+
+
+    {var _this2 = this;var _props =
+      this.props,data = _props.data,title = _props.title,multiSelect = _props.multiSelect,filter = _props.filter,styleTitle = _props.styleTitle,placeholder = _props.placeholder,styleHR = _props.styleHR,flexDirection = _props.flexDirection;
+      var elementSelect = multiSelect ? _react2.default.createElement(_Multiselect2.default, {
+        valueField: 'id', textField: 'name',
+        data: data,
+        placeholder: placeholder,
+        value: this.selected,
+        onChange: function onChange(value) {
+          _this2.setState({ selected: value });
+          _this2.props.onChange(value);
+        } }) :
+
+      _react2.default.createElement(_DropdownList2.default, { placeholder: placeholder ? placeholder : '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 ' + title.toLowerCase(),
+        value: this.selected,
+        caseSensitive: false,
+        filter: filter,
+        busy: this.props.data && this.props.data.length > 0 ? false : true,
+        onChange: function onChange(value) {
+          _this2.setState({ selected: value });
+          _this2.props.onChange(value);
+        }, valueField: 'id', textField: 'name', data: data });
+      var defaultStyleTitle = { 'display': 'none' };
+      if (title)
+      {
+        defaultStyleTitle = styleTitle ? Object.assign(styleTitle, { 'flexDirection': flexDirection }) : _StylePriem.Styles.spanTitleSelect;
+      }
+
+      var selectClass = Object.assign({}, _StylePriem.Styles.selectClass, this.props.selectClass);
+      return (
+        _react2.default.createElement('div', { style: selectClass },
+          _react2.default.createElement('div', { style: defaultStyleTitle }, title),
+          _react2.default.createElement('div', { style: this.props.styleSelectContainer }, elementSelect),
+          this.props.divider ? _react2.default.createElement(_Divider2.default, { style: Object.assign(_StylePriem.Styles.hr, styleHR) }) : null));
+
+
+    } }, { key: 'selected', get: function get() {if (this.props.clean) return null;if (this.props.selected) return this.props.selected;return this.state.selected;} }]);return Select;}(_react.PureComponent);exports.default = Select;
+
+Select.defaultProps = (_Select$defaultProps = {
+  data: [],
+  selectClass: {},
+  selected: undefined,
+  clean: false,
+  title: '',
+  styleSelectContainer: { 'width': '100%' },
+  placeholder: false,
+  multiSelect: false,
+  filter: 'contains',
+  onChange: function onChange() {},
+  serviceAttr: [],
+  divider: true,
+  styleHR: {} }, _defineProperty(_Select$defaultProps, 'placeholder',
+false), _defineProperty(_Select$defaultProps, 'flexDirection',
+'column'), _defineProperty(_Select$defaultProps, 'styleSelect',
+{}), _defineProperty(_Select$defaultProps, 'flexDirection',
+'column'), _defineProperty(_Select$defaultProps, 'styleTitle',
+null), _defineProperty(_Select$defaultProps, 'styleHR',
+{}), _Select$defaultProps);

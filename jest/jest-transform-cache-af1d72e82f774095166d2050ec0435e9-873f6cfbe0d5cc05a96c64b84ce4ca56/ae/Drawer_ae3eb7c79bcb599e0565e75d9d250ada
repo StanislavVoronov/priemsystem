@@ -1,0 +1,223 @@
+'use strict';Object.defineProperty(exports, "__esModule", { value: true });var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();
+var _react = require('react');var _react2 = _interopRequireDefault(_react);
+
+var _Drawer = require('material-ui/Drawer');var _Drawer2 = _interopRequireDefault(_Drawer);
+var _MenuItem = require('material-ui/MenuItem');var _MenuItem2 = _interopRequireDefault(_MenuItem);
+var _AppBar = require('material-ui/AppBar');var _AppBar2 = _interopRequireDefault(_AppBar);
+var _StylePriem = require('./StylePriem');
+var _IconButton = require('material-ui/IconButton');var _IconButton2 = _interopRequireDefault(_IconButton);
+
+
+var _IconMenu = require('material-ui/IconMenu');var _IconMenu2 = _interopRequireDefault(_IconMenu);
+
+var _reactTabtab = require('react-tabtab');
+var _menu = require('material-ui/svg-icons/navigation/menu');var _menu2 = _interopRequireDefault(_menu);
+var _moreVert = require('material-ui/svg-icons/navigation/more-vert');var _moreVert2 = _interopRequireDefault(_moreVert);
+var _search = require('material-ui/svg-icons/action/search');var _search2 = _interopRequireDefault(_search);
+var _notifications = require('material-ui/svg-icons/social/notifications');var _notifications2 = _interopRequireDefault(_notifications);
+var _Badge = require('material-ui/Badge');var _Badge2 = _interopRequireDefault(_Badge);
+var _person = require('material-ui/svg-icons/social/person');var _person2 = _interopRequireDefault(_person);
+var _noteAdd = require('material-ui/svg-icons/action/note-add');var _noteAdd2 = _interopRequireDefault(_noteAdd);
+var _MainMenuSystem = require('./MainMenuSystem');var _MainMenuSystem2 = _interopRequireDefault(_MainMenuSystem);
+var _Snackbar = require('material-ui/Snackbar');var _Snackbar2 = _interopRequireDefault(_Snackbar);
+var _Dialog = require('material-ui/Dialog');var _Dialog2 = _interopRequireDefault(_Dialog);
+
+var _Divider = require('material-ui/Divider');var _Divider2 = _interopRequireDefault(_Divider);
+
+var _priemGlobals = require('./priemGlobals');
+
+
+var _RefreshIndicator = require('material-ui/RefreshIndicator');var _RefreshIndicator2 = _interopRequireDefault(_RefreshIndicator);
+var _reactRedux = require('react-redux');
+var _actions = require('../actions');
+var _LoginForm = require('./LoginForm');var _LoginForm2 = _interopRequireDefault(_LoginForm);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;} /* eslint-disable react/jsx-no-bind */ //import PriemStructure from "../PriemStructure/PriemStructure";
+//import Search from "./search";
+var DrawerMainMenu = function (_PureComponent) {_inherits(DrawerMainMenu, _PureComponent);
+  function DrawerMainMenu(props) {_classCallCheck(this, DrawerMainMenu);var _this = _possibleConstructorReturn(this, (DrawerMainMenu.__proto__ || Object.getPrototypeOf(DrawerMainMenu)).call(this,
+    props));
+    _this.state = {
+      drawerDisplay: false,
+      activeKey: 0,
+      isMainIconMenu: true,
+      titleMainApp: 'Меню',
+      userPrivilages: _this.userPrivilages.bind(_this),
+      userFullInfo: _this.userFullInfo.bind(_this),
+      exitSystem: _this.exitSystem.bind(_this) };return _this;
+
+  }_createClass(DrawerMainMenu, [{ key: 'userFullInfo', value: function userFullInfo()
+    {
+
+    } }, { key: 'userPrivilages', value: function userPrivilages()
+    {
+
+    } }, { key: 'exitSystem', value: function exitSystem()
+    {
+      localStorage.clear();
+      this.props.logOutUser();
+    } }, { key: 'componentWillMount', value: function componentWillMount()
+
+    {
+
+      if (localStorage["priemUser"]) {
+        var userPriem = JSON.parse(localStorage["priemUser"]);
+        this.props.setLoggedUser(userPriem);
+        this.props.getUserListRequest(userPriem.id);
+      };
+      this.props.addNewTabPanel({
+        name: "PriemRegNewPerson",
+        state: {},
+        title: "Регистрация нового абитуриента" });
+
+      this.setState({ activeKey: 0 });
+    } }, { key: 'createNewPanel', value: function createNewPanel(
+
+    name, title)
+    {var props = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};var state = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : { loading: false, loader: true };
+      var activeKey = this.props.userTabsListMenu.length;
+      this.props.addNewTabPanel({
+        props: props,
+        name: name,
+        state: state,
+        title: title });
+
+      this.setState({ activeKey: activeKey });
+    } }, { key: '_showMainMenu', value: function _showMainMenu()
+
+    {
+      this.setState({ drawerDisplay: true });
+    } }, { key: '_changeViewDrawer', value: function _changeViewDrawer(
+    open, reason)
+    {
+      this.setState({ drawerDisplay: reason == 'clickaway' ? false : true });
+    } }, { key: 'renderRightPanel', value: function renderRightPanel()
+
+    {
+      return _react2.default.createElement('div', null,
+        _react2.default.createElement(_IconButton2.default, { style: { 'marginTop': 0 }, tooltip: '\u041F\u043E\u0438\u0441\u043A', iconStyle: { 'color': 'white' } }, _react2.default.createElement(_search2.default, null)),
+        _react2.default.createElement(_Badge2.default, {
+            badgeContent: Array.isArray(this.props.userListRequests) ? this.props.userListRequests.length : 0,
+            secondary: true,
+            style: { padding: 0 },
+            badgeStyle: { top: 4, backgroundColor: '#ff0000', right: 6, fontSize: 10, width: 20, height: 20 } },
+          _react2.default.createElement(_IconButton2.default, { style: { 'marginTop': 0 }, tooltip: '\u041E\u0447\u0435\u0440\u0435\u0434\u044C \u0437\u0430\u043F\u0440\u043E\u0441\u043E\u0432', iconStyle: { 'color': 'white', 'marginTop': 0 } },
+            _react2.default.createElement(_notifications2.default, { color: '#ffaa00' }))),
+
+
+        _react2.default.createElement(_IconButton2.default, { style: { 'marginTop': 0 }, iconStyle: { 'color': 'white' }, tooltip: '\u041D\u043E\u0432\u044B\u0439 \u0437\u0430\u043F\u0440\u043E\u0441',
+            onTouchTap: this.createNewPanel.bind(this, "PriemNewRequest", "Создание нового запроса") }, _react2.default.createElement(_noteAdd2.default, null)),
+        _react2.default.createElement(ProfileMenu, this.state));
+
+    } }, { key: 'closeErrorDialog', value: function closeErrorDialog()
+    {
+      this.props.clearErrorState();
+    } }, { key: 'closeMessageBox', value: function closeMessageBox()
+    {
+
+    } }, { key: 'removeUserTabPanel', value: function removeUserTabPanel()
+    {
+      var activeKey = this.state.activeKey,
+      sizeTabMenuList = this.props.userTabsListMenu.length - 1;
+      activeKey = sizeTabMenuList <= activeKey + 1 ? sizeTabMenuList - 1 : 0;
+      this.props.removeUserTabPanel(this.state.activeKey);
+      this.setState({ activeKey: activeKey });
+    } }, { key: 'renderUserTabs', value: function renderUserTabs()
+
+
+    {
+
+      return this.props.userTabsListMenu.map(function (project, key)
+      {
+
+        var titlePanel = project.title,
+        NewTabPanel = (0, _priemGlobals.templateTabPanel)(project.name);
+        return (
+          _react2.default.createElement(_reactTabtab.Panel, { title: titlePanel, key: 'PanelTab ' + key },
+            _react2.default.createElement(NewTabPanel, null)));
+
+
+      });
+    } }, { key: 'render', value: function render()
+    {var _this2 = this;var _state =
+      this.state,ComponentRender = _state.ComponentRender,isMainIconMenu = _state.isMainIconMenu,titleMainApp = _state.titleMainApp,activeKey = _state.activeKey;
+
+      if (this.props.priemUser && this.props.priemUser.id > 0) {
+
+        return _react2.default.createElement('div', null,
+
+          _react2.default.createElement(_AppBar2.default, { titleStyle: _StylePriem.Styles.mainTitleSystem,
+            showMenuIconButton: isMainIconMenu,
+            title: titleMainApp,
+            iconStyleLeft: _StylePriem.Styles.LeftInfoUserMainMenu,
+            iconStyleRight: _StylePriem.Styles.RightInfoUserMainMenu,
+            iconElementLeft: _react2.default.createElement(_IconButton2.default, { tooltip: '\u041C\u0435\u043D\u044E' }, _react2.default.createElement(_menu2.default, null)),
+            onLeftIconButtonTouchTap: this._showMainMenu.bind(this),
+            iconElementRight: this.renderRightPanel() }),
+          _react2.default.createElement(_Drawer2.default, { open: this.state.drawerDisplay, docked: false, onRequestChange: function onRequestChange(open, reason) {return _this2._changeViewDrawer(open, reason);} },
+            _react2.default.createElement(_MainMenuSystem2.default, { user: this.props.priemUser })),
+
+
+          _react2.default.createElement(_reactTabtab.Tabs, { activeKey: activeKey, style: "tabtab__folder__",
+              tabDeleteButton: true, handleTabDeleteButton: this.removeUserTabPanel.bind(this) },
+            this.renderUserTabs()),
+
+
+          _react2.default.createElement(_Snackbar2.default, {
+            open: false,
+            action: '\u0417\u0430\u043A\u0440\u044B\u0442\u044C',
+            message: '' + this.props.error.service,
+            onActionTouchTap: this.closeMessageBox.bind(this) }),
+          _react2.default.createElement(_Dialog2.default, {
+              title: '\u0421\u043E\u043E\u0431\u0449\u0435\u043D\u0438\u044F \u0441\u0435\u0440\u0432\u0435\u0440\u0430 \u043E\u0431 \u043E\u0448\u0438\u0431\u043A\u0435',
+              modal: false,
+              titleStyle: _StylePriem.Styles.errorDialogTitle,
+              onRequestClose: this.closeErrorDialog.bind(this),
+              open: this.props.error.show },
+            _react2.default.createElement(_Divider2.default, { style: _StylePriem.Styles.hr }),
+            _react2.default.createElement('div', null, _react2.default.createElement('b', null, 'ErrorCode:'), ' ', this.props.error.codeError),
+            _react2.default.createElement(_Divider2.default, { style: _StylePriem.Styles.hr }),
+            _react2.default.createElement('div', null, _react2.default.createElement('b', null, 'Service=parametrs:'), ' ', this.props.error.service),
+            _react2.default.createElement(_Divider2.default, { style: _StylePriem.Styles.hr }),
+            _react2.default.createElement('div', null, _react2.default.createElement('b', null, 'Request:'), ' ', this.props.error.request),
+            _react2.default.createElement(_Divider2.default, { style: _StylePriem.Styles.hr }),
+            _react2.default.createElement('div', null, _react2.default.createElement('b', null, 'Reason:'), ' ', this.props.error.reason)));
+
+
+      }
+
+      return _react2.default.createElement(_LoginForm2.default, { setPriemUser: this.props.setPriemUser, priemUser: this.props.priemUser });
+
+    } }]);return DrawerMainMenu;}(_react.PureComponent);
+
+
+
+var mapStateToProps = function mapStateToProps(state)
+{
+  return {
+    priemUser: state.PriemAccount.user,
+    stateSystem: state.SystemStatusState,
+    userListRequests: state.PriemAccount.listRequests,
+    error: state.PriemAccount.error,
+    userTabsListMenu: state.projectStates.userTabsListMenu,
+    needStateUpdate: state.PriemAccount.needStateUpdate };
+
+};
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    clearErrorState: function clearErrorState() {return dispatch((0, _actions.clearErrorState)());},
+    setPriemUser: function setPriemUser(user) {return dispatch((0, _actions.setPriemUser)(user));},
+    setLoggedUser: function setLoggedUser(user) {return dispatch((0, _actions.setLoggedUser)(user));},
+    getUserListRequest: function getUserListRequest(user) {return dispatch((0, _actions.getUserListRequest)(user));},
+    addNewTabPanel: function addNewTabPanel(item) {return dispatch((0, _actions.addNewTabPanel)(item));},
+    removeUserTabPanel: function removeUserTabPanel(item) {return dispatch((0, _actions.removeUserTabPanel)(item));},
+    logOutUser: function logOutUser() {return dispatch((0, _actions.logOutUser)());} };
+
+};exports.default =
+(0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(DrawerMainMenu);
+
+var ProfileMenu = function ProfileMenu(props) {return (
+    _react2.default.createElement(_IconMenu2.default, { iconStyle: { 'color': 'white' },
+        iconButtonElement:
+        _react2.default.createElement(_IconButton2.default, { tooltip: '\u041F\u0440\u043E\u0444\u0438\u043B\u044C' }, _react2.default.createElement(_moreVert2.default, null)) },
+      _react2.default.createElement(_MenuItem2.default, { onTouchTap: props.userFullInfo.bind(undefined), primaryText: '\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C' }),
+      _react2.default.createElement(_MenuItem2.default, { onTouchTap: props.userPrivilages.bind(undefined), primaryText: '\u041F\u0440\u0430\u0432\u0430 \u0434\u043E\u0441\u0442\u0443\u043F\u0430' }),
+      _react2.default.createElement(_MenuItem2.default, { onTouchTap: props.exitSystem.bind(undefined), primaryText: '\u0412\u044B\u0445\u043E\u0434' })));};

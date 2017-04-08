@@ -1,0 +1,14 @@
+'use strict';var _PriemRegNewPerson = require('../../components/PriemRegNewPerson/PriemRegNewPerson');var _PriemRegNewPerson2 = _interopRequireDefault(_PriemRegNewPerson);
+
+var _enzyme = require('enzyme');function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+
+describe("Simple Test", function () {
+	it("Check simple function", function () {
+		var component = (0, _enzyme.shallow)(React.createElement(Select, { muiTheme: true }));
+
+
+	});
+
+
+});

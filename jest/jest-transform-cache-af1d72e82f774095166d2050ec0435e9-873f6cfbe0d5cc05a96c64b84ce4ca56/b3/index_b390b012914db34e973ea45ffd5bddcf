@@ -1,0 +1,91 @@
+"use strict";Object.defineProperty(exports, "__esModule", { value: true }); //********PersonData - begin***********
+var SET_FIRST_NAME = exports.SET_FIRST_NAME = "SET_FIRST_NAME";
+var SET_LAST_NAME = exports.SET_LAST_NAME = "SET_LAST_NAME";
+var SET_MIDDLE_NAME = exports.SET_MIDDLE_NAME = "SET_MIDDLE_NAME";
+var SET_SEX_NEW_PERSON = exports.SET_SEX_NEW_PERSON = "SET_SEX_NEW_PERSON";
+var SET_GOVERNMENT = exports.SET_GOVERNMENT = "SET_GOVERNMENT";
+var SET_CUR_PERSON_DOC = exports.SET_CUR_PERSON_DOC = "SET_CUR_PERSON_DOC";
+var SET_DATE_OF_BIRTH_NEW_PERSON = exports.SET_DATE_OF_BIRTH_NEW_PERSON = "SET_DATE_OF_BIRTH_NEW_PERSON";
+var SET_PLACE_OF_BIRTH_NEW_PERSON = exports.SET_PLACE_OF_BIRTH_NEW_PERSON = "SET_PLACE_OF_BIRTH_NEW_PERSON";
+var SET_CUR_PERSON_DOC_SERIA = exports.SET_CUR_PERSON_DOC_SERIA = "SET_CUR_PERSON_DOC_SERIA";
+var SET_CUR_PERSON_DOC_NUMBER = exports.SET_CUR_PERSON_DOC_NUMBER = "SET_CUR_PERSON_DOC_NUMBER";
+var SET_CUR_PERSON_DOC_DEPARTMENT = exports.SET_CUR_PERSON_DOC_DEPARTMENT = "SET_CUR_PERSON_DOC_DEPARTMENT";
+var SET_CUR_PERSON_DOC_DATE = exports.SET_CUR_PERSON_DOC_DATE = "SET_CUR_PERSON_DOC_DATE";
+var SET_CUR_PERSON_DOC_CODE_DEPARTMENT = exports.SET_CUR_PERSON_DOC_CODE_DEPARTMENT = "SET_CUR_PERSON_DOC_CODE_DEPARTMENT";
+var SET_CUR_PERSON_DOC_PAGE = exports.SET_CUR_PERSON_DOC_PAGE = "SET_CUR_PERSON_DOC_PAGE";
+var SET_OLD_PERSON_DOC_SERIA = exports.SET_OLD_PERSON_DOC_SERIA = "SET_OLD_PERSON_DOC_SERIA";
+var SET_OLD_PERSON_DOC_NUMBER = exports.SET_OLD_PERSON_DOC_NUMBER = "SET_OLD_PERSON_DOC_NUMBER";
+var SET_IS_FROM_KRIM = exports.SET_IS_FROM_KRIM = "SET_IS_FROM_KRIM";
+
+
+var setFirstName = exports.setFirstName = function setFirstName(item)
+{
+	return { type: SET_FIRST_NAME, item: item };
+};
+
+var setLastName = exports.setLastName = function setLastName(item)
+{
+	return { type: SET_LAST_NAME, item: item };
+};
+var setMiddleName = exports.setMiddleName = function setMiddleName(item)
+{
+	return { type: SET_MIDDLE_NAME, item: item };
+};
+var setSexNewPerson = exports.setSexNewPerson = function setSexNewPerson(item)
+{
+	return { type: SET_SEX_NEW_PERSON, item: item };
+};
+var setDateOfBirth = exports.setDateOfBirth = function setDateOfBirth(item)
+{
+	return { type: SET_DATE_OF_BIRTH_NEW_PERSON, item: item };
+};
+var setPlaceOfBirth = exports.setPlaceOfBirth = function setPlaceOfBirth(item)
+{
+	return { type: SET_PLACE_OF_BIRTH_NEW_PERSON, item: item };
+};
+var setGovernment = exports.setGovernment = function setGovernment(item)
+{
+	return { type: SET_GOVERNMENT, item: item };
+};
+var setCurPersonDoc = exports.setCurPersonDoc = function setCurPersonDoc(item)
+{
+	return { type: SET_CUR_PERSON_DOC, item: item };
+};
+var setCurPersonDocSeria = exports.setCurPersonDocSeria = function setCurPersonDocSeria(item)
+{
+	return { type: SET_CUR_PERSON_DOC_SERIA, item: item };
+};
+var setCurPersonDocNumber = exports.setCurPersonDocNumber = function setCurPersonDocNumber(item)
+{
+	return { type: SET_CUR_PERSON_DOC_NUMBER, item: item };
+};
+var setCurPersonDocDepartment = exports.setCurPersonDocDepartment = function setCurPersonDocDepartment(item)
+{
+	return { type: SET_CUR_PERSON_DOC_DEPARTMENT, item: item };
+};
+var setCurPersonDocDate = exports.setCurPersonDocDate = function setCurPersonDocDate(item)
+{
+	return { type: SET_CUR_PERSON_DOC_DATE, item: item };
+};
+var setCurPersonDocCodeDepartment = exports.setCurPersonDocCodeDepartment = function setCurPersonDocCodeDepartment(item)
+{
+	return { type: SET_CUR_PERSON_DOC_CODE_DEPARTMENT, item: item };
+};
+var setCurPersonDocPage = exports.setCurPersonDocPage = function setCurPersonDocPage(item)
+{
+	return { type: SET_CUR_PERSON_DOC_PAGE, item: item };
+};
+var setOldPersonDocSeria = exports.setOldPersonDocSeria = function setOldPersonDocSeria(item)
+{
+	return { type: SET_OLD_PERSON_DOC_SERIA, item: item };
+};
+var setOldPersonDocNunmber = exports.setOldPersonDocNunmber = function setOldPersonDocNunmber(item)
+{
+	return { type: SET_OLD_PERSON_DOC_NUMBER, item: item };
+};
+var setIsFromKrim = exports.setIsFromKrim = function setIsFromKrim()
+{
+	return { type: SET_IS_FROM_KRIM };
+};
+
+//***********PersonData - end***********

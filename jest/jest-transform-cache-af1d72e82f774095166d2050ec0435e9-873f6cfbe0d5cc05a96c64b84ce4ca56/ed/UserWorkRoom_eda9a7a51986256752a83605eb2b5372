@@ -1,0 +1,54 @@
+'use strict';Object.defineProperty(exports, "__esModule", { value: true });var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();
+var _react = require('react');var _react2 = _interopRequireDefault(_react);
+var _StylePriem = require('../common/StylePriem');
+
+
+var _Table = require('material-ui/Table');
+var _PriemTableView = require('./PriemTableView');var _PriemTableView2 = _interopRequireDefault(_PriemTableView);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+
+UserWorkRoom = function (_PureComponent) {_inherits(UserWorkRoom, _PureComponent);function UserWorkRoom() {_classCallCheck(this, UserWorkRoom);return _possibleConstructorReturn(this, (UserWorkRoom.__proto__ || Object.getPrototypeOf(UserWorkRoom)).apply(this, arguments));}_createClass(UserWorkRoom, [{ key: 'setHeaderTable', value: function setHeaderTable()
+
+
+		{
+			return [
+			{
+				name: 'ФИО методиста',
+				key: 'name' },
+
+			{
+				name: 'Институт',
+				key: 'department',
+				placeholder: 'институтам',
+				isSearch: true },
+
+			{
+				name: 'Расположение',
+				key: 'workSpace',
+				placeholder: 'расположению',
+				isSearch: true },
+
+			{
+				name: 'Кол-во запросов в работе',
+				key: 'done' },
+
+			{
+				name: 'Кол-во запросов обработано',
+				key: 'inProgress' },
+
+			{
+				component: true,
+				name: 'Статус',
+				type: 'radio',
+				title: 'Выбрать' }];
+
+
+		} }, { key: 'selectRequestPerformer', value: function selectRequestPerformer(
+		priemMetodist)
+		{
+			this.props.onSelectPerformer(priemMetodist);
+		} }, { key: 'render', value: function render()
+
+		{
+
+			return _react2.default.createElement(_PriemTableView2.default, { selected: this.props.requestPerformer.id, onAction: this.selectRequestPerformer.bind(this), priemHeaderTable: this.setHeaderTable(), priemDataTable: this.props.userWorkRoom });
+		} }]);return UserWorkRoom;}(_react.PureComponent);exports.default = UserWorkRoom;

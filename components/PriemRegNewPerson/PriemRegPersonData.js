@@ -45,8 +45,8 @@ getDefaultFirstNames()
 getDefaultMiddleNames()
 {
 	const middleNames=this.props.defaultNames && this.props.defaultNames.middleNames || []
-	if (this.props.newPerson && this.props.newPerson["firstName"]	){
-		const personName=this.props.defaultNames.firstNames.find(name=>name.value===this.props.newPerson["firstName"])
+	if (this.props.newPerson && this.props.newPerson["first_name"]){
+		const personName=this.props.defaultNames.firstNames.find(name=>name.value===this.props.newPerson["first_name"])
 		if (personName) {
 			return middleNames.filter(name=> name.sex==personName.sex)
 		}
@@ -99,7 +99,7 @@ render(){
     				  dataSourceConfig={dataSourceConfig}/>	
     			
     			 	<RadioButtonGroup name="sexPerson" style={{display:'flex',marginTop:10}} 
-    			 			valueSelected={newPerson && newPerson["sex"]} onChange={(event,value)=>this.props.setSexNewPerson(value-1)}>
+    			 			valueSelected={newPerson && newPerson["sex"]} onChange={(event,value)=>this.props.setSexNewPerson(value)}>
 			      <RadioButton style={{width:'auto'}}
 			        	labelStyle={{marginRight:30}}
 			        	iconStyle={{marginRight:8}}	
@@ -119,11 +119,12 @@ render(){
 			    floatingLabelText={"Место рождения"}  hintText={"г. Москва"} onChange={this.props.setPlaceOfBirth} />
 			    
 
-			    <Select divider={false}  filter={true} selectClass={{marginTop:10}}  selected={this.props.id_doc && this.props.id_doc.gov}
+			    <Select required divider={false}  filter={true} selectClass={{marginTop:10}}  selected={this.props.id_doc && this.props.id_doc.gov}
 			    	title='Гражданство' onChange={(value)=>this.props.setGovernment(value.id)} data={this.props.govermentList} />	
 			    
 
-			    <Select divider={false} filter={true} selectClass={{marginTop:15,marginBottom:5}}  selected={this.props.govermentList && this.props.govermentList[0]}
+			    <Select required divider={false} filter={true} selectClass={{marginTop:15,marginBottom:5}}  
+			    	selected={this.props.newPerson && this.props.newPerson.id_doc.type}
 			    	title='Документ, удостоверяющий личность' onChange={(value)=>this.props.setCurPersonDoc(value)} data={this.props.typeDocList} />	
 			    
 			    <TextField style={Styles.marginBetweenTextFieldValid} 

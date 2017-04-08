@@ -1,0 +1,199 @@
+'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.PriemRegNewPerson = undefined;var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {return typeof obj;} : function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;};var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _react = require('react');var _react2 = _interopRequireDefault(_react);
+var _Stepper = require('material-ui/Stepper');
+
+
+
+
+var _reactRedux = require('react-redux');
+
+
+var _StylePriem = require('../common/StylePriem');
+var _ExpandTransition = require('material-ui/internal/ExpandTransition');var _ExpandTransition2 = _interopRequireDefault(_ExpandTransition);
+var _RaisedButton = require('material-ui/RaisedButton');var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+var _actions = require('../actions');
+var _reactLoader = require('react-loader');var _reactLoader2 = _interopRequireDefault(_reactLoader);
+var _priemGlobals = require('../common/priemGlobals');
+var _keyboardArrowRight = require('material-ui/svg-icons/hardware/keyboard-arrow-right');var _keyboardArrowRight2 = _interopRequireDefault(_keyboardArrowRight);
+var _Divider = require('material-ui/Divider');var _Divider2 = _interopRequireDefault(_Divider);
+var _PriemRegPersonData = require('./PriemRegPersonData');var _PriemRegPersonData2 = _interopRequireDefault(_PriemRegPersonData);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+
+PriemRegNewPerson = exports.PriemRegNewPerson = function (_React$Component) {_inherits(PriemRegNewPerson, _React$Component);function PriemRegNewPerson() {_classCallCheck(this, PriemRegNewPerson);return _possibleConstructorReturn(this, (PriemRegNewPerson.__proto__ || Object.getPrototypeOf(PriemRegNewPerson)).apply(this, arguments));}_createClass(PriemRegNewPerson, [{ key: 'componentWillMount', value: function componentWillMount()
+
+
+
+    {
+      this.props.updateTabPanelState("priemRegNewPerson", { stepIndex: 0, finished: false, loading: false, loaded: false });
+    } }, { key: 'handleNext', value: function handleNext()
+    {var _props$projectStates =
+      this.props.projectStates,stepIndex = _props$projectStates.stepIndex,finished = _props$projectStates.finished;
+
+      if (stepIndex == 3) {
+        finished = false;
+        stepIndex = 0;
+      } else if (stepIndex == 2) {
+        finished = true;
+        stepIndex += 1;
+      } else
+      if (stepIndex == 1) {
+
+        stepIndex += 1;
+      } else {
+        stepIndex += 1;
+      }
+      this.props.setStateNewRequest(stepIndex, finished);
+    } }, { key: 'handlePrev', value: function handlePrev(
+
+    stepIndex) {
+      this.props.setStateNewRequest(stepIndex - 1, false);
+    } }, { key: 'getStepContent', value: function getStepContent(
+
+    stepIndex) {
+
+      switch (stepIndex) {
+        case 0:
+          return _react2.default.createElement(_PriemRegPersonData2.default, null);
+        case 1:
+
+        case 2:
+
+        case 3:
+          {
+
+          }
+        default:
+          return '';}
+
+    } }, { key: 'renderLabelButton', value: function renderLabelButton(
+    stepIndex)
+    {
+      switch (stepIndex) {
+
+        case 0:{
+            return "Контактные данные";
+          }
+        case 1:{
+            return "Данные об образовании";
+          }
+        case 2:{
+            return "Заявления на поступление";
+          }
+        case 3:{
+            return "Дополнительная информация";
+          }}
+
+
+    } }, { key: 'getNextButtonStatus', value: function getNextButtonStatus(
+    stepIndex, DocFileList)
+    {
+      switch (stepIndex) {
+
+        case 0:
+
+        case 1:
+
+        case 2:}
+
+
+    } }, { key: 'simpleTextFunction', value: function simpleTextFunction(
+    a)
+    {
+      return a;
+    } }, { key: 'validateRequiredData', value: function validateRequiredData(
+    stepIndex)
+    {var _this2 = this;
+
+      var requiredFields = (0, _priemGlobals.validateFieldsNewPerson)(stepIndex);
+      var notValidateFields = [];
+      requiredFields.map(function (field, key)
+      {
+
+        if ((typeof field === 'undefined' ? 'undefined' : _typeof(field)) === "object")
+        {var _loop = function _loop(
+          _key) {
+            Array.isArray(field[_key]) && field[_key].map(function (value) {
+              !_this2.props.newPerson[_key][value] && notValidateFields.push(value);
+            });};for (var _key in field) {_loop(_key);
+          }
+        } else
+        {
+          !_this2.props.newPerson[field] && notValidateFields.push(field);
+        }
+      });
+      console.log("validateRequiredData", notValidateFields);
+      return notValidateFields.length > 0;
+    } }, { key: 'renderContent', value: function renderContent()
+    {var stepIndex = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+      return (
+        _react2.default.createElement('div', null,
+          _react2.default.createElement('div', null, this.getStepContent(stepIndex)),
+          _react2.default.createElement('div', { style: { marginTop: 24, marginBottom: 12, 'display': 'flex', 'justifyContent': 'flex-end' } },
+            stepIndex > 0 && stepIndex < 3 && _react2.default.createElement(FlatButton, {
+              label: '\u041D\u0430\u0437\u0430\u0434',
+              labelStyle: { 'fontSize': 12 },
+              onTouchTap: this.handlePrev.bind(this, stepIndex),
+              style: { marginRight: 12 } }),
+            _react2.default.createElement(_RaisedButton2.default, {
+              disabled: this.validateRequiredData(stepIndex),
+              label: this.renderLabelButton(stepIndex),
+              backgroundColor: '#2474f5',
+              labelStyle: { 'fontSize': 12 },
+              labelColor: '#ffffff',
+              labelPosition: 'before',
+              icon: _react2.default.createElement(_keyboardArrowRight2.default, null),
+              onTouchTap: this.handleNext.bind(this) }))));
+
+
+
+    } }, { key: 'render', value: function render()
+    {var _ref =
+
+      new Object(this.props.tabPanelState.get("priemRegNewPerson")),stepIndex = _ref.stepIndex,loading = _ref.loading;
+      return (
+        _react2.default.createElement(_reactLoader2.default, { loaded: !loading, options: _priemGlobals.options, className: 'spinner' },
+          _react2.default.createElement(_Stepper.Stepper, { activeStep: stepIndex, style: _StylePriem.Styles.flexWrap },
+            _react2.default.createElement(_Stepper.Step, { style: _StylePriem.Styles.firstStepMarginLeft },
+              _react2.default.createElement(_Stepper.StepLabel, null, '\u041F\u0435\u0440\u0441\u043E\u043D\u0430\u043B\u044C\u043D\u044B\u0435 \u0434\u0430\u043D\u043D\u044B\u0435')),
+
+            _react2.default.createElement(_Stepper.Step, null,
+              _react2.default.createElement(_Stepper.StepLabel, null, '\u041A\u043E\u043D\u0442\u0430\u043A\u0442\u043D\u044B\u0435 \u0434\u0430\u043D\u043D\u044B\u0435')),
+
+            _react2.default.createElement(_Stepper.Step, null,
+              _react2.default.createElement(_Stepper.StepLabel, null, '\u0414\u0430\u043D\u043D\u044B\u0435 \u043E\u0431 \u043E\u0431\u0440\u0430\u0437\u043E\u0432\u0430\u043D\u0438\u0438')),
+
+            _react2.default.createElement(_Stepper.Step, null,
+              _react2.default.createElement(_Stepper.StepLabel, null, '\u0417\u0430\u044F\u0432\u043B\u0435\u043D\u0438\u044F \u043D\u0430 \u043F\u043E\u0441\u0442\u0443\u043F\u043B\u0435\u043D\u0438\u0435')),
+
+            _react2.default.createElement(_Stepper.Step, null,
+              _react2.default.createElement(_Stepper.StepLabel, null, '\u0414\u043E\u043F\u043E\u043B\u043D\u0438\u0442\u0435\u043B\u044C\u043D\u0430\u044F \u0438\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044F'))),
+
+
+          _react2.default.createElement(_Divider2.default, { style: { marginBottom: 10 } }),
+          _react2.default.createElement(_ExpandTransition2.default, { open: true },
+            this.renderContent(stepIndex))));
+
+
+
+
+    } }]);return PriemRegNewPerson;}(_react2.default.Component);
+
+PriemRegNewPerson.defaultProps =
+{
+  namePanelTab: "priemRegNewPerson" };
+
+
+var mapStateToProps = function mapStateToProps(state)
+{
+  return {
+    tabPanelState: state.projectStates.priemTabPanelStates,
+    priemUser: state.PriemAccount.user,
+    newPerson: state.PriemRegNewPerson,
+    stateSystem: state.SystemStatusState };
+
+};
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    updateTabPanelState: function updateTabPanelState(name, items) {return dispatch((0, _actions.updateTabPanelState)(name, items));} };
+
+
+};exports.default =
+(0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(PriemRegNewPerson);

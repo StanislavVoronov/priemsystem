@@ -1,0 +1,142 @@
+"use strict";Object.defineProperty(exports, "__esModule", { value: true });exports.updateTabPanelState = exports.setDefaultStateNewRequest = exports.getUserUploadImage = exports.setNewTypeRequest = exports.sendNewPriemRequestForServer = exports.setLoggedUser = exports.setPriemUser = exports.setRequestPerformer = exports.deleteImageFile = exports.updateFileItemStatus = exports.updateFileItemType = exports.updateFileList = exports.updateDocNeedScans = exports.getUserWorkRoom = exports.addNewFileToServer = exports.clearErrorState = exports.setStateNewRequest = exports.addNewTabPanel = exports.getUserListRequest = exports.removeUserTabPanel = exports.logOutUser = exports.UPDATE_STATE_TAB_PANEL = exports.PRIEM_LOGOUT_USER = exports.REMOVE_USER_TAB_PANEL = exports.SET_USER_TABS_MENU_LIST = exports.ADD_NEW_PRIEM_REQUEST = exports.SET_AUTH_DATA = exports.PRIEM_CLEAR_ERRORS = exports.PRIEM_SUCCESS_OCCURED = exports.PRIEM_ERROR_OCCURED = exports.SET_USER_LIST_REQUEST = exports.GET_USER_LIST_REQUEST = exports.SET_STATE_NEWREQUEST = exports.CLEAN_DELETE_FILE_LIST = exports.DEFAULT_STATE_NEW_REQUEST = exports.SYSTEM_STATUS_STATE = exports.GET_DOWNLOAD_FILE_IMAGE = exports.CHECK_BEFORE_SEND_REQUEST = exports.ADDED_NEW_PRIEM_REQUEST = exports.SET_NEW_TYPE_REQUEST = exports.SET_LOGGED_PRIEM_USER = exports.SET_PRIEM_USER = exports.SET_REQUEST_PERFORMER = exports.GET_USER_WORK_ROOM = exports.ADD_NEW_FILE_TO_SERVER = exports.UPDATE_DOC_NEED_SCANS = exports.DELETE_FILE_ITEM = exports.UPDATE_FILE_ITEM_STATUS = exports.UPDATE_FILE_ITEM_TYPE = exports.UPDATE_UPLOAD_IMAGE_FILE = exports.UPDATE_FILE_LIST = undefined;exports.default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PriemRootSaga;var _sagaActions = require("./sagaActions");var _sagaActions2 = _interopRequireDefault(_sagaActions);var _sagaDataProvider = require("./dataProviderActions/sagaDataProvider");var _sagaDataProvider2 = _interopRequireDefault(_sagaDataProvider);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var _marked = [PriemRootSaga].map(regeneratorRuntime.mark);function _toConsumableArray(arr) {if (Array.isArray(arr)) {for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {arr2[i] = arr[i];}return arr2;} else {return Array.from(arr);}}var UPDATE_FILE_LIST = exports.UPDATE_FILE_LIST = "UPDATE_FILE_LIST";var UPDATE_UPLOAD_IMAGE_FILE = exports.UPDATE_UPLOAD_IMAGE_FILE = "UPDATE_UPLOAD_IMAGE_FILE";var UPDATE_FILE_ITEM_TYPE = exports.UPDATE_FILE_ITEM_TYPE = "UPDATE_FILE_ITEM_TYPE";var UPDATE_FILE_ITEM_STATUS = exports.UPDATE_FILE_ITEM_STATUS = "UPDATE_FILE_ITEM_STATUS";var DELETE_FILE_ITEM = exports.DELETE_FILE_ITEM = "DELETE_FILE_ITEM";var UPDATE_DOC_NEED_SCANS = exports.UPDATE_DOC_NEED_SCANS = "UPDATE_DOC_NEED_SCANS";var ADD_NEW_FILE_TO_SERVER = exports.ADD_NEW_FILE_TO_SERVER = "ADD_NEW_FILE_TO_SERVER";var GET_USER_WORK_ROOM = exports.GET_USER_WORK_ROOM = "GET_USER_WORK_ROOM";var SET_REQUEST_PERFORMER = exports.SET_REQUEST_PERFORMER = "SET_REQUEST_PERFORMER";var SET_PRIEM_USER = exports.SET_PRIEM_USER = "SET_PRIEM_USER";var SET_LOGGED_PRIEM_USER = exports.SET_LOGGED_PRIEM_USER = "SET_LOGGED_PRIEM_USER";var SET_NEW_TYPE_REQUEST = exports.SET_NEW_TYPE_REQUEST = "SET_NEW_TYPE_REQUEST";var ADDED_NEW_PRIEM_REQUEST = exports.ADDED_NEW_PRIEM_REQUEST = "ADDED_NEW_PRIEM_REQUEST";var CHECK_BEFORE_SEND_REQUEST = exports.CHECK_BEFORE_SEND_REQUEST = "CHECK_BEFORE_SEND_REQUEST";var GET_DOWNLOAD_FILE_IMAGE = exports.GET_DOWNLOAD_FILE_IMAGE = "GET_DOWNLOAD_FILE_IMAGE";var SYSTEM_STATUS_STATE = exports.SYSTEM_STATUS_STATE = "SYSTEM_STATUS_STATE";var DEFAULT_STATE_NEW_REQUEST = exports.DEFAULT_STATE_NEW_REQUEST = "DEFAULT_STATE_NEW_REQUEST";var CLEAN_DELETE_FILE_LIST = exports.CLEAN_DELETE_FILE_LIST = "CLEAN_DELETE_FILE_LIST";var SET_STATE_NEWREQUEST = exports.SET_STATE_NEWREQUEST = "SET_STATE_NEWREQUEST";var GET_USER_LIST_REQUEST = exports.GET_USER_LIST_REQUEST = "GET_USER_LIST_REQUEST";var SET_USER_LIST_REQUEST = exports.SET_USER_LIST_REQUEST = "SET_USER_LIST_REQUEST";var PRIEM_ERROR_OCCURED = exports.PRIEM_ERROR_OCCURED = "PRIEM_ERROR_OCCURED";var PRIEM_SUCCESS_OCCURED = exports.PRIEM_SUCCESS_OCCURED = "PRIEM_SUCCESS_OCCURED";var PRIEM_CLEAR_ERRORS = exports.PRIEM_CLEAR_ERRORS = "PRIEM_CLEAR_ERRORS";var SET_AUTH_DATA = exports.SET_AUTH_DATA = "SET_AUTH_DATA";var ADD_NEW_PRIEM_REQUEST = exports.ADD_NEW_PRIEM_REQUEST = "ADD_NEW_PRIEM_REQUEST";var SET_USER_TABS_MENU_LIST = exports.SET_USER_TABS_MENU_LIST = "SET_USER_TABS_MENU_LIST";var REMOVE_USER_TAB_PANEL = exports.REMOVE_USER_TAB_PANEL = "REMOVE_TAB_PANEL";var PRIEM_LOGOUT_USER = exports.PRIEM_LOGOUT_USER = "PRIEM_LOGOUT_USER";var UPDATE_STATE_TAB_PANEL = exports.UPDATE_STATE_TAB_PANEL = "UPDATE_STATE_TAB_PANEL"; /////////////////////////////////////////////
+function PriemRootSaga(state) {return regeneratorRuntime.wrap(function PriemRootSaga$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return [].concat(_toConsumableArray(_sagaActions2.default), _toConsumableArray(_sagaDataProvider2.default));case 2:case "end":return _context.stop();}}}, _marked[0], this);}
+
+
+/////////////////////////////////////////////
+
+var logOutUser = exports.logOutUser = function logOutUser() {
+	return { type: PRIEM_LOGOUT_USER };
+};
+
+var removeUserTabPanel = exports.removeUserTabPanel = function removeUserTabPanel(item) {
+	return { type: REMOVE_USER_TAB_PANEL, item: item };
+};
+
+var getUserListRequest = exports.getUserListRequest = function getUserListRequest(item) {
+	return { type: GET_USER_LIST_REQUEST, item: item };
+};
+
+var addNewTabPanel = exports.addNewTabPanel = function addNewTabPanel(item) {
+	return { type: SET_USER_TABS_MENU_LIST, item: item };
+};
+
+
+var setStateNewRequest = exports.setStateNewRequest = function setStateNewRequest(stepIndex, finished) {
+	return { type: SET_STATE_NEWREQUEST, items: { stepIndex: stepIndex, finished: finished } };
+};
+var clearErrorState = exports.clearErrorState = function clearErrorState()
+{
+	return { type: PRIEM_CLEAR_ERRORS };
+};
+
+
+
+var addNewFileToServer = exports.addNewFileToServer = function addNewFileToServer(item)
+{
+	return { type: ADD_NEW_FILE_TO_SERVER, item: item };
+};
+var getUserWorkRoom = exports.getUserWorkRoom = function getUserWorkRoom(items)
+{
+	return { type: GET_USER_WORK_ROOM, items: items };
+};
+
+var updateDocNeedScans = exports.updateDocNeedScans = function updateDocNeedScans(items)
+{
+	return { type: UPDATE_DOC_NEED_SCANS, items: items };
+};
+
+var updateFileList = exports.updateFileList = function updateFileList(items)
+{
+	return { type: UPDATE_FILE_LIST, items: items };
+};
+
+var updateFileItemType = exports.updateFileItemType = function updateFileItemType(item, typeDoc)
+{
+	return { type: UPDATE_FILE_ITEM_TYPE,
+		item: item,
+		typeDoc: typeDoc };
+
+};
+
+var updateFileItemStatus = exports.updateFileItemStatus = function updateFileItemStatus(item, status)
+{
+
+	return { type: UPDATE_FILE_ITEM_STATUS, item: item, status: status };
+};
+
+var deleteImageFile = exports.deleteImageFile = function deleteImageFile(item)
+{
+	return { type: DELETE_FILE_ITEM, item: item };
+};
+var setRequestPerformer = exports.setRequestPerformer = function setRequestPerformer(item)
+{
+	return { type: SET_REQUEST_PERFORMER, item: item };
+};
+var setPriemUser = exports.setPriemUser = function setPriemUser(item)
+{
+	return { type: SET_AUTH_DATA, item: item };
+};
+var setLoggedUser = exports.setLoggedUser = function setLoggedUser(item)
+{
+	return { type: SET_LOGGED_PRIEM_USER, item: item };
+};
+var sendNewPriemRequestForServer = exports.sendNewPriemRequestForServer = function sendNewPriemRequestForServer(item)
+{
+	return { type: ADD_NEW_PRIEM_REQUEST, item: item };
+};
+var setNewTypeRequest = exports.setNewTypeRequest = function setNewTypeRequest(item)
+{
+	return { type: SET_NEW_TYPE_REQUEST, item: item };
+};
+var getUserUploadImage = exports.getUserUploadImage = function getUserUploadImage()
+{
+	return { type: GET_DOWNLOAD_FILE_IMAGE, items: [] };
+};
+
+var setDefaultStateNewRequest = exports.setDefaultStateNewRequest = function setDefaultStateNewRequest()
+{
+	return { type: DEFAULT_STATE_NEW_REQUEST };
+};
+
+//////
+
+var updateTabPanelState = exports.updateTabPanelState = function updateTabPanelState(name, items)
+{
+	return { type: UPDATE_STATE_TAB_PANEL, name: name, items: items };
+};
+//////

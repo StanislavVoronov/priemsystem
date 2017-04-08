@@ -1,0 +1,44 @@
+'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.
+
+
+
+getDefaultNames = getDefaultNames;exports.
+
+
+
+
+
+
+
+
+
+
+getGovermentList = getGovermentList;exports.
+
+
+
+
+
+
+
+
+
+
+
+getTypeDocPersonList = getTypeDocPersonList;var _effects = require('redux-saga/effects');var _networkService = require('../../common/networkService');var _ = require('./');var _marked = [getDefaultNames, getGovermentList, getTypeDocPersonList].map(regeneratorRuntime.mark);function getDefaultNames() {var items;return regeneratorRuntime.wrap(function getDefaultNames$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (0, _effects.take)(_.GET_DEFAULT_NAMES);case 2:items = void 0;_context.prev = 3;_context.next = 6;return (0, _effects.call)(_networkService.networkService, { name: 'priemDefaultNames' });case 6:items = _context.sent;_context.next = 9;return (0, _effects.put)({ type: _.GET_DEFAULT_NAMES, items: items });case 9:_context.next = 15;break;case 11:_context.prev = 11;_context.t0 = _context['catch'](3);_context.next = 15;return (0, _effects.put)({ type: _.GET_DEFAULT_NAMES, items: items });case 15:case 'end':return _context.stop();}}}, _marked[0], this, [[3, 11]]);}function getGovermentList() {var items;return regeneratorRuntime.wrap(function getGovermentList$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.next = 2;return (0, _effects.take)(_.GET_GOVERMENT_LIST);case 2:items = void 0;_context2.prev = 3;_context2.next = 6;return (0, _effects.call)(_networkService.networkService, { name: 'govermentList' });case 6:items = _context2.sent;_context2.next = 9;return (0, _effects.put)({ type: _.GET_GOVERMENT_LIST, items: items });case 9:_context2.next = 15;break;case 11:_context2.prev = 11;_context2.t0 = _context2['catch'](3);_context2.next = 15;return (0, _effects.put)({ type: _.GET_GOVERMENT_LIST, items: items });case 15:case 'end':return _context2.stop();}}}, _marked[1], this, [[3, 11]]);}function getTypeDocPersonList() {var items;return regeneratorRuntime.wrap(function getTypeDocPersonList$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:_context3.next = 2;return (
+
+						(0, _effects.take)(_.GET_TYPE_DOC_LIST));case 2:
+					items = void 0;_context3.prev = 3;_context3.next = 6;return (
+
+						(0, _effects.call)(_networkService.networkService, { name: 'DocumentList' }));case 6:items = _context3.sent;_context3.next = 9;return (
+						(0, _effects.put)({ type: _.GET_TYPE_DOC_LIST, items: items }));case 9:_context3.next = 15;break;case 11:_context3.prev = 11;_context3.t0 = _context3['catch'](3);_context3.next = 15;return (
+
+						(0, _effects.put)({ type: _.GET_TYPE_DOC_LIST, items: items }));case 15:case 'end':return _context3.stop();}}}, _marked[2], this, [[3, 11]]);}
+
+
+var sagaDataProvider = [
+getDefaultNames(),
+getGovermentList(),
+getTypeDocPersonList()];exports.default =
+
+sagaDataProvider;

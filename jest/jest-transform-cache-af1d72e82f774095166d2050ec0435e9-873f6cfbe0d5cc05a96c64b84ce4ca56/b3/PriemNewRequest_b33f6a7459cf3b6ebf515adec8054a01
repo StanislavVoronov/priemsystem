@@ -1,0 +1,219 @@
+'use strict';Object.defineProperty(exports, "__esModule", { value: true });var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _react = require('react');var _react2 = _interopRequireDefault(_react);
+var _Stepper = require('material-ui/Stepper');
+
+
+
+
+
+
+var _StylePriem = require('../common/StylePriem');
+var _ExpandTransition = require('material-ui/internal/ExpandTransition');var _ExpandTransition2 = _interopRequireDefault(_ExpandTransition);
+var _RaisedButton = require('material-ui/RaisedButton');var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+var _FlatButton = require('material-ui/FlatButton');var _FlatButton2 = _interopRequireDefault(_FlatButton);
+var _multiSelect = require('../common/multiSelect');var _multiSelect2 = _interopRequireDefault(_multiSelect);
+var _actions = require('../actions');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _reactRedux = require('react-redux');
+var _UserWorkRoom = require('../common/UserWorkRoom');var _UserWorkRoom2 = _interopRequireDefault(_UserWorkRoom);
+var _AddNewDocFile = require('../common/AddNewDocFile');var _AddNewDocFile2 = _interopRequireDefault(_AddNewDocFile);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+PriemNewRequest = function (_React$Component) {_inherits(PriemNewRequest, _React$Component);function PriemNewRequest() {_classCallCheck(this, PriemNewRequest);return _possibleConstructorReturn(this, (PriemNewRequest.__proto__ || Object.getPrototypeOf(PriemNewRequest)).apply(this, arguments));}_createClass(PriemNewRequest, [{ key: 'componentWillMount', value: function componentWillMount()
+
+
+    {
+      if (!(this.props.docsNeedScans && this.props.docsNeedScans.length > 0)) this.props.updateDocNeedScans();
+      if (!(this.props.docTypeList && this.props.docTypeList.length > 0)) this.props.updateDocTypeList();
+      if (this.props.priemUser.typeOperator != 2) this.props.setRequestPerformer(this.props.priemUser);
+      this.props.getUserUploadImage();
+    } }, { key: 'handleNext', value: function handleNext()
+
+    {var _props$projectStates =
+      this.props.projectStates,stepIndex = _props$projectStates.stepIndex,finished = _props$projectStates.finished;
+
+      if (stepIndex == 3) {
+        finished = false;
+        stepIndex = 0;
+      } else if (stepIndex == 2) {
+        finished = true;
+        stepIndex += 1;
+        this.props.sendNewPriemRequestForServer();
+      } else
+      if (stepIndex == 1) {
+        this.props.priemUser.typeOperator == 2 && this.props.getUserWorkRoom();
+        stepIndex += 1;
+      } else {
+        stepIndex += 1;
+      }
+      this.props.setStateNewRequest(stepIndex, finished);
+    } }, { key: 'handlePrev', value: function handlePrev(
+
+    stepIndex) {
+      this.props.setStateNewRequest(stepIndex - 1, false);
+    } }, { key: 'getStepContent', value: function getStepContent(
+
+    stepIndex) {
+
+      switch (stepIndex) {
+        case 0:
+          return (
+            _react2.default.createElement(_multiSelect2.default, { selected: this.props.typeRequest, filter: false, title: '\u0422\u0438\u043F \u0437\u0430\u043F\u0440\u043E\u0441\u0430', onChange: this.props.updateTypeRequest, placeholder: '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0442\u0438\u043F \u043D\u043E\u0432\u043E\u0433\u043E \u0437\u0430\u043F\u0440\u043E\u0441\u0430', data: this.props.docsNeedScans }));
+
+        case 1:
+          return _react2.default.createElement(_AddNewDocFile2.default, { updateFileItemStatus: this.props.updateFileItemStatus,
+            addNewFileToServer: this.props.addNewFileToServer, DocFileList: this.props.DocFileList,
+            updateFileItemType: this.props.updateFileItemType,
+            deleteImageFile: this.props.deleteImageFile,
+            docTypeList: this.props.docTypeList,
+            updateFileList: this.props.updateFileList });
+
+
+        case 2:
+
+          if (this.props.priemUser.typeOperator == 2) {
+            return (
+              _react2.default.createElement(_UserWorkRoom2.default, { stateSystem: this.props.stateSystem, requestPerformer: this.props.requestPerformer, onSelectPerformerМ: this.props.setRequestPerformer, userWorkRoom: this.props.userWorkRoom }));
+
+          } else {
+            return _react2.default.createElement('p', { style: { marginLeft: 5, fontSize: 14 } }, _react2.default.createElement('p', null, _react2.default.createElement('span', { style: _StylePriem.Styles.boldRed }, '\u041E\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u044E\u0442 \u0434\u043E\u0441\u0442\u0443\u043F\u043D\u044B\u0435 \u043C\u0435\u0442\u043E\u0434\u0438\u0441\u0442\u044B.')),
+              _react2.default.createElement('p', { style: { fontSize: 14 } }, _react2.default.createElement('span', { style: { fontWeight: 'bold' } }, '\u0414\u043B\u044F \u043E\u0442\u043F\u0440\u0430\u0432\u043A\u0438 \u0437\u0430\u043F\u0440\u043E\u0441\u0430 \u0442\u0435\u043A\u0443\u0449\u0435\u043C\u0443 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044E'), ' \u043D\u0430\u0436\u043C\u0438\u0442\u0435 ', _react2.default.createElement('span', { style: _StylePriem.Styles.boldGreen }, '\xAB\u0421\u043E\u0437\u0434\u0430\u0442\u044C \u0437\u0430\u043F\u0440\u043E\u0441\xBB.')));
+          }
+        case 3:
+          {
+            return _react2.default.createElement('p', { style: { marginLeft: 5 } }, '<span style={{fontWeight:\'bold\'}}>\u0417\u0430\u043F\u0440\u043E\u0441 \u2116 ' +
+              this.props.newNumberRequest + ' \u0443\u0441\u043F\u0435\u0448\u043D\u043E \u043E\u0442\u043F\u0440\u0430\u0432\u043B\u0435\u043D</span> \u043C\u0435\u0442\u043E\u0434\u0438\u0441\u0442\u0443: ' + this.props.requestPerformer.name);
+
+          }
+        default:
+          return '';}
+
+    } }, { key: 'renderLabelButton', value: function renderLabelButton(
+    stepIndex)
+    {
+      switch (stepIndex) {
+
+        case 0:{
+            return "Выбрать тип запроса";
+          }
+        case 1:{
+            return "Добавить документы в запрос";
+          }
+        case 2:{
+            return "Создать запрос";
+          }
+        case 3:{
+            return "Создать новый запрос";
+          }}
+
+
+    } }, { key: 'getNextButtonStatus', value: function getNextButtonStatus(
+    stepIndex, DocFileList)
+    {
+      switch (stepIndex) {
+
+        case 0:return !this.props.typeRequest;
+        case 1:{
+            var listDocSelectedFiles = DocFileList.filter(function (file) {return file.selected;});
+            var listDocTypeSelectedFiles = listDocSelectedFiles.filter(function (file) {return file.typeDoc && file.typeDoc.typeDoc;});
+            return !(listDocTypeSelectedFiles.length === listDocSelectedFiles.length && listDocSelectedFiles.length > 0);
+          }
+        case 2:{
+            return !this.props.requestPerformer;
+          }}
+
+
+    } }, { key: 'renderContent', value: function renderContent()
+    {var _props$projectStates2 =
+      this.props.projectStates,finished = _props$projectStates2.finished,stepIndex = _props$projectStates2.stepIndex,
+      contentStyle = { margin: '0 16px', overflow: 'hidden' };
+      var titleLabel = '';
+      return (
+        _react2.default.createElement('div', null,
+          _react2.default.createElement('div', null, this.getStepContent(stepIndex)),
+          _react2.default.createElement('div', { style: { marginTop: 24, marginBottom: 12, 'display': 'flex', 'justifyContent': 'flex-end' } },
+            stepIndex > 0 && stepIndex < 3 && _react2.default.createElement(_FlatButton2.default, {
+              label: '\u041D\u0430\u0437\u0430\u0434',
+              labelStyle: { 'fontSize': 12 },
+              onTouchTap: this.handlePrev.bind(this, stepIndex),
+              style: { marginRight: 12 } }),
+            _react2.default.createElement(_RaisedButton2.default, {
+              disabled: this.getNextButtonStatus(stepIndex, this.props.DocFileList),
+              label: this.renderLabelButton(stepIndex),
+              backgroundColor: '#2474f5',
+              labelStyle: { 'fontSize': 12 },
+              labelColor: '#ffffff',
+              onTouchTap: this.handleNext.bind(this) }))));
+
+
+
+    } }, { key: 'render', value: function render()
+
+    {var
+      stepIndex = this.props.projectStates.stepIndex;
+      console.log(this.props);
+      return (
+        _react2.default.createElement('div', { style: { width: '100%', margin: 'auto' } },
+          _react2.default.createElement(_Stepper.Stepper, { activeStep: stepIndex },
+            _react2.default.createElement(_Stepper.Step, null,
+              _react2.default.createElement(_Stepper.StepLabel, null, '\u0412\u044B\u0431\u043E\u0440 \u0442\u0438\u043F\u0430 \u0437\u0430\u043F\u0440\u043E\u0441\u0430')),
+
+            _react2.default.createElement(_Stepper.Step, null,
+              _react2.default.createElement(_Stepper.StepLabel, null, '\u0414\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u043E\u0432')),
+
+            _react2.default.createElement(_Stepper.Step, null,
+              _react2.default.createElement(_Stepper.StepLabel, null, '\u0412\u044B\u0431\u043E\u0440 \u043C\u0435\u0442\u043E\u0434\u0438\u0441\u0442\u0430 \u043F\u0440\u0438\u0435\u043C\u0430'))),
+
+
+          _react2.default.createElement(_ExpandTransition2.default, { open: true },
+            this.renderContent())));
+
+
+
+    } }]);return PriemNewRequest;}(_react2.default.Component);
+
+
+var mapStateToProps = function mapStateToProps(state)
+{
+  return {
+    docsNeedScans: state.directories.docsNeedScansList,
+    projectStates: state.projectStates.priemNewRequestState,
+    docTypeList: state.directories.subTypesDocList,
+    DocFileList: state.PriemAddNewRequest.DocFileList,
+    userWorkRoom: state.PriemAddNewRequest.userWorkRoom,
+    typeRequest: state.PriemAddNewRequest.typeRequest,
+    requestPerformer: state.PriemAddNewRequest.requestPerformer,
+    newNumberRequest: state.PriemAddNewRequest.newNumberRequest,
+    priemUser: state.PriemAccount.user,
+    stateSystem: state.SystemStatusState };
+
+};
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    setDefaultStateNewRequest: function setDefaultStateNewRequest() {return dispatch((0, _actions.setDefaultStateNewRequest)());},
+    setStateNewRequest: function setStateNewRequest(stepIndex, finished) {return dispatch((0, _actions.setStateNewRequest)(stepIndex, finished));},
+    getUserUploadImage: function getUserUploadImage(action) {return dispatch((0, _actions.getUserUploadImage)(action));},
+    addNewFileToServer: function addNewFileToServer(action) {return dispatch((0, _actions.addNewFileToServer)(action));},
+    updateFileItemStatus: function updateFileItemStatus(action, status) {return dispatch((0, _actions.updateFileItemStatus)(action, status));},
+    updateFileItemType: function updateFileItemType(index, typeDoc) {return dispatch((0, _actions.updateFileItemType)(index, typeDoc));},
+    updateDocNeedScans: function updateDocNeedScans(action) {return dispatch((0, _actions.updateDocNeedScans)(action));},
+    updateDocTypeList: function updateDocTypeList(action) {return dispatch((0, _actions.updateDocTypeList)(action));},
+    updateFileList: function updateFileList(action) {return dispatch((0, _actions.updateFileList)(action));},
+    getUserWorkRoom: function getUserWorkRoom(action) {return dispatch((0, _actions.getUserWorkRoom)());},
+    deleteImageFile: function deleteImageFile(action) {return dispatch((0, _actions.deleteImageFile)(action));},
+    setRequestPerformer: function setRequestPerformer(performer) {return dispatch((0, _actions.setRequestPerformer)(performer));},
+    updateTypeRequest: function updateTypeRequest(typeRequest) {return dispatch((0, _actions.setNewTypeRequest)(typeRequest));},
+    sendNewPriemRequestForServer: function sendNewPriemRequestForServer(newRequest) {return dispatch((0, _actions.sendNewPriemRequestForServer)(newRequest));} };
+
+};exports.default =
+(0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(PriemNewRequest);

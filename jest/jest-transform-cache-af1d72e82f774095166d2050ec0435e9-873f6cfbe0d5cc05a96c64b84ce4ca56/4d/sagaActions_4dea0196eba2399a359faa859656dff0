@@ -1,0 +1,269 @@
+'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+getUserListRequest = getUserListRequest;exports.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+getDownloadFileImage = getDownloadFileImage;exports.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+setLoggedPriemUser = setLoggedPriemUser;exports.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+setLoginUser = setLoginUser;exports.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+getDocNeedScans = getDocNeedScans;exports.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+sendNewFileToServer = sendNewFileToServer;exports.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+removeFileImageFromServer = removeFileImageFromServer;exports.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+getRequestUserWorkRoom = getRequestUserWorkRoom;exports.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+addNewPriemRequest = addNewPriemRequest;var _ = require('./');var _effects = require('redux-saga/effects');var _networkService = require('../common/networkService');var _marked = [getUserListRequest, getDownloadFileImage, setLoggedPriemUser, setLoginUser, getDocNeedScans, sendNewFileToServer, removeFileImageFromServer, getRequestUserWorkRoom, addNewPriemRequest].map(regeneratorRuntime.mark);function priemMakeErrorList(error) {var arrayErrors = error.message.split(";");return { type: _.PRIEM_ERROR_OCCURED, reason: arrayErrors[1], service: arrayErrors[3], codeError: arrayErrors[0], request: arrayErrors[2] };}function getUserListRequest() {var userData, item;return regeneratorRuntime.wrap(function getUserListRequest$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:if (!true) {_context.next = 23;break;}_context.next = 3;return (0, _effects.take)(_.GET_USER_LIST_REQUEST);case 3:_context.next = 5;return (0, _effects.select)(function (state) {return state.PriemAccount.getUserRequests;});case 5:userData = _context.sent;item = void 0;_context.prev = 7;_context.next = 10;return (0, _effects.call)(_networkService.networkService, { name: "userListRequests", data: userData, method: "GET" });case 10:item = _context.sent;_context.next = 13;return (0, _effects.put)({ type: _.GET_USER_LIST_REQUEST, item: item });case 13:_context.next = 15;return (0, _effects.put)({ type: _.SET_USER_LIST_REQUEST, item: item });case 15:_context.next = 21;break;case 17:_context.prev = 17;_context.t0 = _context['catch'](7);_context.next = 21;return (0, _effects.put)(priemMakeErrorList(_context.t0));case 21:_context.next = 0;break;case 23:case 'end':return _context.stop();}}}, _marked[0], this, [[7, 17]]);}function getDownloadFileImage() {var userData, items;return regeneratorRuntime.wrap(function getDownloadFileImage$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.next = 2;return (0, _effects.take)(_.GET_DOWNLOAD_FILE_IMAGE);case 2:_context2.next = 4;return (0, _effects.put)({ type: _.SYSTEM_STATUS_STATE, item: { loading: true, loaded: false } });case 4:_context2.next = 6;return (0, _effects.select)(function (state) {return state.PriemAccount.user;});case 6:userData = _context2.sent;items = void 0;_context2.prev = 8;_context2.next = 11;return (0, _effects.call)(_networkService.networkService, { name: "userFileImage", data: userData.id_operator, method: "GET" });case 11:items = _context2.sent;_context2.next = 14;return (0, _effects.put)({ type: _.UPDATE_FILE_LIST, items: items });case 14:_context2.next = 20;break;case 16:_context2.prev = 16;_context2.t0 = _context2['catch'](8);_context2.next = 20;return (0, _effects.put)(priemMakeErrorList(_context2.t0));case 20:_context2.next = 22;return (0, _effects.put)({ type: _.SYSTEM_STATUS_STATE, item: { loading: false, loaded: false } });case 22:case 'end':return _context2.stop();}}}, _marked[1], this, [[8, 16]]);}function setLoggedPriemUser() {var userData, item;return regeneratorRuntime.wrap(function setLoggedPriemUser$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:_context3.next = 2;return (0, _effects.take)(_.SET_LOGGED_PRIEM_USER);case 2:userData = JSON.parse(localStorage["priemUser"]);item = void 0;_context3.prev = 4;_context3.next = 7;return (0, _effects.call)(_networkService.networkService, { name: "connOper", data: userData, method: "POST" });case 7:item = _context3.sent;_context3.next = 10;return (0, _effects.put)({ type: _.SET_LOGGED_PRIEM_USER, item: item });case 10:_context3.next = 16;break;case 12:_context3.prev = 12;_context3.t0 = _context3['catch'](4);_context3.next = 16;return (0, _effects.put)(priemMakeErrorList(_context3.t0));case 16:case 'end':return _context3.stop();}}}, _marked[2], this, [[4, 12]]);}function setLoginUser(state) {var userData, item;return regeneratorRuntime.wrap(function setLoginUser$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:if (!true) {_context4.next = 33;break;}_context4.next = 3;return (0, _effects.take)(_.SET_AUTH_DATA);case 3:_context4.next = 5;return (0, _effects.select)(function (state) {return state.PriemAccount.auth;});case 5:userData = _context4.sent;item = void 0;_context4.prev = 7;_context4.next = 10;return (0, _effects.call)(_networkService.networkService, { name: "regOper", data: userData, method: "POST" });case 10:item = _context4.sent;if (!(item.id == 0)) {_context4.next = 18;break;}localStorage.clear();item = undefined;_context4.next = 16;return (0, _effects.put)({ type: _.SET_PRIEM_USER, item: { authMessage: "Неправильный логин или пароль!" } });case 16:_context4.next = 21;break;case 18:localStorage["priemUser"] = JSON.stringify(item);_context4.next = 21;return (0, _effects.put)({ type: _.SET_PRIEM_USER, item: item });case 21:_context4.next = 23;return (0, _effects.put)({ type: _.SET_AUTH_DATA, item: null });case 23:_context4.next = 31;break;case 25:_context4.prev = 25;_context4.t0 = _context4['catch'](7);_context4.next = 29;return (0, _effects.put)({ type: _.SET_AUTH_DATA, item: null });case 29:_context4.next = 31;return (0, _effects.put)(priemMakeErrorList(_context4.t0));case 31:_context4.next = 0;break;case 33:case 'end':return _context4.stop();}}}, _marked[3], this, [[7, 25]]);}function getDocNeedScans(state) {var items;return regeneratorRuntime.wrap(function getDocNeedScans$(_context5) {while (1) {switch (_context5.prev = _context5.next) {case 0:_context5.next = 2;return (0, _effects.take)(_.UPDATE_DOC_NEED_SCANS);case 2:items = void 0;_context5.prev = 3;_context5.next = 6;return (0, _effects.call)(_networkService.networkService, { name: 'RequestTypesNeedScans' });case 6:items = _context5.sent;_context5.next = 9;return (0, _effects.put)({ type: _.UPDATE_DOC_NEED_SCANS, items: items });case 9:_context5.next = 15;break;case 11:_context5.prev = 11;_context5.t0 = _context5['catch'](3);_context5.next = 15;return (0, _effects.put)(priemMakeErrorList(_context5.t0));case 15:case 'end':return _context5.stop();}}}, _marked[4], this, [[3, 11]]);}function sendNewFileToServer() {var file, nameDocFile, image;return regeneratorRuntime.wrap(function sendNewFileToServer$(_context6) {while (1) {switch (_context6.prev = _context6.next) {case 0:if (!true) {_context6.next = 22;break;}_context6.next = 3;return (0, _effects.take)(_.ADD_NEW_FILE_TO_SERVER);case 3:_context6.next = 5;return (0, _effects.select)(function (state) {return state.PriemAddNewRequest.DocFileList.find(function (file, index) {return state.PriemAddNewRequest.needsUpload == index;});});case 5:file = _context6.sent;nameDocFile = file.docType && file.docType.docType == 41 ? decodeURIComponent(escape(file.name)) : file.name;image = void 0;_context6.prev = 8;_context6.next = 11;return (0, _effects.call)(_networkService.networkService, { name: nameDocFile, data: file, format: true, url: 'priem_image_upload?json=1', method: 'POST' });case 11:image = _context6.sent;_context6.next = 14;return (0, _effects.put)({ type: _.UPDATE_UPLOAD_IMAGE_FILE, item: image });case 14:_context6.next = 20;break;case 16:_context6.prev = 16;_context6.t0 = _context6['catch'](8);_context6.next = 20;return (0, _effects.put)(priemMakeErrorList(_context6.t0));case 20:_context6.next = 0;break;case 22:case 'end':return _context6.stop();}}}, _marked[5], this, [[8, 16]]);}function removeFileImageFromServer() {var imageId;return regeneratorRuntime.wrap(function removeFileImageFromServer$(_context7) {while (1) {switch (_context7.prev = _context7.next) {case 0:if (!true) {_context7.next = 19;break;}_context7.next = 3;return (0, _effects.take)(_.DELETE_FILE_ITEM);case 3:_context7.next = 5;return (0, _effects.select)(function (state) {return state.PriemAddNewRequest.needsImageRemove;});case 5:imageId = _context7.sent;_context7.prev = 6;_context7.next = 9;return (0, _effects.call)(_networkService.networkService, { name: "removeUploadImageFile", data: imageId, format: true, method: 'POST' });case 9:_context7.next = 15;break;case 11:_context7.prev = 11;_context7.t0 = _context7['catch'](6);_context7.next = 15;return (0, _effects.put)(priemMakeErrorList(_context7.t0));case 15:_context7.next = 17;return (0, _effects.put)({ type: _.CLEAN_DELETE_FILE_LIST, item: imageId });case 17:_context7.next = 0;break;case 19:case 'end':return _context7.stop();}}}, _marked[6], this, [[6, 11]]);}function getRequestUserWorkRoom() {var items;return regeneratorRuntime.wrap(function getRequestUserWorkRoom$(_context8) {while (1) {switch (_context8.prev = _context8.next) {case 0:if (!true) {_context8.next = 22;break;}_context8.next = 3;return (0, _effects.take)(_.GET_USER_WORK_ROOM);case 3:_context8.next = 5;return (0, _effects.put)({ type: _.SYSTEM_STATUS_STATE, item: { loading: true, loaded: false } });case 5:items = void 0;_context8.prev = 6;_context8.next = 9;return (0, _effects.call)(_networkService.networkService, { name: 'userWorkRoom' });case 9:items = _context8.sent;_context8.next = 12;return (0, _effects.put)({ type: _.GET_USER_WORK_ROOM, items: items });case 12:_context8.next = 18;break;case 14:_context8.prev = 14;_context8.t0 = _context8['catch'](6);_context8.next = 18;return (0, _effects.put)(priemMakeErrorList(_context8.t0));case 18:_context8.next = 20;return (0, _effects.put)({ type: _.SYSTEM_STATUS_STATE, item: { loading: false, loaded: true } });case 20:_context8.next = 0;break;case 22:case 'end':return _context8.stop();}}}, _marked[7], this, [[6, 14]]);}function addNewPriemRequest() {var _this = this;var _loop;return regeneratorRuntime.wrap(function addNewPriemRequest$(_context10) {while (1) {switch (_context10.prev = _context10.next) {case 0:_loop = regeneratorRuntime.mark(function _loop() {var items, user, addedFiles, selectedDocs, idOperator, typeRequest, requestData, needUploadFiles, error, requestNumber;return regeneratorRuntime.wrap(function _loop$(_context9) {while (1) {switch (_context9.prev = _context9.next) {case 0:_context9.next = 2;return (
+
+
+											(0, _effects.take)(_.ADD_NEW_PRIEM_REQUEST));case 2:_context9.next = 4;return (
+											(0, _effects.put)({ type: _.SYSTEM_STATUS_STATE, item: { loading: true, loaded: false } }));case 4:
+										items = void 0;_context9.next = 7;return (
+											(0, _effects.select)(function (state) {
+												return state.PriemAccount.user;}));case 7:user = _context9.sent;_context9.next = 10;return (
+											(0, _effects.select)(function (state) {
+												return state.PriemAddNewRequest.DocFileList;}));case 10:addedFiles = _context9.sent;
+
+										console.log("addedFiles", addedFiles);
+										selectedDocs = addedFiles.filter(function (file) {
+											return file.selected && file.typeDoc;
+										});_context9.next = 15;return (
+											(0, _effects.select)(function (state) {
+												return state.PriemAddNewRequest.requestPerformer.id;
+											}));case 15:idOperator = _context9.sent;_context9.next = 18;return (
+											(0, _effects.select)(function (state) {
+												return state.PriemAddNewRequest.typeRequest;
+											}));case 18:typeRequest = _context9.sent;
+										requestData = new FormData();
+										needUploadFiles = [];
+										addedFiles.filter(function (file) {
+											if (!file.id && file.selected && file.typeDoc)
+											{
+												requestData.append('file', file);
+												needUploadFiles.push(file);
+												return false;
+											}
+											return true;
+										});
+										error = false;
+										requestData.append('idNewTypeRequest', typeRequest.id);
+										requestData.append('operatorIdNewRequest', idOperator);
+										requestData.append('addedDocFiles', JSON.stringify(selectedDocs));
+										requestData.append('needUploadDocFiles', JSON.stringify(needUploadFiles));
+										console.log("requestData", requestData);_context9.prev = 28;_context9.next = 31;return (
+
+											(0, _effects.call)(_networkService.networkService,
+											{
+												formData: requestData,
+												format: true,
+												method: 'POST' }));case 31:requestNumber = _context9.sent;_context9.next = 34;return (
+
+
+
+											(0, _effects.put)({ type: _.ADD_NEW_PRIEM_REQUEST, item: requestNumber.id_queue }));case 34:_context9.next = 36;return (
+											(0, _effects.put)({ type: _.SYSTEM_STATUS_STATE, item: { loading: false, loaded: false } }));case 36:if (!(
+										user.id == idOperator)) {_context9.next = 39;break;}_context9.next = 39;return (
+
+											(0, _effects.put)({ type: _.GET_USER_LIST_REQUEST, item: idOperator }));case 39:_context9.next = 46;break;case 41:_context9.prev = 41;_context9.t0 = _context9['catch'](28);
+
+
+										console.log(_context9.t0);_context9.next = 46;return (
+											(0, _effects.put)({ type: _.ADD_NEW_PRIEM_REQUEST, item: 0 }));case 46:case 'end':return _context9.stop();}}}, _loop, _this, [[28, 41]]);});case 1:if (!true) {_context10.next = 5;break;}return _context10.delegateYield(_loop(), 't0', 3);case 3:_context10.next = 1;break;case 5:case 'end':return _context10.stop();}}}, _marked[8], this);}
+
+
+
+var reduxSagaActions = [
+addNewPriemRequest(),
+getRequestUserWorkRoom(),
+removeFileImageFromServer(),
+sendNewFileToServer(),
+getDocNeedScans(),
+setLoginUser(),
+setLoggedPriemUser(),
+getDownloadFileImage(),
+getUserListRequest()];exports.default =
+
+reduxSagaActions;

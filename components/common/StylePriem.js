@@ -21,6 +21,15 @@ export const Styles =
 	    position: 'relative',
 	    backgroundColor:'#f2f2f2'
   	 },
+  	 requiredSelectField:{
+  	 	color:'rgb(244, 67, 54)',
+  	 	borderTopColor:'red',
+  	 	borderTopWidth:2,  
+        borderTopStyle: 'solid',
+        fontSize:12,
+        paddingTop:5,
+        marginTop:1
+  	 },
   	 authFailed:
   	 {
   	 	color:'red',
@@ -160,6 +169,9 @@ export const Styles =
 	 	textAlign:'center',
 	 	width:'15%'
 	 },
+	 fontSizeTwelve:{fontSize:12},
+	 marginsIconButton:{marginRight:4,marginBottom:2},
+	 stepperRegNewPerson: {marginTop: 24, marginRight:10,marginBottom: 12,'display':'flex', 'justifyContent': 'flex-end'},
 	 marginBetweenTextField:
 	 {
 	 	marginTop:-20

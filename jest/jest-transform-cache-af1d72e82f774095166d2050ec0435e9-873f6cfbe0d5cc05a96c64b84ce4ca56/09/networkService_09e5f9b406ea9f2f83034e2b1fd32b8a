@@ -1,0 +1,49 @@
+'use strict';Object.defineProperty(exports, "__esModule", { value: true });exports.
+
+networkService = networkService;var DEFAULT_URL = 'https://monitoring.mgutm.ru/dev-bin/priem_requests';var DEFAULT_DOMEN = 'https://monitoring.mgutm.ru/dev-bin/';function networkService(service)
+{
+    var url = service.url ? '' + DEFAULT_DOMEN + service.url : '' +
+    DEFAULT_URL;
+    var method = service.method ? service.method : 'GET';
+    var isJsonRes = service.format ? false : true;
+    var parametrs = isJsonRes ? JSON.stringify(service.data) :
+    service.data;
+    var request = {
+        method: method,
+        credentials: "same-origin",
+        header:
+        {
+            "Accept": "application/x-www-form-urlencoded; charset=UTF-8",
+            "Content-Type": "multipart/formdata" } };
+
+
+
+    if (service.formData)
+    {
+        Object.assign(request, { body: service.formData });
+    } else
+    if (method == "GET")
+    {
+        url += '?' + service.name;
+        url += parametrs ? '=' + parametrs : '=currentUser';
+    } else
+    if (method == "POST")
+    {
+        var formData = new FormData();
+        formData.append(service.name, parametrs);
+
+        Object.assign(request, { body: formData });
+    }
+
+    return fetch(url, request).
+    then(function (response) {return response.json();}).
+    then(function (data) {
+        if (data.error)
+        {
+            var stringError = data.codeError + ';' + data.error + ';' + data.request + ';' + url;
+            throw new Error(stringError);
+        }
+        return data;
+    });
+
+}

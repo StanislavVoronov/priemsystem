@@ -1,0 +1,187 @@
+'use strict';Object.defineProperty(exports, "__esModule", { value: true });var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _react = require('react');var _react2 = _interopRequireDefault(_react);
+
+
+
+
+var _Subheader = require('material-ui/Subheader');var _Subheader2 = _interopRequireDefault(_Subheader);
+var _StylePriem = require('../common/StylePriem');
+var _reactDropzone = require('react-dropzone');var _reactDropzone2 = _interopRequireDefault(_reactDropzone);
+var _Checkbox = require('material-ui/Checkbox');var _Checkbox2 = _interopRequireDefault(_Checkbox);
+var _IconButton = require('material-ui/IconButton');var _IconButton2 = _interopRequireDefault(_IconButton);
+var _PriemButtons = require('./PriemButtons');var _PriemButtons2 = _interopRequireDefault(_PriemButtons);
+var _WebPhoto = require('./WebPhoto');var _WebPhoto2 = _interopRequireDefault(_WebPhoto);
+var _Popover = require('material-ui/Popover');var _Popover2 = _interopRequireDefault(_Popover);
+var _colors = require('material-ui/styles/colors');
+var _Card = require('material-ui/Card');
+var _Table = require('material-ui/Table');
+var _multiSelect = require('../common/multiSelect');var _multiSelect2 = _interopRequireDefault(_multiSelect);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+
+AddNewDocFile = function (_React$Component) {_inherits(AddNewDocFile, _React$Component);
+  function AddNewDocFile(props)
+  {_classCallCheck(this, AddNewDocFile);var _this = _possibleConstructorReturn(this, (AddNewDocFile.__proto__ || Object.getPrototypeOf(AddNewDocFile)).call(this,
+    props));
+    _this.state = {
+      webPhotoDialog: false,
+      webPhoto: undefined,
+      popOverImageOpen: false,
+      selectedDocType: null,
+      defautStateDocTypes: false,
+      showAddButton: _this.showAddButton.bind(_this),
+      onDropFiles: _this.onDropFiles.bind(_this),
+      renderTableAttachDocs: _this.renderTableAttachDocs.bind(_this) };return _this;
+
+  }_createClass(AddNewDocFile, [{ key: 'onDropFiles', value: function onDropFiles(
+
+    files) {var _this2 = this;
+      //TODO check the type of image - only JPG FILES
+      var mapDocs = files.map(function (file) {return Object.assign(file,
+        { selected: true }, { typeDoc: _this2.state.selectedDocType });});
+
+      this.props.updateFileList(mapDocs);
+      this.setState(function (nextState) {return {
+          selectedDocType: null,
+          defautStateDocTypes: true };});
+
+    } }, { key: 'showAddButton', value: function showAddButton(
+    value)
+    {
+      this.setState(function () {return {
+          selectedDocType: value,
+          defautStateDocTypes: false };});
+
+    } }, { key: 'addDocFileByButton', value: function addDocFileByButton(
+    event) {
+      if (this.state.selectedDocType && this.state.selectedDocType.subTypeDoc == 41)
+      {
+        this.setState({ webPhotoDialog: true });
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+      }
+
+    } }, { key: 'onPressActionButton', value: function onPressActionButton(
+    index, fileLoaded)
+    {
+      if (fileLoaded) {
+        this.props.deleteImageFile(index);
+      } else
+
+      {
+        this.props.addNewFileToServer(index);
+      }
+    } }, { key: 'renderTableAttachDocs', value: function renderTableAttachDocs()
+
+    {var _this3 = this;
+      if (!this.props.DocFileList) return [];
+
+      return this.props.DocFileList.map(function (file, index) {
+
+
+        return _react2.default.createElement(_Table.TableRow, { style: _StylePriem.Styles.OverflowVisible, key: index, selectable: false },
+          _react2.default.createElement(_Table.TableRowColumn, { style: _StylePriem.Styles.StatusFileRowStyle },
+            _react2.default.createElement(_Checkbox2.default, { onCheck: function onCheck() {return _this3.props.updateFileItemStatus(index, file.selected);}, label: '', checked: file.selected })),
+
+          _react2.default.createElement(_Table.TableRowColumn, { style: _StylePriem.Styles.NameFileRowStyle }, file.name),
+          _react2.default.createElement(_Table.TableRowColumn, { style: _StylePriem.Styles.PreviewRowStyle },
+            _react2.default.createElement('a', { href: "#", onClick: _this3.handleTouchTap.bind(_this3, file), title: '\u0418\u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u0435 \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0430' }, '\u0418\u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u0435')),
+
+          _react2.default.createElement(_Table.TableRowColumn, { style: Object.assign({}, _StylePriem.Styles.TypeDocFileRowStyle, { 'textAlign': 'left' }) },
+            _react2.default.createElement(_multiSelect2.default, { data: _this3.props.docTypeList, styleSelectContainer: { 'width': '100%' },
+              filter: 'startsWith',
+              divider: false,
+              selected: file.typeDoc, onChange: function onChange(type) {return _this3.props.updateFileItemType(index, type);},
+              placeholder: '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0442\u0438\u043F \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0430' })),
+          _react2.default.createElement(_Table.TableRowColumn, { style: _StylePriem.Styles.DeleteButtonRowStyle },
+            _react2.default.createElement(_PriemButtons2.default, {
+              type: file.id ? 'delete' : 'save',
+              label: file.id ? 'Удалить' : 'Сохранить',
+              onClick: _this3.onPressActionButton.bind(_this3, index, file.id) })));
+
+
+      });
+    } }, { key: 'handleTouchTap', value: function handleTouchTap(
+    file, event) {
+      event.preventDefault();
+      console.log(event.currentTarget);
+      this.setState({
+        popOverImageOpen: true,
+        popOverUrlImage: file.preview,
+        popOverNameImage: file.name,
+        anchorEl: event.currentTarget });
+
+    } }, { key: 'makeWebPhoto', value: function makeWebPhoto(
+    screenshot)
+    {
+      this.setState({ webPhoto: screenshot });
+    } }, { key: 'webPhotoDialogClose', value: function webPhotoDialogClose(
+    photo)
+    {
+      photo && this.onDropFiles(photo);
+      this.setState({ webPhotoDialog: false, webPhoto: undefined });
+    } }, { key: 'handleRequestClose', value: function handleRequestClose()
+    {
+      this.setState({
+        popOverImageOpen: false });
+
+    } }, { key: 'renderPopOverImage', value: function renderPopOverImage()
+
+    {
+
+      return (
+        _react2.default.createElement(_Popover2.default, {
+            open: this.state.popOverImageOpen,
+            anchorEl: this.state.anchorEl,
+            anchorOrigin: { horizontal: 'left', vertical: 'top' },
+            targetOrigin: { horizontal: 'left', vertical: 'top' },
+            onRequestClose: this.handleRequestClose.bind(this) },
+          _react2.default.createElement(_Card.Card, null,
+            _react2.default.createElement(_Card.CardHeader, { titleStyle: { 'fontWeight': 'bold' }, style: { paddingTop: 8, paddingBottom: 0 },
+              title: this.state.popOverNameImage }),
+            _react2.default.createElement(_Card.CardMedia, null,
+              _react2.default.createElement('img', { style: { width: window.innerWidth / 1.4, height: window.innerHeight / 1.4 }, src: this.state.popOverUrlImage })))));
+
+
+
+    } }, { key: 'render', value: function render()
+
+    {var _this4 = this;var _state =
+
+
+
+      this.state,defautStateDocTypes = _state.defautStateDocTypes,renderTableAttachDocs = _state.renderTableAttachDocs,selectedDocType = _state.selectedDocType,showAddButton = _state.showAddButton,onDropFiles = _state.onDropFiles;
+      var isShowAddButton = !defautStateDocTypes && selectedDocType ? {} : _StylePriem.Styles.DisplayNone;
+      return _react2.default.createElement('div', null,
+        _react2.default.createElement(_multiSelect2.default, { data: this.props.docTypeList, filter: 'startsWith', selected: selectedDocType, onChange: showAddButton,
+          placeholder: '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0442\u0438\u043F \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0430 \u0434\u043B\u044F \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u0438\u044F \u043E\u0434\u043D\u043E\u0433\u043E \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0430',
+          title: '\u0422\u0438\u043F \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0430' }),
+        _react2.default.createElement(_reactDropzone2.default, { style: _StylePriem.Styles.FileUploadZone, onDrop: onDropFiles },
+          _react2.default.createElement(_PriemButtons2.default, {
+            onClick: function onClick(event) {return _this4.addDocFileByButton(event);},
+            type: 'add',
+            buttonStyle: isShowAddButton,
+            label: '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043D\u043E\u0432\u044B\u0439 \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442' }),
+          _react2.default.createElement(_Subheader2.default, { style: _StylePriem.Styles.centerBoxHeader, inset: true }, '\u043F\u0435\u0440\u0435\u043D\u0435\u0441\u0438\u0442\u0435 \u0432\u0441\u0435 \u043D\u0435\u043E\u0431\u0445\u043E\u0434\u0438\u043C\u044B\u0435 \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u044B \u0432 \u043E\u0442\u043C\u0435\u0447\u0435\u043D\u043D\u0443\u044E \u043E\u0431\u043B\u0430\u0441\u0442\u044C')),
+
+        _react2.default.createElement(_Table.Table, { selectable: false, wrapperStyle: _StylePriem.Styles.OverflowVisible, style: _StylePriem.Styles.OverflowVisible, bodyStyle: _StylePriem.Styles.OverflowVisible },
+          _react2.default.createElement(_Table.TableHeader, { displaySelectAll: false, adjustForCheckbox: false },
+
+            _react2.default.createElement(_Table.TableRow, { selectable: false },
+              _react2.default.createElement(_Table.TableHeaderColumn, { style: _StylePriem.Styles.StatusFileRowStyle }, '\u0421\u0442\u0430\u0442\u0443\u0441'),
+              _react2.default.createElement(_Table.TableHeaderColumn, { style: _StylePriem.Styles.NameFileRowStyle }, '\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u0444\u0430\u0439\u043B\u0430'),
+              _react2.default.createElement(_Table.TableHeaderColumn, { style: _StylePriem.Styles.PreviewRowStyle }, '\u0424\u0430\u0439\u043B'),
+              _react2.default.createElement(_Table.TableHeaderColumn, { style: _StylePriem.Styles.TypeDocFileRowStyle }, '\u0422\u0438\u043F \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0430'),
+              _react2.default.createElement(_Table.TableHeaderColumn, { style: _StylePriem.Styles.DeleteButtonRowStyle }, '\u0414\u0435\u0439\u0441\u0442\u0432\u0438\u0435'))),
+
+
+          _react2.default.createElement(_Table.TableBody, { selectable: false, style: _StylePriem.Styles.OverflowVisible, displayRowCheckbox: false },
+            renderTableAttachDocs())),
+
+
+
+        this.renderPopOverImage(),
+        _react2.default.createElement(_WebPhoto2.default, { makeWebPhoto: this.makeWebPhoto.bind(this),
+          webPhotoDialogClose: this.webPhotoDialogClose.bind(this),
+          webPhotoDialog: this.state.webPhotoDialog,
+          webPhoto: this.state.webPhoto }));
+
+    } }]);return AddNewDocFile;}(_react2.default.Component);exports.default = AddNewDocFile;

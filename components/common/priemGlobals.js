@@ -26,16 +26,17 @@ export const  templateTabPanel=(name)=>
     }
 }
 
-
-export const validateFieldsNewPerson=(stepIndex)=>{
-	switch (stepIndex)
-	{
-		case 0: return ["last_name","first_name","birthdate",{"id_doc":["gov","seria","num","org","date","type","code"]},"sex"]
-		default: return []
-	}
-	
+const listRequiredData=
+{
+	"personData": 	{"last_name":'Фамилия',"first_name":'Имя',"birthdate":'День рождение',"sex": 'Пол'},
+	"passportData": {"gov":'Гражданство',"seria":'Серия документа',"num":'Номер документа',"org":'Кем выдан',"date": 'Дата выдачи',"type":'Тип документа',"code":'Код подразделения'}
 }
 
+export const validateFields=(nameFields,nameList)=>
+{
+	const validationKeys=Object.keys(nameFields)
+	return (Object.keys(listRequiredData[nameList]).filter(item=> !validationKeys.includes(item)))
+} 
 
 export const options = {
 	    lines: 13,

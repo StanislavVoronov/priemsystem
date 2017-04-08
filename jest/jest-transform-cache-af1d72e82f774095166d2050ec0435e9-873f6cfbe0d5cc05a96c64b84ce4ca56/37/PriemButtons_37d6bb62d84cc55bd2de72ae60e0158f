@@ -1,0 +1,93 @@
+'use strict';Object.defineProperty(exports, "__esModule", { value: true });var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _react = require('react');var _react2 = _interopRequireDefault(_react);
+
+
+var _FlatButton = require('material-ui/FlatButton');var _FlatButton2 = _interopRequireDefault(_FlatButton);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+
+Buttons = function (_PureComponent) {_inherits(Buttons, _PureComponent);function Buttons() {_classCallCheck(this, Buttons);return _possibleConstructorReturn(this, (Buttons.__proto__ || Object.getPrototypeOf(Buttons)).apply(this, arguments));}_createClass(Buttons, [{ key: 'render', value: function render()
+
+
+
+
+		{
+			var styleButton = Object.assign({}, this.props.defaultButtonStyle, this.props.buttonStyle);
+			var styleLabel = Object.assign({}, this.props.defaultLabelStyle, this.props.labelStyle);
+			switch (this.props.type) {
+
+				case "delete":
+					{
+						return _react2.default.createElement(_FlatButton2.default, {
+							disabled: this.props.disabled,
+							label: this.props.label,
+							labelStyle: styleLabel,
+							primary: this.props.primary,
+							secondary: this.props.secondary,
+							backgroundColor: '#ff0000',
+							hoverColor: '#ff6666',
+							icon: this.props.icon,
+							onTouchTap: this.props.onTouchTap ? this.props.onClick : function () {},
+							onClick: this.props.onClick,
+							style: styleButton });
+					}
+				case "save":
+					{
+						return _react2.default.createElement(_FlatButton2.default, {
+							disabled: this.props.disabled,
+							label: this.props.label,
+							labelStyle: styleLabel,
+							primary: this.props.primary,
+							hoverColor: '#00bcd4',
+							icon: this.props.icon,
+							secondary: this.props.secondary,
+							onClick: this.props.onClick,
+							onTouchTap: this.props.onTouchTap ? this.props.onClick : function () {},
+							backgroundColor: '#2574f4',
+							style: styleButton });
+					}
+				case "add":
+					{
+						return _react2.default.createElement(_FlatButton2.default, {
+							disabled: this.props.disabled,
+							label: this.props.label,
+							labelStyle: styleLabel,
+							primary: this.props.primary,
+							hoverColor: '#00cc00',
+							icon: this.props.icon,
+							secondary: this.props.secondary,
+							onClick: this.props.onClick,
+							onTouchTap: this.props.onTouchTap ? this.props.onClick : function () {},
+							backgroundColor: '#009900',
+							style: styleButton });
+					}
+				default:
+					return _react2.default.createElement(_FlatButton2.default, {
+						disabled: this.props.disabled,
+						label: this.props.label,
+						labelStyle: styleLabel,
+						primary: this.props.primary,
+						hoverColor: this.props.hoverColor,
+						icon: this.props.icon,
+						secondary: this.props.secondary,
+						onClick: this.props.onClick,
+						onTouchTap: this.props.onTouchTap ? this.props.onClick : function () {},
+						backgroundColor: this.props.backgroundColor,
+						style: styleButton });}
+
+
+
+
+		} }]);return Buttons;}(_react.PureComponent);exports.default = Buttons;
+
+
+Buttons.defaultProps =
+{
+	backgroundColor: '#4286f4',
+	defaultButtonStyle: { 'width': 'auto',
+		'height': '25px',
+		'lineHeight': '25px' },
+
+	hoverColor: '',
+	onTouchTap: true,
+	disabled: false,
+	defaultLabelStyle: { 'color': '#ffffff', 'fontSize': '12px' },
+	primary: false,
+	secondary: false };

@@ -12,7 +12,7 @@ import ExpandTransition from 'material-ui/internal/ExpandTransition';
 import RaisedButton from 'material-ui/RaisedButton';
 import {updateTabPanelState} from '../actions'
 import Loader from 'react-loader';
-import {options,validateFieldsNewPerson} from "../common/priemGlobals"
+import {options,validateFields} from "../common/priemGlobals"
 import ChevronRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 import Divider from 'material-ui/Divider';
 import PriemRegPersonData from './PriemRegPersonData'
@@ -57,9 +57,7 @@ export class PriemRegNewPerson extends React.Component{
       case 2:
 
       case 3:
-      {
-         
-      }
+      
       default:
         return '';
     }
@@ -69,16 +67,16 @@ export class PriemRegNewPerson extends React.Component{
      switch (stepIndex)
      {
         case 0: {
-           return "Контактные данные"
+           return "контактные данные"
         }
         case 1: {
-           return "Данные об образовании"
+           return "данные об образовании"
         }
         case 2:{
-           return "Заявления на поступление"
+           return "заявления на поступление"
         }
         case 3:{
-           return "Дополнительная информация"
+           return "дополнительная информация"
         }
      }
 
@@ -95,46 +93,43 @@ export class PriemRegNewPerson extends React.Component{
 
      }
   }
+  simpleTextFunction(a)
+  {
+    return a
+  }
   validateRequiredData(stepIndex)
   {
+     if (this.props.newPerson) {
+         switch (stepIndex){
+            case 0:
+            {
+              console.log("validateFields",validateFields(this.props.newPerson,"personData"),this.props.newPerson.id_doc,"passportData")
+              return !(validateFields(this.props.newPerson,"personData").length==0 
+                     && validateFields(this.props.newPerson.id_doc,"passportData").length==0)
+            }
 
-  	 const requiredFields=validateFieldsNewPerson(stepIndex)
-  	 const	notValidateFields=[]	
-  	 requiredFields.map((field,key)=>
-  	 {
-  	 	
-  	 	if (typeof field ==="object")
-  	 	{
-  	 		for (let key in field) {
-	  	 		Array.isArray(field[key]) && field[key].map(value=>{
-	  	 			!this.props.newPerson[key].hasOwnProperty(value) && notValidateFields.push(value)
-	  	 		})
-  	 		}
-  	 	} else
-  	 	{
-  	 		!this.props.newPerson.hasOwnProperty(field) && notValidateFields.push(field)
-  	 	}
-  	 })
-  	 return notValidateFields.length>0
+         }
+     }
   }
   renderContent(stepIndex=0) {
+
     return (
      <div>
 	        <div>{this.getStepContent(stepIndex)}</div>
-	        <div style={{marginTop: 24, marginBottom: 12,'display':'flex', 'justifyContent': 'flex-end'}}>
+	        <div style={Styles.stepperRegNewPerson}>
                                      {stepIndex>0 && stepIndex < 3 && <FlatButton
                                           label="Назад"
-                                          labelStyle={{'fontSize':12}}
+                                          labelStyle={Styles.fontSizeTwelve}
                                           onTouchTap={this.handlePrev.bind(this,stepIndex)}
                                           style={{marginRight: 12}} />}
                                         <RaisedButton
                                           disabled={this.validateRequiredData(stepIndex)}
                                           label={this.renderLabelButton(stepIndex)}
                                           backgroundColor={'#2474f5'}
-                                          labelStyle={{'fontSize':12}}
+                                          labelStyle={Styles.fontSizeTwelve}
                                           labelColor={'#ffffff'}
                                           labelPosition={'before'}
-                                          icon={<ChevronRight />}
+                                          icon={<ChevronRight style={Styles.marginsIconButton}/>}
                                           onTouchTap={this.handleNext.bind(this)}/>
                                   </div>
       </div>

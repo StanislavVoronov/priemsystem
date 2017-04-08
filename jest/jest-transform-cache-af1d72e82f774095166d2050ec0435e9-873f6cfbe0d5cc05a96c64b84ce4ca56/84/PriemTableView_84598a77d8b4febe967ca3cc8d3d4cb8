@@ -1,0 +1,144 @@
+'use strict';Object.defineProperty(exports, "__esModule", { value: true });var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _react = require('react');var _react2 = _interopRequireDefault(_react);
+
+var _priemGlobals = require('./priemGlobals');
+var _multiSelect = require('../common/multiSelect');var _multiSelect2 = _interopRequireDefault(_multiSelect);
+var _Table = require('material-ui/Table');
+var _StylePriem = require('../common/StylePriem');
+var _PriemButtons = require('./PriemButtons');var _PriemButtons2 = _interopRequireDefault(_PriemButtons);
+var _Checkbox = require('material-ui/Checkbox');var _Checkbox2 = _interopRequireDefault(_Checkbox);
+var _RadioButton = require('material-ui/RadioButton');function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _toConsumableArray(arr) {if (Array.isArray(arr)) {for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {arr2[i] = arr[i];}return arr2;} else {return Array.from(arr);}}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+TableView = function (_PureComponent) {_inherits(TableView, _PureComponent);
+
+	function TableView(props)
+	{_classCallCheck(this, TableView);var _this = _possibleConstructorReturn(this, (TableView.__proto__ || Object.getPrototypeOf(TableView)).call(this,
+		props));
+		_this.state = { filterMap: new Map(), headerTableRow: [], searchTableRow: [] };return _this;
+	}_createClass(TableView, [{ key: 'setFilterTable', value: function setFilterTable(
+		index, value)
+		{
+
+
+			var filterMap = this.state.filterMap;
+			filterMap.set(index, value);
+			console.log("filterMap", filterMap);
+			this.setState({ filterMap: new Map(filterMap) });
+		} }, { key: 'componentWillMount', value: function componentWillMount()
+
+		{
+			this.setState({ headerTableRow: this.renderTableHeaderRow(), searchTableRow: this.renderTableSearchRow() });
+		} }, { key: 'renderTableSearchRow', value: function renderTableSearchRow()
+
+		{var _this2 = this;
+			var countSearchFields = 0;
+			var priemSearchRows = this.props.priemHeaderTable.map(function (searchRow, index) {
+				if (searchRow.isSearch == true) {
+					countSearchFields++;
+					var uniqueValues = [].concat(_toConsumableArray(new Set(_this2.props.priemDataTable.map(function (item) {return item[searchRow['key']];}))));
+					uniqueValues.sort(_priemGlobals.sortAlfabet);
+					var dataSelect = uniqueValues.map(function (name, id) {return new Object({ id: id, name: name });});
+					return _react2.default.createElement(_Table.TableRowColumn, { style: _StylePriem.Styles.OverflowVisible, key: 'SearchCell ' + index },
+						_react2.default.createElement(_multiSelect2.default, { placeholder: '\u0424\u0438\u043B\u044C\u0442\u0440 \u043F\u043E ' + searchRow.placeholder, multiSelect: true, onChange: _this2.setFilterTable.bind(_this2, index),
+							data: dataSelect, styleSelectContainer: { 'width': '100%' },
+							filter: 'startsWith', divider: false }));
+
+				} else
+				{
+					return _react2.default.createElement(_Table.TableRowColumn, { key: 'SearchCell ' + index });
+
+				}
+			});
+			if (countSearchFields > 0) {
+				return _react2.default.createElement(_Table.TableRow, { selectable: false, key: 'SearchRow' }, priemSearchRows);
+			}
+		} }, { key: 'renderActionElement', value: function renderActionElement(
+		header, row, index, key) {
+
+			switch (header.type) {
+				case "button":
+					{
+						return _react2.default.createElement(_Table.TableRowColumn, { key: 'RowTable ' + index + ' - ' + key }, _react2.default.createElement(_PriemButtons2.default, {
+								type: header.type,
+								label: header.title,
+								onClick: this.props.onAction.bind(this, row) }));
+					}
+				case "radio":
+					{
+						return _react2.default.createElement(_Table.TableRowColumn, { key: 'RowTable ' + index + ' - ' + key },
+							_react2.default.createElement(_RadioButton.RadioButtonGroup, { valueSelected: this.props.selected, onChange: this.props.onAction.bind(this, row), name: 'shipSpeed' },
+								_react2.default.createElement(_RadioButton.RadioButton
+								//value="enterprise
+								, { value: row.id,
+									label: header.title })));
+
+
+					}
+				case "checkbox":
+					{
+						return _react2.default.createElement(_Table.TableRowColumn, { key: 'RowTable ' + index + ' - ' + key },
+							_react2.default.createElement(_Checkbox2.default, { onCheck: this.props.onAction.bind(this, row)
+								//checkedIcon={<ActionFavorite />}
+								//uncheckedIcon={<ActionFavoriteBorder />}
+								, label: header.title }));
+
+					}
+				case "menu":
+					{
+						return _react2.default.createElement(_Table.TableRowColumn, { key: 'RowTable ' + index + ' - ' + key }, _react2.default.createElement(_PriemButtons2.default, {
+								type: header.type,
+								label: header.title,
+								onClick: this.props.onAction.bind(this, row) }));
+					}}
+
+
+
+		} }, { key: 'renderDataTable', value: function renderDataTable()
+
+		{var _this3 = this;
+			var filterValues = this.props.priemDataTable.filter(function (value) {
+				var dataExists = _this3.props.priemHeaderTable.filter(function (header, key) {
+					if (_this3.state.filterMap.has(key))
+					{
+						var dataFilter = _this3.state.filterMap.get(key);
+						if (dataFilter.length == 0) return true;
+						dataExists = dataFilter.findIndex(function (row, index) {return row.name === value[header['key']];});
+						return dataExists > -1;
+					}
+					return true;
+				});
+				return dataExists.length == _this3.props.priemHeaderTable.length;
+			});
+			return filterValues.map(function (row, index) {
+				var priemCell = _this3.props.priemHeaderTable.map(function (header, key) {
+					if (header.component) {
+						return _this3.renderActionElement(header, row, index, key);
+					}
+					return _react2.default.createElement(_Table.TableRowColumn, { key: 'RowTable ' + index + ' - ' + key }, row[header['key']]);
+				});
+				return _react2.default.createElement(_Table.TableRow, { key: 'Column ' + index }, priemCell);
+			});
+		} }, { key: 'renderTableHeaderRow', value: function renderTableHeaderRow()
+
+		{
+			var headerTable = this.props.priemHeaderTable.map(function (header, index) {return (
+					_react2.default.createElement(_Table.TableHeaderColumn, { key: 'Header ' + index }, header.name));});
+			return _react2.default.createElement(_Table.TableRow, { key: 'MainHeader' }, headerTable);
+		} }, { key: 'render', value: function render()
+
+		{
+			return (
+
+				_react2.default.createElement(_Table.Table, null,
+					_react2.default.createElement(_Table.TableHeader, { adjustForCheckbox: false, enableSelectAll: false, displaySelectAll: false },
+
+						this.state.headerTableRow),
+
+
+
+					_react2.default.createElement(_Table.TableBody, { displayRowCheckbox: false, adjustForCheckbox: false },
+
+						this.state.searchTableRow,
+						this.renderDataTable())));
+
+
+
+		} }]);return TableView;}(_react.PureComponent);exports.default = TableView;

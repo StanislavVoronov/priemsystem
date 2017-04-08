@@ -22,20 +22,21 @@ export default class Select extends PureComponent{
   }
   render() {
   const  {data,title,multiSelect,filter,styleTitle,placeholder,styleHR,flexDirection} = this.props
+  const filterType=filter ? {filter:this.props.filterType} : {}
   const elementSelect=multiSelect ? <Multiselect 
       valueField='id' textField='name'
       data={data}
+      caseSensitive={false}
       placeholder={placeholder}
       value={this.selected}
       onChange={value=> {
           this.setState({selected:value})
           this.props.onChange(value) 
-      }}  
-    />
+      }} />
     : <DropdownList placeholder={placeholder ? placeholder : `Выберите ${title.toLowerCase()}`} 
     value={this.selected} 
     caseSensitive={false}
-    filter={filter}
+    {...filterType}
     busy={this.props.data && this.props.data.length>0 ? false : true}
     onChange={value=> {
       this.setState({selected:value})
@@ -52,6 +53,7 @@ export default class Select extends PureComponent{
     <div style={selectClass}>
       <div style={defaultStyleTitle}>{title}</div>
       <div style={this.props.styleSelectContainer}>{elementSelect}</div>
+      {this.props.required && !this.selected && <div style={Styles.requiredSelectField}>{this.props.requiredTitle}</div>}
       {this.props.divider ? <Divider style={Object.assign(Styles.hr,styleHR)}/> : null}
      </div>
     )
@@ -66,11 +68,14 @@ Select.defaultProps={
   styleSelectContainer:{'width':'100%'},
   placeholder:false,
   multiSelect:false,
-  filter:'contains',
+  filter:false,
+  filterType:'contains',
   onChange:()=>{},
   serviceAttr:[],
   divider:true,
   styleHR:{},
+  required:false,
+  requiredTitle:'Обязательно для заполнения',
   placeholder:false,
   flexDirection:'column',
   styleSelect:{},

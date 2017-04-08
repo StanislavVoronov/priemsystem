@@ -12,7 +12,7 @@ import {connect} from 'react-redux'
 class MainMenuList extends React.Component {
    renderMenu()
    {
-      console.log("Links",this.props.user)
+     //console.log("Links",this.props.user)
       if (!this.props.user) return []
       const links=this.props.user.links;
       if (!links) return []

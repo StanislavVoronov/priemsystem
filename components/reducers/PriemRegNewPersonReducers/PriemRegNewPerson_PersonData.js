@@ -50,7 +50,7 @@ export default function PriemRegNewPerson(state={
 			}
 			case SET_CUR_PERSON_DOC:{
 				const updatePersonDoc=new Object(state.id_doc)
-				updatePersonDoc.type=action.item
+				updatePersonDoc.type=action.item.type
 				return Object.assign({},state,{id_doc:updatePersonDoc})
 			}
 			case SET_CUR_PERSON_DOC_SERIA:{

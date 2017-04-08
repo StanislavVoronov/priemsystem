@@ -1,0 +1,20 @@
+"use strict";Object.defineProperty(exports, "__esModule", { value: true });var GET_DEFAULT_NAMES = exports.GET_DEFAULT_NAMES = "GET_DEFAULT_NAMES";
+var GET_GOVERMENT_LIST = exports.GET_GOVERMENT_LIST = "GET_GOVERMENT_LIST";
+var GET_TYPE_DOC_LIST = exports.GET_TYPE_DOC_LIST = "GET_TYPE_DOC_LIST";
+
+
+
+
+var getTypeDocList = exports.getTypeDocList = function getTypeDocList(items)
+{
+	return { type: GET_TYPE_DOC_LIST, items: items };
+};
+
+var getDefaultNames = exports.getDefaultNames = function getDefaultNames()
+{
+	return { type: GET_DEFAULT_NAMES, items: {} };
+};
+var getGovermentList = exports.getGovermentList = function getGovermentList()
+{
+	return { type: GET_GOVERMENT_LIST, items: [] };
+};

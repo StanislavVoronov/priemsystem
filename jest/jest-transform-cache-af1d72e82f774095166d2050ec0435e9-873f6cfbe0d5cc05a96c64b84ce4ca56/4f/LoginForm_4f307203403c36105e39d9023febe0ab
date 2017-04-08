@@ -1,0 +1,67 @@
+'use strict';Object.defineProperty(exports, "__esModule", { value: true });var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();
+
+var _react = require('react');var _react2 = _interopRequireDefault(_react);
+
+
+
+
+
+var _StylePriem = require('./StylePriem');
+var _Divider = require('material-ui/Divider');var _Divider2 = _interopRequireDefault(_Divider);
+var _Dialog = require('material-ui/Dialog');var _Dialog2 = _interopRequireDefault(_Dialog);
+var _FlatButton = require('material-ui/FlatButton');var _FlatButton2 = _interopRequireDefault(_FlatButton);
+var _TextField = require('material-ui/TextField');var _TextField2 = _interopRequireDefault(_TextField);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+
+
+LoginForm = function (_PureComponent) {_inherits(LoginForm, _PureComponent);function LoginForm() {_classCallCheck(this, LoginForm);return _possibleConstructorReturn(this, (LoginForm.__proto__ || Object.getPrototypeOf(LoginForm)).apply(this, arguments));}_createClass(LoginForm, [{ key: 'regOperator', value: function regOperator()
+
+
+    {
+      var user = {};
+      if (this.refs.textLogin.input.value == '' || this.refs.textPassword.input.value == '') return false;
+
+      console.log(this.refs.textLogin.input.value);
+      user["login"] = this.refs.textLogin.input.value;
+      user["pass"] = this.refs.textPassword.input.value;
+      this.props.setPriemUser(user);
+    } }, { key: 'render', value: function render()
+
+    {
+      var actions = [
+      _react2.default.createElement(_FlatButton2.default, {
+        hoverColor: 'rgba(0, 188, 212,0.7)',
+        labelStyle: { 'color': 'rgb(255,255,255)' },
+        backgroundColor: 'rgb(0, 188, 212)',
+        label: '\u0412\u043E\u0439\u0442\u0438 \u0432 \u0441\u0438\u0441\u0442\u0435\u043C\u0443',
+        onTouchTap: this.regOperator.bind(this) })];
+
+
+      var titleLogin = 'ЕАИСПА \nМГУТУ им. К. Г. Разумовского (ПКУ)';
+      return (
+        _react2.default.createElement(_Dialog2.default, {
+            open: !(localStorage["priemUser"] && localStorage["priemUser"].id_operator > 0),
+            title: titleLogin,
+            modal: true,
+            actionsContainerStyle: { 'display': 'flex', 'justifyContent': 'center' },
+            close: this.regOperator.bind(this),
+            actions: actions },
+          _react2.default.createElement(_TextField2.default, { id: 'loginName',
+            hintText: '\u041B\u043E\u0433\u0438\u043D',
+            underlineFocusStyle: { borderColor: '#00e600' },
+            ref: 'textLogin',
+            inputStyle: { paddingLeft: 7 },
+            fullWidth: true }),
+          _react2.default.createElement(_Divider2.default, null),
+          _react2.default.createElement(_TextField2.default, { id: 'password',
+            hintText: '\u041F\u0430\u0440\u043E\u043B\u044C',
+            inputStyle: { paddingLeft: 7 },
+            underlineFocusStyle: { borderColor: '#00e600' },
+            ref: 'textPassword',
+            fullWidth: true,
+            type: 'password' }),
+          _react2.default.createElement(_Divider2.default, null),
+          _react2.default.createElement('h3', { style: _StylePriem.Styles.authFailed }, this.props.priemUser && this.props.priemUser.authMessage)));
+
+
+
+    } }]);return LoginForm;}(_react.PureComponent);exports.default = LoginForm;

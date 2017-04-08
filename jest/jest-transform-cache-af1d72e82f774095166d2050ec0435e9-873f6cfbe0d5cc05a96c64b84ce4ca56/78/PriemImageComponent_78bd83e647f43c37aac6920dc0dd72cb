@@ -1,0 +1,72 @@
+'use strict';Object.defineProperty(exports, "__esModule", { value: true });var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();var _reactAvatarEditor = require('react-avatar-editor');var _reactAvatarEditor2 = _interopRequireDefault(_reactAvatarEditor);
+
+var _react = require('react');var _react2 = _interopRequireDefault(_react);
+var _Subheader = require('material-ui/Subheader');var _Subheader2 = _interopRequireDefault(_Subheader);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _possibleConstructorReturn(self, call) {if (!self) {throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return call && (typeof call === "object" || typeof call === "function") ? call : self;}function _inherits(subClass, superClass) {if (typeof superClass !== "function" && superClass !== null) {throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;}var
+
+PriemImageComponent = function (_React$Component) {_inherits(PriemImageComponent, _React$Component);
+
+	function PriemImageComponent(props)
+	{_classCallCheck(this, PriemImageComponent);var _this = _possibleConstructorReturn(this, (PriemImageComponent.__proto__ || Object.getPrototypeOf(PriemImageComponent)).call(this,
+		props));
+		_this.state = {
+			state: 1.0,
+			rotate: 0 };return _this;
+
+	}_createClass(PriemImageComponent, [{ key: 'rotateLeft', value: function rotateLeft(
+		e) {
+			e.preventDefault();
+			this.setState({
+				rotate: this.state.rotate - 90 });
+
+		} }, { key: 'rotateRight', value: function rotateRight(
+
+		e) {
+			e.preventDefault();
+			this.setState({
+				rotate: this.state.rotate + 90 });
+
+		} }, { key: 'handleScale', value: function handleScale(
+		e) {
+			var scale = parseFloat(e.target.value);
+			this.setState({ scale: scale });
+		} }, { key: 'render', value: function render()
+
+		{
+			return (
+				_react2.default.createElement('div', { style: this.props.styleComponent },
+					_react2.default.createElement('div', { style: { display: 'flex' } },
+						_react2.default.createElement(_Subheader2.default, { style: { textAlign: 'center', margin: 0, paddingLeft: 0 } }, '\u041F\u043E\u0432\u0435\u0440\u043D\u0443\u0442\u044C:',
+							_react2.default.createElement('button', { onClick: this.rotateLeft.bind(this) }, '\u0412\u043B\u0435\u0432\u043E'),
+							_react2.default.createElement('button', { onClick: this.rotateRight.bind(this) }, '\u0412\u043F\u0440\u0430\u0432\u043E')),
+
+						_react2.default.createElement(_Subheader2.default, { style: { textAlign: 'center', margin: 0, paddingLeft: 0 } }, '\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0442\u044C:',
+							_react2.default.createElement('input', {
+								name: 'scale',
+								type: 'range',
+								onChange: this.handleScale.bind(this),
+								min: '1',
+								max: '10',
+								step: '1',
+								defaultValue: '1' }))),
+
+					_react2.default.createElement(_reactAvatarEditor2.default, {
+						image: this.props.image,
+						width: window.innerWidth / 2.2,
+						height: window.innerHeight / 2.2,
+						color: this.props.color // RGBA
+						, scale: this.state.scale,
+						rotate: this.state.rotate })));
+
+
+		} }]);return PriemImageComponent;}(_react2.default.Component);exports.default = PriemImageComponent;
+
+
+PriemImageComponent.defaultProps =
+{
+	image: "/dev-bin/priem_get_document?id=29374",
+	color: [255, 255, 255, 0.6],
+	styleComponent: {
+		selfAlign: 'center',
+		width: window.innerWidth / 2.2 + "px",
+		height: window.innerHeight / 2.2 + "px",
+		position: 'fixed' } };
